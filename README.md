@@ -1,5 +1,4 @@
-welcome to Magma
-the game engine for gigachads
+Welcome to Magma
 
 
 
