@@ -59,8 +59,11 @@ namespace Magma {
             P_EntityIDs.push_back(EntityID);
         }
         void M_RemoveID(const char* EntityID) {
-            auto EntityID = std::find();
-            P_EntityIDs.erase(EntityID)
+            auto it = std::find(P_EntityIDs.begin(), P_EntityIDs.end(), EntityID);
+
+            if (it != P_EntityIDs.end()) {
+                P_EntityIDs.erase(it);
+            }
         }
     };
 
