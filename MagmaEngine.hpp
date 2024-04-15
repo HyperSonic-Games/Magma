@@ -1,53 +1,131 @@
 #pragma once
+#include <iostream>
+#include <string>
+#include <vector>
+#include <memory>
+#include <cmath> 
+#include <SDL.h>
+#include <SDL_image.h>
 
+// Forward declaration of Components
+namespace Components {
+    struct BaseComponent;
+    struct Transform;
+    struct Physics;
+    struct BoxCollider;
+    struct CircleCollider;
+    struct CapsuleCollider;
+}
+
+// Namespace for the Magma Game Engine
 namespace Magma {
 
-    class Scene {
-    private:
-        unsigned int P_SceneX;
-        unsigned int P_SceneY;
-        const char* P_Title;
-        SDL_Window* P_MagmaWindow;
-        std::vector<const char*> P_EntityIDs;
-        unsigned int P_FpsTarget;
+    // Forward declaration of the Init function
+    void Init();
 
-    public:
-        Scene(const char* Title, unsigned int SceneX, unsigned int SceneY, unsigned int FpsTarget = 60);
-        ~Scene();
+    // Nested namespace for types used in Magma
+    namespace Types {
 
-        const char* GetTitle() const;
-        int GetX() const;
-        int GetY() const;
-        SDL_Window* GetMagmaWindow();
-        std::vector<const char*> GetEntityIDs() const;
-        void AddID(const char* EntityID);
-        void RemoveID(const char* EntityID);
-    };
+        // Class representing a 2D vector
+        class Vec2 {
+        private:
+            unsigned int X; // X coordinate
+            unsigned int Y; // Y coordinate
+        public:
+            Vec2(unsigned int X, unsigned int Y); // Constructor
+            unsigned int GetX() const; // Getter for X coordinate
+            unsigned int GetY() const; // Getter for Y coordinate
+            void SetX(unsigned int X); // Setter for X coordinate
+            void SetY(unsigned int Y); // Setter for Y coordinate
+        };
+
+        // Class representing an RGBA color
+        class RgbaColor {
+        private:
+            SDL_Color Color = { 0, 0, 0, 0 }; // SDL_color with RGBA components
+        public:
+            RgbaColor(unsigned int Red, unsigned int Green, unsigned int Blue, unsigned int Alpha); // Constructor
+            unsigned int GetRed() const; // Getter for red component
+            unsigned int GetGreen() const; // Getter for green component
+            unsigned int GetBlue() const; // Getter for blue component
+            unsigned int GetAlpha() const; // Getter for alpha component
+            void SetRed(unsigned int Red); // Setter for red component
+            void SetGreen(unsigned int Green); // Setter for green component
+            void SetBlue(unsigned int Blue); // Setter for blue component
+            void SetAlpha(unsigned int Alpha); // Setter for alpha component
+        };
+    }
+
+    // Namespace for components used in Magma
+    namespace Components {
+
+        // Base struct representing a component
+        static struct BaseComponent {
+            virtual ~BaseComponent() {} // Virtual destructor for polymorphism
+        };
+
+        // Struct representing a Transform component
+        struct Transform : public BaseComponent {
+            Types::Vec2 Position; // Position of the entity
+            float Rotation;       // Rotation of the entity
+            float Scale;          // Scale of the entity
+            void MoveTo(const Types::Vec2& Position);
+            void MoveBy(const Types::Vec2& Offset);
+            void SetRotation(float Rotation);
+            void SetScale(float Scale);
+            Types::Vec2 GetPosition() const;
+            float GetRotation();
+            float GetScale();
+        };
+
+        // Struct representing a Physics component
+        struct Physics : public BaseComponent {
+            float Gravity = 9.81; // Earth's Gravitational Constant In m/s
+            float Mass; // Object's Mass in Pounds
+        };
+
+        // Struct representing a Box collider component
+        struct BoxCollider : public BaseComponent {
+            Types::Vec2 Point1; // First corner of the box collider
+            Types::Vec2 Point2; // Second corner of the box collider
+            Types::Vec2 Point3; // Third corner of the box collider
+            Types::Vec2 Point4; // Fourth corner of the box collider
+        };
+
+        // Struct representing a Circle collider component
+        struct CircleCollider : public BaseComponent {
+            float Diameter; // Diameter of the circle collider
+        };
+
+        // Struct representing a Capsule collider component
+        struct CapsuleCollider : public BaseComponent {
+            Types::Vec2 center;    // Center position of the capsule
+            float orientation;     // Orientation angle of the capsule
+            float length;          // Length of the capsule
+            float radius;          // Radius of the capsule
+        };
+    }
 
     class Entity {
     private:
-        const char* P_EntityID;
-        int P_EntityX;
-        int P_EntityY;
-        Scene& P_Scene;
-
+        std::string Name;
+        std::vector<std::shared_ptr<Components::BaseComponent>> Components;
     public:
-        Entity(const char* EntityID, int EntityX, int EntityY, Scene& Scene);
-        ~Entity();
+        void SetName(std::string Name);
+        void AddComponent(const std::shared_ptr<Components::BaseComponent>& Component);
     };
 
     class Renderer {
     private:
-        SDL_Renderer* P_SDLRenderer;
-
+        SDL_Window* WindowContext;
+        SDL_Renderer* RendererContext;
+        std::vector<Entity> RenderCach;
     public:
-        Renderer(SDL_Window* window);
+        Renderer(const char* Title, Types::Vec2 WindowCreationOrgin, unsigned int WindowWidth, unsigned int WindowHeight, bool Fullscreen);
         ~Renderer();
-
-        void Clear() const;
-        void Render() const;
-        void DrawRect(int x, int y, int width, int height) const;
-        // Add more rendering methods as needed (images, textures, etc.)
+        void AddToRendererCache(Entity Entity);
+        void Update();
+        void Clear(Types::RgbaColor ClearColor);
     };
 
-}  // namespace Magma
+} // End of namespace Magma

@@ -1,120 +1,240 @@
-// MagmaEngine.cpp
-#include <SDL.h>
-#include <iostream>
-#include <vector>
-#include <algorithm>
 #include "MagmaEngine.hpp"
+#include <iostream>
+#include <string>
+#include <vector>
+#include <memory>
+#include <SDL.h>
+#include <SDL_image.h>
 
 namespace Magma {
-
-    // Scene Implementation
-    Scene::Scene(const char* Title, unsigned int SceneX, unsigned int SceneY, unsigned int FpsTarget)
-        : P_Title(Title), P_SceneX(SceneX), P_SceneY(SceneY), P_MagmaWindow(nullptr), P_FpsTarget(FpsTarget) {
-        if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO) != 0) {
-            std::cerr << "ERROR: <SDL> " << SDL_GetError() << std::endl;
-            SDL_Quit();
-        }
-
-        P_MagmaWindow = SDL_CreateWindow(P_Title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, P_SceneX, P_SceneY, SDL_WINDOW_SHOWN);
-        if (P_MagmaWindow == nullptr) {
-            std::cerr << "Error: <SDL> " << SDL_GetError() << std::endl;
-            SDL_Quit();
+    // Initialize the Magma Game Engine
+    void Init() {
+        if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+            std::cerr << SDL_GetError(); // Output error message if SDL initialization fails
+            exit(1); // Exit the program with error code 1
         }
     }
 
-    Scene::~Scene() {
-        if (P_MagmaWindow != nullptr) {
-            SDL_DestroyWindow(P_MagmaWindow);
+    namespace Types {
+        // Constructor for 2D vector
+        Vec2::Vec2(unsigned int X, unsigned int Y) {
+            this->X = X; // Initialize X coordinate
+            this->Y = Y; // Initialize Y coordinate
         }
-        SDL_Quit();
-    }
 
-    const char* Scene::GetTitle() const {
-        return P_Title;
-    }
+        // Getter for X coordinate
+        unsigned int Vec2::GetX() const {
+            return this->X; // Return X coordinate
+        }
 
-    int Scene::GetX() const {
-        return P_SceneX;
-    }
+        // Getter for Y coordinate
+        unsigned int Vec2::GetY() const {
+            return this->Y; // Return Y coordinate
+        }
 
-    int Scene::GetY() const {
-        return P_SceneY;
-    }
+        // Setter for X coordinate
+        void Vec2::SetX(unsigned int X) {
+            this->X = X; // Set X coordinate
+        }
 
-    SDL_Window* Scene::GetMagmaWindow() {
-        return P_MagmaWindow;
-    }
+        // Setter for Y coordinate
+        void Vec2::SetY(unsigned int Y) {
+            this->Y = Y; // Set Y coordinate
+        }
 
-    std::vector<const char*> Scene::GetEntityIDs() const {
-        return P_EntityIDs;
-    }
+        // Constructor for RGBA color
+        RgbaColor::RgbaColor(unsigned int Red, unsigned int Green, unsigned int Blue, unsigned int Alpha) {
+            if (Red > 255 or Green > 255 or Blue > 255 or Alpha > 255) {
+                std::cerr << "An rgba color value can not be higher than 255"; // Output error message if color values are out of range
+                exit(1); // Exit the program with error code 1
+            }
+            else {
+                Color.r = Red; // Initialize red component
+                Color.g = Green; // Initialize green component
+                Color.b = Blue; // Initialize blue component
+                Color.a = Alpha; // Initialize alpha component
+            }
+        }
 
-    void Scene::AddID(const char* EntityID) {
-        P_EntityIDs.push_back(EntityID);
-    }
+        // Getter for red component
+        unsigned int RgbaColor::GetRed() const {
+            return this->Color.r; // Return red component
+        }
 
-    void Scene::RemoveID(const char* EntityID) {
-        auto it = std::find(P_EntityIDs.begin(), P_EntityIDs.end(), EntityID);
+        // Getter for green component
+        unsigned int RgbaColor::GetGreen() const {
+            return this->Color.g; // Return green component
+        }
 
-        if (it != P_EntityIDs.end()) {
-            P_EntityIDs.erase(it);
+        // Getter for blue component
+        unsigned int RgbaColor::GetBlue() const {
+            return this->Color.b; // Return blue component
+        }
+
+        // Getter for alpha component
+        unsigned int RgbaColor::GetAlpha() const {
+            return this->Color.a; // Return alpha component
+        }
+
+        // Setter for red component
+        void RgbaColor::SetRed(unsigned int Red) {
+            if (Red > 255) {
+                std::cerr << "An rgba color value can not be higher than 255"; // Output error message if color value is out of range
+                exit(1); // Exit the program with error code 1
+            }
+            else {
+                this->Color.r = Red; // Set red component
+            }
+        }
+
+        // Setter for green component
+        void RgbaColor::SetGreen(unsigned int Green) {
+            if (Green > 255) {
+                std::cerr << "An rgba color value can not be higher than 255"; // Output error message if color value is out of range
+                exit(1); // Exit the program with error code 1
+            }
+            else {
+                this->Color.g = Green; // Set green component
+            }
+        }
+
+        // Setter for blue component
+        void RgbaColor::SetBlue(unsigned int Blue) {
+            if (Blue > 255) {
+                std::cerr << "An rgba color value can not be higher than 255"; // Output error message if color value is out of range
+                exit(1); // Exit the program with error code 1
+            }
+            else {
+                this->Color.b = Blue; // Set blue component
+            }
+        }
+
+        // Setter for alpha component
+        void RgbaColor::SetAlpha(unsigned int Alpha) {
+            if (Alpha > 255) {
+                std::cerr << "An rgba color value can not be higher than 255"; // Output error message if color value is out of range
+                exit(1); // Exit the program with error code 1
+            }
+            else {
+                this->Color.a = Alpha; // Set alpha component
+            }
         }
     }
 
-    // Entity Implementation
-    Entity::Entity(const char* EntityID, int EntityX, int EntityY, Scene& Scene)
-        : P_EntityID(EntityID), P_EntityX(EntityX), P_EntityY(EntityY), P_Scene(Scene) {
-        if (std::find(P_Scene.GetEntityIDs().begin(), P_Scene.GetEntityIDs().end(), EntityID) != P_Scene.GetEntityIDs().end()) {
-            std::cout << "ERROR: <MagmaEngine> New Entity Initialized With An Existing EntityID" << std::endl;
-            SDL_Quit();
+    namespace Components {
+        // Move the entity to a new position
+        void Transform::MoveTo(const Types::Vec2& Position) {
+            this->Position = Position; // Set position to the provided value
         }
-        else if (EntityX > P_Scene.GetX()) {
-            std::cout << "ERROR: <MagmaEngine> New Entity Initialized With An X Value Bigger Than The Screen's Current X Value" << std::endl;
-            SDL_Quit();
+
+        // Move the entity by a certain offset
+        void Transform::MoveBy(const Types::Vec2& Offset) {
+            this->Position.SetX(this->Position.GetX() + Offset.GetX()); // Add offset to current X coordinate
+            this->Position.SetY(this->Position.GetY() + Offset.GetY()); // Add offset to current Y coordinate
         }
-        else if (EntityY > P_Scene.GetY()) {
-            std::cout << "ERROR: <MagmaEngine> New Entity Initialized With A Y Value Bigger Than The Screen's Current Y Value" << std::endl;
-            SDL_Quit();
+
+        // Set the rotation of the entity
+        void Transform::SetRotation(float Rotation) {
+            this->Rotation = Rotation; // Set rotation to the provided value
+        }
+
+        // Set the scale of the entity
+        void Transform::SetScale(float Scale) {
+            this->Scale = Scale; // Set scale to the provided value
+        }
+
+        // Getter for position of the entity
+        Types::Vec2 Transform::GetPosition() const {
+            return this->Position; // Return the position vector
+        }
+
+        // Getter for rotation of the entity
+        float Transform::GetRotation() {
+            return this->Rotation; // Return the rotation value
+        }
+
+        // Getter for scale of the entity
+        float Transform::GetScale() {
+            return this->Scale; // Return the scale value
+        }
+
+
+    }
+
+
+
+    // Set the name of the entity
+    void Entity::SetName(std::string Name) {
+        this->Name = Name; // Set the name of the entity
+    }
+
+    // Add a component to the entity
+    void Entity::AddComponent(const std::shared_ptr<Components::BaseComponent>& Component) {
+        Components.push_back(Component); // Add the component to the entity's component list
+    }
+
+    Renderer::Renderer(const char* Title, Types::Vec2 WindowCreationOrgin, unsigned int WindowWidth, unsigned int WindowHeight, bool Fullscreen) {
+        if (Fullscreen) {
+            this->WindowContext = SDL_CreateWindow(Title, WindowCreationOrgin.GetX(), WindowCreationOrgin.GetY(), WindowWidth, WindowHeight, SDL_WINDOW_FULLSCREEN);
+            if (!this->WindowContext) {
+                std::cerr << "Failed to create fullscreen window: " << SDL_GetError();
+                exit(1);
+            }
+            this->RendererContext = SDL_CreateRenderer(WindowContext, -1, SDL_RENDERER_ACCELERATED);
+            if (!this->RendererContext) {
+                std::cerr << "Failed to create renderer: " << SDL_GetError();
+                exit(1);
+            }
         }
         else {
-            P_Scene.AddID(P_EntityID);
-        }
-    }
-
-    Entity::~Entity() {
-        P_Scene.RemoveID(P_EntityID);
-    }
-
-    // Renderer Implementation
-    Renderer::Renderer(SDL_Window* window) : P_SDLRenderer(nullptr) {
-        P_SDLRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
-        if (P_SDLRenderer == nullptr) {
-            std::cerr << "Error: <SDL> Failed to create renderer: " << SDL_GetError() << std::endl;
-            SDL_Quit();
+            WindowContext = SDL_CreateWindow(Title, WindowCreationOrgin.GetX(), WindowCreationOrgin.GetY(), WindowWidth, WindowHeight, 0);
+            if (!WindowContext) {
+                std::cerr << "Failed to create windowed mode window: " << SDL_GetError();
+                exit(1);
+            }
+            RendererContext = SDL_CreateRenderer(WindowContext, -1, SDL_RENDERER_ACCELERATED);
+            if (!RendererContext) {
+                std::cerr << "Failed to create renderer: " << SDL_GetError();
+                exit(1);
+            }
         }
     }
 
     Renderer::~Renderer() {
-        if (P_SDLRenderer != nullptr) {
-            SDL_DestroyRenderer(P_SDLRenderer);
+        SDL_DestroyRenderer(this->RendererContext);
+        SDL_DestroyWindow(this->WindowContext);
+    }
+
+    void Renderer::AddToRendererCache(Entity Entity) {
+        this->RenderCach.push_back(Entity);
+    }
+
+    void Renderer::Clear(Types::RgbaColor ClearColor) {
+        // Set the RGBA color (e.g., red with alpha 128)
+        if (!SDL_SetRenderDrawColor(RendererContext, ClearColor.GetRed(), ClearColor.GetGreen(), ClearColor.GetBlue(), ClearColor.GetAlpha())) {
+            std::cerr << SDL_GetError();
+            exit(1);
         }
+
+        // Clear the screen with the RGBA color
+        if (!SDL_RenderClear(RendererContext)) {
+            std::cerr << SDL_GetError();
+            exit(1);
+        }
+
+        if (!SDL_SetRenderDrawColor(RendererContext, 0, 0, 0, 255)) {
+            std::cerr << SDL_GetError();
+            exit(1);
+        }
+        
+        // Present the renderer
+        SDL_RenderPresent(RendererContext);
     }
 
-    void Renderer::Clear() const {
-        SDL_RenderClear(P_SDLRenderer);
+    void Renderer::Update() {
+        // Jesus crist why are ECS so dam difficult
+       // TODO: Emplement pain and suffering
     }
+ 
 
-    void Renderer::Render() const {
-        SDL_RenderPresent(P_SDLRenderer);
-    }
-
-    void Renderer::DrawRect(int x, int y, int width, int height) const {
-        SDL_Rect rect = { x, y, width, height };
-        SDL_SetRenderDrawColor(P_SDLRenderer, 255, 255, 255, 255); // White color
-        SDL_RenderFillRect(P_SDLRenderer, &rect);
-    }
-
-    // Add more rendering methods as needed (images, textures, etc.)
-
-}  // namespace Magma
+}
