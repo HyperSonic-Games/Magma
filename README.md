@@ -1,5 +1,4 @@
 # Welcome To The Github Repo For The Magma Game Engine
-## Cool Logo
 ![Magma](https://github.com/HyperSonic-Games/Magma/assets/123091707/cdeeaa51-f6d5-4cb2-a4af-555ee6dd5aa1)
 
 # How To Build From Source
