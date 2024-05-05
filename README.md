@@ -19,3 +19,6 @@ To build on Windows, place the Dependency Folders in C://Libs and set the compil
 ## What Platforms does Magma support?
 
 Magma supports any 64-bit system where SDL2 can run, but there are no guarantees that everything will work because it was primarily developed with Windows in mind.
+
+## How Do I ____
+The Source code is hevaly commented and explaned for evryones sanity
