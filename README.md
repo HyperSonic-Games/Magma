@@ -3,6 +3,11 @@
 
 # How To Build From Source
 
+## DEPENDEDENCYS
+SDL2_image-2.8.2 (For Textures)
+SDL2_ttf-2.22.0 (For Fonts and other text stuff )
+SDL2-2.28.5 ( For rendering )
+
 ## Windows
 
 To build on Windows, have the SDL2 Lib Folder in C://Libs and set the compile target to X64, and it should just work.
