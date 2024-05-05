@@ -6,6 +6,8 @@
 #include <cmath> 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
+
 
 // Forward declaration of Components
 namespace Components {
@@ -58,34 +60,31 @@ namespace Magma {
 
     // Namespace for components used in Magma
     namespace Components {
+        namespace Internal {
 
-        // Base struct representing a component
-        static struct BaseComponent {
-            virtual ~BaseComponent() {} // Virtual destructor for polymorphism
-        };
+            // Base struct representing a component
+            static struct BaseComponent {
+                virtual ~BaseComponent() {} // Virtual destructor for polymorphism
+            };
+        }
 
         // Struct representing a Transform component
-        struct Transform : public BaseComponent {
+        struct Transform : public Internal::BaseComponent {
             Types::Vec2 Position; // Position of the entity
             float Rotation;       // Rotation of the entity
             float Scale;          // Scale of the entity
             void MoveTo(const Types::Vec2& Position);
             void MoveBy(const Types::Vec2& Offset);
-            void SetRotation(float Rotation);
-            void SetScale(float Scale);
-            Types::Vec2 GetPosition() const;
-            float GetRotation();
-            float GetScale();
         };
 
         // Struct representing a Physics component
-        struct Physics : public BaseComponent {
+        struct Physics : public Internal::BaseComponent {
             float Gravity = 9.81; // Earth's Gravitational Constant In m/s
             float Mass; // Object's Mass in Pounds
         };
 
         // Struct representing a Box collider component
-        struct BoxCollider : public BaseComponent {
+        struct BoxCollider : public Internal::BaseComponent {
             Types::Vec2 Point1; // First corner of the box collider
             Types::Vec2 Point2; // Second corner of the box collider
             Types::Vec2 Point3; // Third corner of the box collider
@@ -93,12 +92,12 @@ namespace Magma {
         };
 
         // Struct representing a Circle collider component
-        struct CircleCollider : public BaseComponent {
+        struct CircleCollider : public Internal::BaseComponent {
             float Diameter; // Diameter of the circle collider
         };
 
         // Struct representing a Capsule collider component
-        struct CapsuleCollider : public BaseComponent {
+        struct CapsuleCollider : public Internal::BaseComponent {
             Types::Vec2 center;    // Center position of the capsule
             float orientation;     // Orientation angle of the capsule
             float length;          // Length of the capsule
@@ -109,10 +108,11 @@ namespace Magma {
     class Entity {
     private:
         std::string Name;
-        std::vector<std::shared_ptr<Components::BaseComponent>> Components;
+        std::vector<std::shared_ptr<Components::Internal::BaseComponent>> Components;
     public:
         void SetName(std::string Name);
-        void AddComponent(const std::shared_ptr<Components::BaseComponent>& Component);
+        void AddComponent(const std::shared_ptr<Components::Internal::BaseComponent>& Component);
+        std::vector<std::shared_ptr<Components::Internal::BaseComponent>> GetComponentList();
     };
 
     class Renderer {

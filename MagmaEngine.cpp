@@ -5,6 +5,7 @@
 #include <memory>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 namespace Magma {
     // Initialize the Magma Game Engine
@@ -133,32 +134,6 @@ namespace Magma {
             this->Position.SetY(this->Position.GetY() + Offset.GetY()); // Add offset to current Y coordinate
         }
 
-        // Set the rotation of the entity
-        void Transform::SetRotation(float Rotation) {
-            this->Rotation = Rotation; // Set rotation to the provided value
-        }
-
-        // Set the scale of the entity
-        void Transform::SetScale(float Scale) {
-            this->Scale = Scale; // Set scale to the provided value
-        }
-
-        // Getter for position of the entity
-        Types::Vec2 Transform::GetPosition() const {
-            return this->Position; // Return the position vector
-        }
-
-        // Getter for rotation of the entity
-        float Transform::GetRotation() {
-            return this->Rotation; // Return the rotation value
-        }
-
-        // Getter for scale of the entity
-        float Transform::GetScale() {
-            return this->Scale; // Return the scale value
-        }
-
-
     }
 
 
@@ -169,9 +144,15 @@ namespace Magma {
     }
 
     // Add a component to the entity
-    void Entity::AddComponent(const std::shared_ptr<Components::BaseComponent>& Component) {
+    void Entity::AddComponent(const std::shared_ptr<Components::Internal::BaseComponent>& Component) {
         Components.push_back(Component); // Add the component to the entity's component list
     }
+
+    // This is used mostly internaly but for debuging a guess you could use this? 
+    std::vector<std::shared_ptr<Components::Internal::BaseComponent>> Entity::GetComponentList() {
+        return Components;
+    }
+
 
     Renderer::Renderer(const char* Title, Types::Vec2 WindowCreationOrgin, unsigned int WindowWidth, unsigned int WindowHeight, bool Fullscreen) {
         if (Fullscreen) {
@@ -209,6 +190,8 @@ namespace Magma {
         this->RenderCach.push_back(Entity);
     }
 
+
+
     void Renderer::Clear(Types::RgbaColor ClearColor) {
         // Set the RGBA color (e.g., red with alpha 128)
         if (!SDL_SetRenderDrawColor(RendererContext, ClearColor.GetRed(), ClearColor.GetGreen(), ClearColor.GetBlue(), ClearColor.GetAlpha())) {
@@ -226,15 +209,98 @@ namespace Magma {
             std::cerr << SDL_GetError();
             exit(1);
         }
-        
+
         // Present the renderer
         SDL_RenderPresent(RendererContext);
     }
 
     void Renderer::Update() {
-        // Jesus crist why are ECS so dam difficult
-       // TODO: Emplement pain and suffering
+        Components::Transform* TransformComponent_ECS = nullptr;
+        Components::BoxCollider* BoxColliderComponent_ECS = nullptr;
+        Components::CapsuleCollider* CapsuleCollider_ECS = nullptr;
+        Components::CircleCollider* CircleCollider_ECS = nullptr;
+        Components::Physics* Physics_ECS = nullptr;
+
+        // Iterate over each entity in RenderCach
+        for (Entity entity : RenderCach) {
+
+            // Iterate over each component of the current entity
+            for (std::shared_ptr<Components::Internal::BaseComponent> ComponentPtr : entity.GetComponentList()) {
+
+                // Use dynamic_cast to cast to the exact type
+                if (auto TransformComponent = dynamic_cast<Components::Transform*>(ComponentPtr.get())) {
+                    TransformComponent_ECS = TransformComponent;
+                }
+                else if (auto BoxColliderComponent = dynamic_cast<Components::BoxCollider*>(ComponentPtr.get())) {
+                    BoxColliderComponent_ECS = BoxColliderComponent;
+                }
+                else if (auto CapsuleCollider = dynamic_cast<Components::CapsuleCollider*>(ComponentPtr.get())) {
+                    CapsuleCollider_ECS = CapsuleCollider;
+                }
+                else if (auto CircleCollider = dynamic_cast<Components::CircleCollider*>(ComponentPtr.get())) {
+                    CircleCollider_ECS = CircleCollider;
+                }
+                else if (auto Physics = dynamic_cast<Components::Physics*>(ComponentPtr.get())) {
+                    Physics_ECS = Physics;
+                }
+                // To Add More Components Just add and else if statement here
+            }
+        }
+        // This is where the actual rendering logic of the ENTIRE game engine Lives PLZ Don't touch this if you don't
+        // know what you are doing
+
+
+        // Load a default font
+        TTF_Font* font = TTF_OpenFont(nullptr, font_size); // Passing nullptr uses the default font
+        if (font == nullptr) {
+            // Error handling: unable to load the default font
+            // Log the error or handle it in an appropriate way
+        }
+
+        if (TransformComponent_ECS == nullptr) {
+            SDL_Window* PopupWindow = SDL_CreateWindow("Error", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 400, 200, SDL_WINDOW_SHOWN);
+            if (PopupWindow != nullptr) {
+                SDL_Renderer* PopupRenderer = SDL_CreateRenderer(PopupWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+                if (PopupRenderer != nullptr) {
+                    SDL_SetRenderDrawColor(PopupRenderer, 255, 255, 255, 255); // Set background color to white
+                    SDL_RenderClear(PopupRenderer);
+                    // Render your message
+                    SDL_Color textColor = { 0, 0, 0, 255 }; // Black color
+                    SDL_Surface* textSurface = TTF_RenderText_Solid(font, "An Entity Is Missing A TransformComponent This is Required For Rendering!", textColor);
+                    if (textSurface != nullptr) {
+                        SDL_Texture* textTexture = SDL_CreateTextureFromSurface(PopupRenderer, textSurface);
+                        if (textTexture != nullptr) {
+                            SDL_Rect textRect = { 50, 50, textSurface->w, textSurface->h };
+                            SDL_RenderCopy(PopupRenderer, textTexture, nullptr, &textRect);
+                            SDL_RenderPresent(PopupRenderer);
+
+                            // Wait for the user to close the popup window
+                            SDL_Event event;
+                            bool popupOpen = true;
+                            while (popupOpen) {
+                                while (SDL_PollEvent(&event)) {
+                                    if (event.type == SDL_QUIT) {
+                                        popupOpen = false;
+                                    }
+                                }
+                            }
+                            SDL_DestroyTexture(textTexture);
+                        }
+                        SDL_FreeSurface(textSurface);
+                    }
+                    SDL_DestroyRenderer(PopupRenderer);
+                }
+                SDL_DestroyWindow(PopupWindow);
+            }
+        }
+
+        // Clean up the font
+        TTF_CloseFont(font);
+
+
     }
- 
+
+
+
 
 }
