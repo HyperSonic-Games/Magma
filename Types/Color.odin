@@ -1,6 +1,7 @@
 package Types
 
 import "core:simd"
+import "core:math/linalg"
 import "vendor:sdl2"
 
 // SIMD-backed color type
@@ -30,5 +31,6 @@ ColorMul :: proc(a, b: Color) -> Color {
 }
 
 ColorDiv :: proc(a, b: Color) -> Color {
-	return simd.div(a, b)
+	// eww look at that ugly cast
+	return cast(#simd[4]u8)simd.div(cast(#simd[4]f32)a, cast(#simd[4]f32)b)
 }
