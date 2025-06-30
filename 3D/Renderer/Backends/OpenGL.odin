@@ -9,7 +9,7 @@ import "base:runtime"
 
 import "../../../Util"
 
-@private
+
 OpenGLDebugCallback :: proc "c" (source: uint, type: uint, id: uint, severity: uint, length: int, message: cstring, user_param: rawptr) {
 	context = runtime.default_context()
     Util.log(.DEBUG, "Renderer3D_GL_Internal", "OpenGL Debug Message: %s", message)

@@ -1,10 +1,10 @@
 package main
 
 import "core:fmt"
-import "2D/Renderer"
-import "2D/EventSys"
-import "Types"
-import "Util"
+import "../2D/Renderer"
+import "../2D/EventSys"
+import "../Types"
+import "../Util"
 
 
 

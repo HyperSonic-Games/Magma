@@ -1,84 +1,34 @@
 package Types
 
+import "core:simd"
 import "vendor:sdl2"
 
-RGBA :: sdl2.Color
+// SIMD-backed color type
+Color :: #simd[4]u8
 
-RGBAGetRed :: proc(color: RGBA) -> (Red: u8) {
-    return color.r
+// SDL2 conversion
+ColorFromSDL :: proc(c: sdl2.Color) -> Color {
+	color: Color = {c.r, c.g, c.b, c.a}
+    return color
 }
 
-RGBAGetGreen :: proc(color: RGBA) -> (Green: u8) {
-    return color.g
+ColorToSDL :: proc(c: Color) -> sdl2.Color {
+	return sdl2.Color{r = simd.extract(c, 0), g = simd.extract(c, 1), b = simd.extract(c, 2), a = simd.extract(c, 3)}
 }
 
-RGBAGetBlue :: proc(color: RGBA) -> (Blue: u8) {
-    return color.b
+// Arithmetic operations
+ColorAdd :: proc(a, b: Color) -> Color {
+	return simd.add(a, b)
 }
 
-RGBAGetAlpha :: proc(color: RGBA) -> (Alpha: u8) {
-    return color.a
+ColorSub :: proc(a, b: Color) -> Color {
+	return simd.sub(a, b)
 }
 
-RGBASetRed :: proc(color: RGBA, value: u8){
-    color := color
-    color.r = value
+ColorMul :: proc(a, b: Color) -> Color {
+	return simd.mul(a, b)
 }
 
-RGBASetGreen :: proc(color: RGBA, value: u8 ) {
-    color := color
-    color.g = value
-}
-
-RGBASetBlue :: proc(color: RGBA, value: u8) {
-    color := color
-    color.b = value
-}
-
-RGBASetAlpha :: proc(color: RGBA, value: u8) {
-        color := color
-        color.a = value
-}
-
-RGBAdd :: proc(a: RGBA, b: RGBA) -> (color: RGBA) {
-    result: RGBA = {r = a.r + b.r, g = a.g + b.g, b = a.b + b.b, a = a.a + b.b}
-    return result
-}
-
-RGBSub :: proc(a: RGBA, b: RGBA) -> (color: RGBA) {
-    result: RGBA = {r = a.r - b.r, g = a.g - b.g, b = a.b - b.b, a = a.a - b.a}
-    return result
-}
-
-RGBMul :: proc(a: RGBA, b: RGBA) -> (color: RGBA) {
-    result: RGBA = {r = a.r * b.r, g = a.g * b.g, b = a.b * b.b, a = a.a * b.a}
-    return result
-}
-
-RGBDiv :: proc(a: RGBA, b: RGBA) -> (color: RGBA) {
-    result: RGBA = {r = a.r / b.r, g = a.g / b.g, b = a.b / b.b, a = a.a / b.a}
-    return result
-}
-
-
-
-RGBABlend :: proc(a: RGBA, b: RGBA) -> RGBA {
-    alpha_a := f32(a.a) / 255.0
-    alpha_b := f32(b.a) / 255.0
-    out_a := alpha_a + alpha_b * (1.0 - alpha_a)
-
-    if out_a == 0.0 {
-        return RGBA{r=0, g=0, b=0, a=0}
-    }
-
-    r := ((f32(a.r) * alpha_a) + (f32(b.r) * alpha_b * (1.0 - alpha_a))) / out_a
-    g := ((f32(a.g) * alpha_a) + (f32(b.g) * alpha_b * (1.0 - alpha_a))) / out_a
-    b := ((f32(a.b) * alpha_a) + (f32(b.b) * alpha_b * (1.0 - alpha_a))) / out_a
-
-    return RGBA{
-        r = u8(clamp(r, 0.0, 255.0)),
-        g = u8(clamp(g, 0.0, 255.0)),
-        b = u8(clamp(b, 0.0, 255.0)),
-        a = u8(clamp(out_a * 255.0, 0.0, 255.0))
-    }
+ColorDiv :: proc(a, b: Color) -> Color {
+	return simd.div(a, b)
 }
