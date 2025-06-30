@@ -18,9 +18,9 @@ main :: proc() {
 
     running: bool = true
 
-    ctx: Renderer.RenderContext = Renderer.Init("Magma Engine Test App", "Magma Engine Test App", 800, 500, backend)
+    ctx: Renderer.RenderContext = Renderer.Init("Magma Engine Test App", "Magma Engine Test App", 800, 500, backend, false)
     
-    rect_color := Types.RGBA{r = 25, g = 230, b = 12, a = 0}
+    rect_color := Types.Color{25, 230, 12, 0}
     Renderer.DrawRect(&ctx, 0, 0, 100, 100, rect_color)
 
     defer Renderer.Shutdown(ctx)

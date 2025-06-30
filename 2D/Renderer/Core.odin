@@ -139,7 +139,7 @@ Init :: proc(
             
             // Clear splash from window
             sdl2.RenderClear(renderer)
-            sdl2.SetRenderDrawColor(renderer, 0, 0, 0, 255) // Black background
+            sdl2.SetRenderDrawColor(renderer, 0, 0, 0, 100) // Black background
             sdl2.RenderClear(renderer)
             sdl2.RenderPresent(renderer)
             sdl2.DestroyTexture(splash_texture)
