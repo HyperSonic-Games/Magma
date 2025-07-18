@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<title>.\Util\Filesystem.odin</title>
+<style>
+    :root {
+        --bg: #ffffff;
+        --fg: #000000;
+        --code-bg: #f0f0f0;
+    }
+    [data-theme="dark"] {
+        --bg: #1e1e1e;
+        --fg: #e0e0e0;
+        --code-bg: #2e2e2e;
+    }
+    body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: sans-serif;
+        padding: 2em;
+        max-width: 900px;
+        margin: auto;
+    }
+    pre, code {
+        background: var(--code-bg);
+        color: var(--fg);
+        font-family: monospace;
+        padding: 0.5em;
+        border-radius: 5px;
+        overflow-x: auto;
+        display: block;
+    }
+    .theme-toggle {
+        position: fixed;
+        top: 1em;
+        right: 1em;
+        background: none;
+        border: 1px solid var(--fg);
+        padding: 0.4em;
+        color: var(--fg);
+        cursor: pointer;
+        border-radius: 5px;
+    }
+</style>
+</head>
+<body>
+<button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+<svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor">
+    <circle cx="12" cy="12" r="5"/>
+    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+</svg>
+</button>
+
+<h1>.\Util\Filesystem.odin</h1>
+<h2>WriteCompressedStringFile</h2><p>WriteCompressedStringFile writes an array of strings to a file.<br>Each line is compressed using Shoco compression before being written.<br><br>@param filepath Destination file path<br>@param text Array of strings to compress and write</p><pre><code>WriteCompressedStringFile(filepath: string, text: []string)</code></pre>
+<h2>ReadCompressedStringFile</h2><p>ReadCompressedStringFile reads a Shoco-compressed file,<br>decompresses its content, and returns the result split by lines.<br><br>@param filepath Path to the compressed file<br>@return Decompressed lines as an array of strings</p><pre><code>ReadCompressedStringFile(filepath: string)</code></pre>
+<h2>ReadCSVFile</h2><p>ReadCSVFile reads and parses a CSV file into a flat array of all fields.<br><br>@param filepath Path to the CSV file<br>@return Flat array of all CSV fields</p><pre><code>ReadCSVFile(filepath: string)</code></pre>
+<h2>WriteCSVFile</h2><p>WriteCSVFile writes a flat array of values as a single CSV line to a file.<br><br>@param filepath File to write to<br>@param values Flat array of values to write<br>@return True if write succeeded</p><pre><code>WriteCSVFile(filepath: string, values: []string)</code></pre>
+<h2>ReadBase32File</h2><p>ReadBase32File reads a Base32-encoded file and decodes it into raw bytes.<br><br>@param filepath Path to encoded file<br>@return Decoded byte slice or nil on error</p><pre><code>ReadBase32File(filepath: string)</code></pre>
+<h2>WriteBase32File</h2><p>WriteBase32File encodes the given data to Base32 and writes it to a file.<br><br>@param filepath Destination file<br>@param data Byte slice to encode<br>@return True if write succeeded</p><pre><code>WriteBase32File(filepath: string, data: []byte)</code></pre>
+<h2>ReadBase64File</h2><p>ReadBase64File reads a Base64-encoded file and decodes it into raw bytes.<br><br>@param filepath Input file path<br>@return Decoded byte slice or nil on error</p><pre><code>ReadBase64File(filepath: string)</code></pre>
+<h2>WriteBase64File</h2><p>WriteBase64File encodes the given data to Base64 and writes it to a file.<br><br>param: filepath Output file path<br>@param data Byte slice to encode<br>@return True if write succeeded</p><pre><code>WriteBase64File(filepath: string, data: []byte)</code></pre>
+<h2>LoadDynamicLibrary</h2><p>DynamicLibHandle stores a reference to a loaded dynamic library.<br>/<br>DynamicLibHandle :: dynlib.Library<br><br>/<br>LoadDynamicLibrary loads a dynamic library and resolves its symbols into a struct.<br><br>@param filepath Path to the dynamic library<br>@param symbol_table Pointer to struct to receive function pointers</p><pre><code>LoadDynamicLibrary(filepath: string, symbol_table: ^$T)</code></pre>
+<h2>UnloadDynamicLibrary</h2><p>UnloadDynamicLibrary unloads a previously loaded dynamic library.<br><br>@param symbol_table Struct containing the dynamic library handle</p><pre><code>UnloadDynamicLibrary(symbol_table: $T)</code></pre>
+
+<script>
+    const sunSVG = `<svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor">
+<circle cx="12" cy="12" r="5"/>
+<path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+</svg>`;
+    const moonSVG = `<svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor">
+<path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+</svg>`;
+
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        document.getElementById('theme-icon').outerHTML = theme === 'dark' ? moonSVG : sunSVG;
+    }
+
+    function toggleTheme() {
+        const current = localStorage.getItem('theme') || 'light';
+        setTheme(current === 'dark' ? 'light' : 'dark');
+    }
+
+    (function() {
+        const saved = localStorage.getItem('theme') || 'light';
+        setTheme(saved);
+    })();
+</script>
+</body>
+</html>

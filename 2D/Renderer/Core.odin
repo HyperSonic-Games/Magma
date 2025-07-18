@@ -6,6 +6,7 @@ import "../../Util"
 
 SplashImage := #load("../../MagmaEngine.png", []byte)
 
+
 import "vendor:sdl2"
 import "vendor:sdl2/image"
 
@@ -69,6 +70,7 @@ Init :: proc(
     if sdl2.Init(sdl2.INIT_VIDEO | sdl2.INIT_AUDIO) != 0 {
         Util.log(.ERROR, "Renderer2D", sdl2.GetErrorString())
     }
+
 
     window_flags: sdl2.WindowFlags = {.SHOWN, .ALLOW_HIGHDPI}
     window := sdl2.CreateWindow(

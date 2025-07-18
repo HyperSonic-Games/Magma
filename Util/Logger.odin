@@ -1,7 +1,9 @@
 package Util
 
+import "core:strings"
 import "core:fmt"
 import "core:encoding/ansi"
+import "vendor:sdl2"
 
 LogLevel :: enum {
     DEBUG,
@@ -25,7 +27,14 @@ log :: proc(level: LogLevel, component_name: string, format: string, args: ..any
         fmt.printfln(ansi.CSI + ansi.FG_YELLOW + ansi.SGR + "%s<WARN> ~ %s" + ansi.CSI + ansi.FG_WHITE, prefix, full_msg)
     }
     else if (level == .ERROR) {
-        fmt.eprintfln(ansi.CSI + ansi.FG_RED + ansi.SGR + "%s<ERROR> ~ %s" + ansi.CSI + ansi.FG_WHITE, prefix, full_msg)
+        if (ODIN_DEBUG) {
+            fmt.eprintfln(ansi.CSI + ansi.FG_RED + ansi.SGR + "%s<ERROR> ~ %s" + ansi.CSI + ansi.FG_WHITE, prefix, full_msg)
+        }
+        else {
+            full_msg_cstring := strings.clone_to_cstring(full_msg)
+            sdl2.ShowSimpleMessageBox({.ERROR}, "MAGMA_ENGINE", full_msg_cstring, nil)
+            free(&full_msg_cstring)
+        }
     }
 
     free(&prefix)
