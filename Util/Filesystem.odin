@@ -126,12 +126,12 @@ WriteCSVFile :: proc(filepath: string, values: []string) -> (ok: bool) {
     return true
 }
 
-/**
- * ReadBase32File reads a Base32-encoded file and decodes it into raw bytes.
- *
- * @param filepath Path to encoded file
- * @return Decoded byte slice or nil on error
- */
+/*
+* ReadBase32File reads a Base32-encoded file and decodes it into raw bytes.
+*
+* @param filepath Path to encoded file
+* @return Decoded byte slice or nil on error
+*/
 ReadBase32File :: proc(filepath: string) -> []byte {
     file_handle, err := os.open(filepath, os.O_RDONLY)
     if err != nil {
@@ -151,13 +151,13 @@ ReadBase32File :: proc(filepath: string) -> []byte {
     return decoded_data
 }
 
-/**
- * WriteBase32File encodes the given data to Base32 and writes it to a file.
- *
- * @param filepath Destination file
- * @param data Byte slice to encode
- * @return True if write succeeded
- */
+/*
+* WriteBase32File encodes the given data to Base32 and writes it to a file.
+*
+* @param filepath Destination file
+* @param data Byte slice to encode
+* @return True if write succeeded
+*/
 WriteBase32File :: proc(filepath: string, data: []byte) -> bool {
     encoded := base32.encode(data)
     defer delete(encoded)
@@ -172,12 +172,12 @@ WriteBase32File :: proc(filepath: string, data: []byte) -> bool {
     return true
 }
 
-/**
- * ReadBase64File reads a Base64-encoded file and decodes it into raw bytes.
- *
- * @param filepath Input file path
- * @return Decoded byte slice or nil on error
- */
+/*
+* ReadBase64File reads a Base64-encoded file and decodes it into raw bytes.
+*
+* @param filepath Input file path
+* @return Decoded byte slice or nil on error
+*/
 ReadBase64File :: proc(filepath: string) -> []byte {
     file_handle, err := os.open(filepath, os.O_RDONLY)
     if err != nil {
@@ -197,13 +197,13 @@ ReadBase64File :: proc(filepath: string) -> []byte {
     return decoded_data
 }
 
-/**
- * WriteBase64File encodes the given data to Base64 and writes it to a file.
- *
- * param: filepath Output file path
- * @param data Byte slice to encode
- * @return True if write succeeded
- */
+/*
+* WriteBase64File encodes the given data to Base64 and writes it to a file.
+*
+* param: filepath Output file path
+* @param data Byte slice to encode
+* @return True if write succeeded
+*/
 WriteBase64File :: proc(filepath: string, data: []byte) -> bool {
     encoded := base64.encode(data)
     defer delete(encoded)
