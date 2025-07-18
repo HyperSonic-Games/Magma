@@ -138,12 +138,7 @@ Init :: proc(
             sdl2.RenderCopy(renderer, splash_texture, nil, &dst_rect)
             sdl2.RenderPresent(renderer)
             sdl2.Delay(3000)
-            
-            // Clear splash from window
-            sdl2.RenderClear(renderer)
-            sdl2.SetRenderDrawColor(renderer, 0, 0, 0, 100) // Black background
-            sdl2.RenderClear(renderer)
-            sdl2.RenderPresent(renderer)
+
             sdl2.DestroyTexture(splash_texture)
         } 
         else {
@@ -163,13 +158,16 @@ Init :: proc(
 }
 
 Update :: proc(ctx: ^RenderContext) {
-    w: i32 = 0;
-    h: i32 = 0;
-    _ = sdl2.GetRendererOutputSize(ctx.Renderer, &w, &h);
+    sdl2.SetRenderTarget(ctx.Renderer, nil)  // Switch to default window framebuffer
 
-    dstRect: sdl2.Rect = {x = 0, y = 0, w = w, h = h };
-    _ = sdl2.RenderCopy(ctx.Renderer, ctx.RenderSurface, nil, &dstRect);
+    w: i32 = 0
+    h: i32 = 0
+    _ = sdl2.GetRendererOutputSize(ctx.Renderer, &w, &h)
+
+    dstRect: sdl2.Rect = {x = 0, y = 0, w = w, h = h}
+    _ = sdl2.RenderCopy(ctx.Renderer, ctx.RenderSurface, nil, &dstRect)
 }
+
 
 
 SetFullscreen :: proc(ctx: RenderContext, fullscreen: bool) {

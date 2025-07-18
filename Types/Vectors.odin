@@ -29,6 +29,21 @@ Vector2fGetY :: proc (vec: Vector2f) -> f64 {
     return result
 }
 
+Vector2SetX :: proc(vec: Vector2, x: i64) -> Vector2 {
+    return simd.replace(vec, 0, x)
+}
+Vector2SetY :: proc(vec: Vector2, y: i64) -> Vector2 {
+    return simd.replace(vec, 1, y)
+}
+
+Vector2fSetX :: proc(vec: Vector2f, x: f64) -> Vector2f {
+    return simd.replace(vec, 0, x)
+}
+Vector2fSetY :: proc(vec: Vector2f, y: f64) -> Vector2f {
+    return simd.replace(vec, 1, y)
+}
+
+
 
 VectorAdd_Vector2 :: proc(a, b: Vector2) -> Vector2 {
     return simd.add(a, b)
@@ -87,6 +102,25 @@ Vector3fGetZ :: proc (vec: Vector3f) -> f64 {
     return vec[2]
 }
 
+Vector3SetX :: proc(vec: Vector3, x: i64) -> Vector3 {
+    return Vector3{x, vec[1], vec[2]}
+}
+Vector3SetY :: proc(vec: Vector3, y: i64) -> Vector3 {
+    return Vector3{vec[0], y, vec[2]}
+}
+Vector3SetZ :: proc(vec: Vector3, z: i64) -> Vector3 {
+    return Vector3{vec[0], vec[1], z}
+}
+
+Vector3fSetX :: proc(vec: Vector3f, x: f64) -> Vector3f {
+    return Vector3f{x, vec[1], vec[2]}
+}
+Vector3fSetY :: proc(vec: Vector3f, y: f64) -> Vector3f {
+    return Vector3f{vec[0], y, vec[2]}
+}
+Vector3fSetZ :: proc(vec: Vector3f, z: f64) -> Vector3f {
+    return Vector3f{vec[0], vec[1], z}
+}
 
 VectorAdd_Vector3 :: proc(a, b: Vector3) -> Vector3 {
     return Vector3{
@@ -190,6 +224,33 @@ Vector4fGetW :: proc (vec: Vector4f) -> f64 {
     result: f64 = simd.extract(vec, 3)
     return result
 }
+
+Vector4SetX :: proc(vec: Vector4, x: i64) -> Vector4 {
+    return simd.replace(vec, 0, x)
+}
+Vector4SetY :: proc(vec: Vector4, y: i64) -> Vector4 {
+    return simd.replace(vec, 1, y)
+}
+Vector4SetZ :: proc(vec: Vector4, z: i64) -> Vector4 {
+    return simd.replace(vec, 2, z)
+}
+Vector4SetW :: proc(vec: Vector4, w: i64) -> Vector4 {
+    return simd.replace(vec, 3, w)
+}
+
+Vector4fSetX :: proc(vec: Vector4f, x: f64) -> Vector4f {
+    return simd.replace(vec, 0, x)
+}
+Vector4fSetY :: proc(vec: Vector4f, y: f64) -> Vector4f {
+    return simd.replace(vec, 1, y)
+}
+Vector4fSetZ :: proc(vec: Vector4f, z: f64) -> Vector4f {
+    return simd.replace(vec, 2, z)
+}
+Vector4fSetW :: proc(vec: Vector4f, w: f64) -> Vector4f {
+    return simd.replace(vec, 3, w)
+}
+
 
 VectorAdd_Vector4 :: proc(a, b: Vector4) -> Vector4 {
     return simd.add(a, b)
