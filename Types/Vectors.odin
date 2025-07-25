@@ -2,6 +2,7 @@ package Types
 
 import "core:simd"
 
+
 Vector2f :: #simd[2]f64
 Vector2  :: #simd[2]i64
 Vector3f :: [3]f64

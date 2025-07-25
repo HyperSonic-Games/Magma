@@ -11,13 +11,13 @@ import "core:strings"
 import "core:os"
 import "base:intrinsics"
 
-/**
+/*
  * WriteCompressedStringFile writes an array of strings to a file.
  * Each line is compressed using Shoco compression before being written.
  *
  * @param filepath Destination file path
  * @param text Array of strings to compress and write
- */
+*/
 WriteCompressedStringFile :: proc(filepath: string, text: []string) {
     handle, _ := os.open(filepath, os.O_WRONLY | os.O_CREATE | os.O_TRUNC, 0o644)
 
@@ -29,13 +29,13 @@ WriteCompressedStringFile :: proc(filepath: string, text: []string) {
     os.close(handle)
 }
 
-/**
+/*
  * ReadCompressedStringFile reads a Shoco-compressed file,
  * decompresses its content, and returns the result split by lines.
  *
  * @param filepath Path to the compressed file
  * @return Decompressed lines as an array of strings
- */
+*/
 ReadCompressedStringFile :: proc(filepath: string) -> []string {
     handle, _ := os.open(filepath, os.O_RDONLY)
     raw, ok := os.read_entire_file_from_handle(handle)
@@ -48,12 +48,12 @@ ReadCompressedStringFile :: proc(filepath: string) -> []string {
     return strings.split(result, "\n")
 }
 
-/**
+/*
  * ReadCSVFile reads and parses a CSV file into a flat array of all fields.
  *
  * @param filepath Path to the CSV file
  * @return Flat array of all CSV fields
- */
+*/
 ReadCSVFile :: proc(filepath: string) -> []string {
     log(.DEBUG, "MAGMA_CSV_READER", "Reading CSV from file: %s", filepath)
 
@@ -97,13 +97,13 @@ ReadCSVFile :: proc(filepath: string) -> []string {
     return dyn_result[:]
 }
 
-/**
+/*
  * WriteCSVFile writes a flat array of values as a single CSV line to a file.
  *
  * @param filepath File to write to
  * @param values Flat array of values to write
  * @return True if write succeeded
- */
+*/
 WriteCSVFile :: proc(filepath: string, values: []string) -> (ok: bool) {
     log(.DEBUG, "MAGMA_CSV_WRITER", "Writing CSV to file: %s", filepath)
     builder := new(strings.Builder)
@@ -218,17 +218,16 @@ WriteBase64File :: proc(filepath: string, data: []byte) -> bool {
     return true
 }
 
-/**
- * DynamicLibHandle stores a reference to a loaded dynamic library.
- */
+
+// stores a reference to a loaded dynamic library.
 DynamicLibHandle :: dynlib.Library
 
-/**
+/*
  * LoadDynamicLibrary loads a dynamic library and resolves its symbols into a struct.
  *
  * @param filepath Path to the dynamic library
  * @param symbol_table Pointer to struct to receive function pointers
- */
+*/
 LoadDynamicLibrary :: proc(filepath: string, symbol_table: ^$T) {
     when !intrinsics.type_is_struct(T) {
         #panic("symbol_table was expected to be a struct")
@@ -241,11 +240,11 @@ LoadDynamicLibrary :: proc(filepath: string, symbol_table: ^$T) {
     }
 }
 
-/**
+/*
  * UnloadDynamicLibrary unloads a previously loaded dynamic library.
  *
  * @param symbol_table Struct containing the dynamic library handle
- */
+*/
 UnloadDynamicLibrary :: proc(symbol_table: $T) {
     when !intrinsics.type_is_struct(T) {
         #panic("symbol_table was expected to be a struct")

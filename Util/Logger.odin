@@ -5,6 +5,7 @@ import "core:fmt"
 import "core:encoding/ansi"
 import "vendor:sdl2"
 
+
 LogLevel :: enum {
     DEBUG,
     INFO,
@@ -12,6 +13,14 @@ LogLevel :: enum {
     ERROR,
 }
 
+/*
+ * log logs a message to stdout/stderr
+ *
+ * calls to log with the .DEBUG level will only output if your game is compiled as a debug build
+ * @param level the level to log at options (DEBUG, INFO, WARN, ERROR)
+ * @param component_name the name associated to what called this function can be anything
+ * @param format a regular odin format string followed by the vars to print out
+*/
 log :: proc(level: LogLevel, component_name: string, format: string, args: ..any) {
     prefix := fmt.aprintf("[MAGMA/%s]: ", component_name)
 
