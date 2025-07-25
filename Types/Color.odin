@@ -9,7 +9,7 @@ Color :: #simd[4]u8
 
 
 /*
- * ColorFromSDL converts SDL2's Color data structure to Magma's Color data structure.
+ * ColorFromSDL an internal function that converts SDL2's Color data structure to Magma's Color data structure.
  *
  * @param c the SDL2 Color data structure
  * @return Magma's Color data structure
@@ -20,7 +20,7 @@ ColorFromSDL :: proc(c: sdl2.Color) -> Color {
 }
 
 /*
- * ColorToSDL converts Magma's Color data structure to SDL2's Color data structure.
+ * ColorToSDL an internal function that converts Magma's Color data structure to SDL2's Color data structure.
  *
  * @param c the Magma Color data structure
  * @return SDL2's Color data structure
