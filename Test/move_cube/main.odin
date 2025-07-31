@@ -49,7 +49,7 @@ main :: proc() {
         if y >= 500 { pos = Types.Vector2SetY(pos, 500 - CellSize) }
 
         Renderer.ClearScreen(&ctx, Types.Color{0, 0, 0, 255})
-        Renderer.DrawRect(&ctx, auto_cast Types.Vector2GetX(pos), auto_cast Types.Vector2GetY(pos), CellSize, CellSize, Types.Color{0, 255, 0, 255})
+        Renderer.DrawRect(&ctx, auto_cast pos, {CellSize, CellSize}, Types.Color{0, 255, 0, 255}, true, 45)
         Renderer.Update(&ctx)
         Renderer.PresentScreen(&ctx)
 

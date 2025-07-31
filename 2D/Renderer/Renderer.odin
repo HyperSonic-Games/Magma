@@ -5,7 +5,8 @@ import "core:math"
 import "../../Util"
 
 SplashImage := #load("../../MagmaEngine.png", []byte)
-
+@private
+Frames: u128
 
 import "vendor:sdl2"
 import "vendor:sdl2/image"
@@ -181,6 +182,8 @@ Update :: proc(ctx: ^RenderContext) {
 
     dstRect: sdl2.Rect = {x = 0, y = 0, w = w, h = h}
     _ = sdl2.RenderCopy(ctx.Renderer, ctx.RenderSurface, nil, &dstRect)
+    Frames += 1
+    Util.log(.DEBUG, "MAGMA_RENDERER_UPDATE", "Frame: %d", Frames)
 }
 
 
@@ -236,3 +239,31 @@ FPSLimiter :: proc(target_fps: u32) {
 
     last_time = sdl2.GetTicks()
 }
+
+/*
+ * GetDeltaTime returns the time in seconds between the current frame and the previous frame.
+ * It only updates the previous frame time every second call, effectively measuring delta over two frames.
+ *
+ * @return delta time in seconds (f32)
+ */
+GetDeltaTime :: proc() -> f32 {
+    @static initialized: bool = false
+    @static last_time: u32
+    @static update_last: bool = false
+
+    if !initialized {
+        last_time = sdl2.GetTicks()
+        initialized = true
+    }
+
+    current_time := sdl2.GetTicks()
+    delta := f32(current_time - last_time) / 1000.0
+
+    if update_last {
+        last_time = current_time
+    }
+    update_last = !update_last
+
+    return delta
+}
+
