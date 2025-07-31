@@ -45,6 +45,11 @@ WindowState :: struct {
     mouse_left:     bool,
 }
 
+/*
+ * ResetWindowFlags sets all the window state flags to a known state (should be called after game logic in the main loop)
+ *
+ * @param state a pointer to a stucture that holds the window state data
+*/
 ResetWindowFlags :: proc(state: ^WindowState) {
     state.should_quit   = false
     state.resized       = false
@@ -56,6 +61,7 @@ ResetWindowFlags :: proc(state: ^WindowState) {
     state.mouse_left    = false
 }
 
+@private
 ConvertSDLKeycodeToKEYS :: proc(sym: sdl2.Keycode) -> KEYS {
     #partial switch sym {
         case sdl2.Keycode.A: return KEYS.A
@@ -103,6 +109,7 @@ ConvertSDLKeycodeToKEYS :: proc(sym: sdl2.Keycode) -> KEYS {
     }
 }
 
+@private
 ConvertSDLModToMODKEYS :: proc(mod: sdl2.Keymod) -> MOD_KEYS {
     using sdl2
     if (mod & KMOD_LSHIFT) != {} {return MOD_KEYS.L_SHIFT}
@@ -115,6 +122,13 @@ ConvertSDLModToMODKEYS :: proc(mod: sdl2.Keymod) -> MOD_KEYS {
     else {return MOD_KEYS.NONE}
 }
 
+/*
+ * HandleEvents When called updates all of the event structures passed to it
+ *
+ * @param mouse a pointer to a stucture that holds mouse data
+ * @param keyboard a pointer to a structure that contains all ot the keys and mod keys being pressed
+ * @param win a pointer to a structure that holds general window state (fullscreen, quit state, ect)
+*/
 HandleEvents :: proc(mouse: ^Mouse, keyboard: ^Keyboard, win: ^WindowState) {
     ResetWindowFlags(win)
 

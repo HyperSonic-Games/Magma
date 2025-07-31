@@ -251,3 +251,4 @@ UnloadDynamicLibrary :: proc(symbol_table: $T) {
     }
     dynlib.unload_library(symbol_table.__handle)
 }
+

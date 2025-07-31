@@ -23,7 +23,18 @@ RenderContext :: struct {
     RenderSurface: ^sdl2.Texture,
 }
 
-
+/*
+ * Init Creates a new window and SDL2 renderer for drawing on
+ *
+ * @param app_name the internal name used by drivers like audio for identification
+ * @param window_name the name displayed in the title bar in ANCI
+ * @param width the width of the window in pixels
+ * @param height the height of the window in pixels
+ * @param GraphicsBackend defaults to OpenGL but can be set to Software on all platforms, Metal on Apple devices, and DirectX3D11 on Windows devices
+ * @param debug_mode flag that tells SDL2 to run in debug mode NOTE: cluters up STDIO use only if MAGMA will not tell you the error
+ * 
+ * @return RenderContext a renderer context for the window you just created
+*/
 Init :: proc(
     app_name: cstring, window_name: cstring, width: i32, height: i32,
     backend: GraphicsBackend = .OPEN_GL,
@@ -157,6 +168,10 @@ Init :: proc(
 
 }
 
+/*
+ * Update Updates the renderer with whatever should be rendered to the screen
+ * @param cxt The renderer context for the window you want to update
+*/
 Update :: proc(ctx: ^RenderContext) {
     sdl2.SetRenderTarget(ctx.Renderer, nil)  // Switch to default window framebuffer
 
@@ -169,7 +184,11 @@ Update :: proc(ctx: ^RenderContext) {
 }
 
 
-
+/*
+ * SetFullscreen controls if the window in the renderer context is fullscreen or not
+ * @param cxt the renderer context of the window you want to toggle fullscreen on
+ * @param fullscreen the flag that sets if the window is fullscreen or not
+*/
 SetFullscreen :: proc(ctx: RenderContext, fullscreen: bool) {
     switch fullscreen {
         case true:
@@ -180,6 +199,10 @@ SetFullscreen :: proc(ctx: RenderContext, fullscreen: bool) {
 
 }
 
+/*
+ * Shutdown cleans up the window and renderer then quits SDL2
+ * @param cxt the context to clean up
+*/
 Shutdown :: proc(ctx: RenderContext) {
     if ctx.Renderer != nil {
         sdl2.DestroyRenderer(ctx.Renderer)
@@ -194,6 +217,10 @@ Shutdown :: proc(ctx: RenderContext) {
     sdl2.Quit()
 }
 
+/*
+ * FPSLimiter limits the FPS to a specific value
+ * @param target_fps the number for the fps you want to limit to
+*/
 FPSLimiter :: proc(target_fps: u32) {
 
     frame_delay := 1000 / target_fps
