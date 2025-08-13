@@ -2,7 +2,7 @@ package Util
 
 import "core:strings"
 import "core:fmt"
-import "core:encoding/ansi"
+import "core:terminal/ansi"
 import "vendor:sdl2"
 
 
