@@ -1,5 +1,6 @@
 package EventSys
 
+import "core:c"
 import "../../Types"
 import "../../Util"
 import "core:simd"
@@ -133,9 +134,8 @@ HandleEvents :: proc(mouse: ^Mouse, keyboard: ^Keyboard, win: ^WindowState) {
     ResetWindowFlags(win)
 
     event: sdl2.Event
-    for sdl2.PollEvent(&event) {
+    for sdl2.PollEvent(&event) != false {
         #partial switch event.type {
-
         case sdl2.EventType.QUIT:
             win.should_quit = true
 
@@ -173,17 +173,21 @@ HandleEvents :: proc(mouse: ^Mouse, keyboard: ^Keyboard, win: ^WindowState) {
             win_event := event.window
             #partial switch win_event.event {
                 case sdl2.WindowEventID.RESIZED:
-                    win.resized     = true
-                    win.new_width   = win_event.data1
-                    win.new_height  = win_event.data2
+                    win.resized    = true
+                    win.new_width  = win_event.data1
+                    win.new_height = win_event.data2
 
-                case sdl2.WindowEventID.MINIMIZED:     win.minimized     = true
-                case sdl2.WindowEventID.MAXIMIZED:     win.maximized     = true
-                case sdl2.WindowEventID.FOCUS_GAINED:  win.focus_gained  = true
-                case sdl2.WindowEventID.FOCUS_LOST:    win.focus_lost    = true
-                case sdl2.WindowEventID.ENTER:         win.mouse_entered = true
-                case sdl2.WindowEventID.LEAVE:         win.mouse_left    = true
+                case sdl2.WindowEventID.MINIMIZED:    win.minimized     = true
+                case sdl2.WindowEventID.MAXIMIZED:    win.maximized     = true
+                case sdl2.WindowEventID.FOCUS_GAINED: win.focus_gained  = true
+                case sdl2.WindowEventID.FOCUS_LOST:   win.focus_lost    = true
+                case sdl2.WindowEventID.ENTER:        win.mouse_entered = true
+                case sdl2.WindowEventID.LEAVE:        win.mouse_left    = true
+
+                case: {} // ignore unhandled window events
             }
+
+        case: {} // ignore all other unknown events safely
         }
     }
 }
