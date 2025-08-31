@@ -9,7 +9,6 @@ import "core:encoding/base64"
 import "core:dynlib"
 import "core:strings"
 import "core:os"
-import "base:intrinsics"
 
 /*
  * WriteCompressedStringFile writes an array of strings to a file.
@@ -108,6 +107,7 @@ WriteCSVFile :: proc(filepath: string, values: []string) -> (ok: bool) {
     log(.DEBUG, "MAGMA_CSV_WRITER", "Writing CSV to file: %s", filepath)
     builder := new(strings.Builder)
     builder = strings.builder_init(builder)
+    defer free(builder)
     i: int
     for i = 0; i < len(values); i += 1 {
         strings.write_string(builder, values[i])

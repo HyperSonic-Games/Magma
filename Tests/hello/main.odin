@@ -17,6 +17,13 @@ main :: proc () {
         EventSys.HandleEvents(mouse, keyboard, win_state)
         Renderer.Update(&ctx)
         Renderer.PresentScreen(&ctx)
+        if win_state.should_quit == true {
+            running = false
+            continue
+        }
     
     }
+    free(mouse)
+    free(keyboard)
+    free(win_state)
 }

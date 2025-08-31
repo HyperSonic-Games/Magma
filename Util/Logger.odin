@@ -42,11 +42,11 @@ log :: proc(level: LogLevel, component_name: string, format: string, args: ..any
         else {
             full_msg_cstring := strings.clone_to_cstring(full_msg)
             sdl2.ShowSimpleMessageBox({.ERROR}, "MAGMA_ENGINE", full_msg_cstring, nil)
-            free(&full_msg_cstring)
+            delete(full_msg_cstring)
         }
     }
 
-    free(&prefix)
+    delete(prefix)
     if len(args) > 0 {
         free(&full_msg)
     }
