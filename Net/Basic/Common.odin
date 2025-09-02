@@ -1,4 +1,4 @@
-package Raw
+package Basic
 
 import "core:net"
 
@@ -9,3 +9,5 @@ UDP_SocketHandle :: net.UDP_Socket
 IPAddrFamily :: net.Address_Family
 
 IPAddr :: net.Address
+
+Packet :: []byte
