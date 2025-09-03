@@ -45,13 +45,13 @@ Init :: proc(
     #partial switch backend {
         case .DIRECTX3D11:
             when (ODIN_OS != .Windows) {
-                Util.log(.WARN, "Renderer2D", "DirectX3D11 is Windows-only, defaulting to OpenGL.")
+                Util.log(.WARN, "MAGMA_2D_RENDERER_INIT", "DirectX3D11 is Windows-only, defaulting to OpenGL.")
                 backend = .OPEN_GL
             }
 
         case .METAL:
             when (ODIN_OS != .Darwin) {
-                Util.log(.WARN, "Renderer2D", "Metal is macOS-only, defaulting to OpenGL.")
+                Util.log(.WARN, "MAGMA_2D_RENDERER_INIT", "Metal is macOS-only, defaulting to OpenGL.")
                 backend = .OPEN_GL
             }
     }
@@ -82,7 +82,7 @@ Init :: proc(
     }
 
     if sdl2.Init(sdl2.INIT_VIDEO | sdl2.INIT_AUDIO) != 0 {
-        Util.log(.ERROR, "Renderer2D", sdl2.GetErrorString())
+        Util.log(.ERROR, "MAGMA_2D_RENDERER_INIT", sdl2.GetErrorString())
     }
 
 
@@ -94,7 +94,7 @@ Init :: proc(
         window_flags
     )
     if window == nil {
-        Util.log(.ERROR, "Renderer2D", "Failed to create window: %s", sdl2.GetErrorString())
+        Util.log(.ERROR, "MAGMA_2D_RENDERER_INIT", "Failed to create window: %s", sdl2.GetErrorString())
         sdl2.Quit()
     }
 
@@ -108,7 +108,7 @@ Init :: proc(
 
     renderer := sdl2.CreateRenderer(window, -1, renderer_flags)
     if renderer == nil {
-        Util.log(.ERROR, "Renderer2D", "Failed to create renderer: %s", sdl2.GetErrorString())
+        Util.log(.ERROR, "MAGMA_2D_RENDERER_INIT", "Failed to create renderer: %s", sdl2.GetErrorString())
         sdl2.Quit()
     }
 
@@ -119,7 +119,7 @@ Init :: proc(
     splash_surface := image.Load_RW(splash_rw, true)
     
     if splash_surface == nil {
-        Util.log(.ERROR, "Renderer2D", "Failed to load splash image: %s", sdl2.GetErrorString())
+        Util.log(.ERROR, "MAGMA_2D_RENDERER_INIT", "Failed to load splash image: %s", sdl2.GetErrorString())
     } else {
         splash_texture := sdl2.CreateTextureFromSurface(renderer, splash_surface)
         sdl2.FreeSurface(splash_surface) // Free surface immediately
@@ -156,7 +156,7 @@ Init :: proc(
             sdl2.DestroyTexture(splash_texture)
         } 
         else {
-            Util.log(.ERROR, "Renderer2D", "Failed to create splash texture: %s", sdl2.GetErrorString())
+            Util.log(.ERROR, "MAGMA_2D_RENDERER_INIT", "Failed to create splash texture: %s", sdl2.GetErrorString())
         }
     }
 
@@ -185,7 +185,7 @@ Update :: proc(ctx: ^RenderContext) {
     dstRect: sdl2.Rect = {x = 0, y = 0, w = w, h = h}
     _ = sdl2.RenderCopy(ctx.Renderer, ctx.RenderSurface, nil, &dstRect)
     Frames += 1
-    Util.log(.DEBUG, "MAGMA_RENDERER_UPDATE", "Frame: %d", Frames)
+    Util.log(.DEBUG, "MAGMA_2D_RENDERER_UPDATE", "Frame: %d", Frames)
 }
 
 

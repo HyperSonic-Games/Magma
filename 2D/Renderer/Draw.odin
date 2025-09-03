@@ -107,7 +107,7 @@ DrawLine :: proc(ctx: ^RenderContext, point1: Types.Vector2f, point2: Types.Vect
  * @param pos the top-left position to draw the texture
  * @param rot the rotation angle (in degrees, clockwise)
 */
-DrawTexture :: proc(ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vector2f, rot: f32 = 0.0) {
+DrawTexture :: proc(ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vector2f, rot: f64) {
     w, h: i32
     _ = sdl2.QueryTexture(texture, nil, nil, &w, &h)
 
@@ -124,5 +124,5 @@ DrawTexture :: proc(ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vect
     }
 
     sdl2.SetRenderTarget(ctx.Renderer, ctx.RenderSurface)
-    sdl2.RenderCopyExF(ctx.Renderer, texture, nil, &dst, cast(f64)rot, &center, .NONE)
+    sdl2.RenderCopyExF(ctx.Renderer, texture, nil, &dst, rot, &center, .NONE)
 }

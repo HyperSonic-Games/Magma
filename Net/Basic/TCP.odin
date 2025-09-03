@@ -33,7 +33,7 @@ OpenTCPSocket :: proc(
 
     sock, err := net.create_socket(addr_type, .TCP)
     if err != .None {
-        Util.log(.ERROR, "RawTCPHandler", "TCP Socket creation failed: %s", err)
+        Util.log(.ERROR, "MAGMA_NET_BASIC_TCP_OPEN", "TCP Socket creation failed: %s", err)
         return nil
     }
 
@@ -61,7 +61,7 @@ OpenTCPSocket :: proc(
     if port != 0 {
         err := net.bind(sock, ENDPOINT)
         if err != .None {
-            Util.log(.ERROR, "RawTCPHandler", "Failed to bind TCP socket: %s", err)
+            Util.log(.ERROR, "MAGMA_NET_BASIC_TCP_OPEN", "Failed to bind TCP socket: %s", err)
             net.close(sock)
             return nil
         }
@@ -84,7 +84,7 @@ SendTCPSocket :: proc(socket: TCP_SocketHandle, data: []byte) -> (int, bool) {
     data_written, err := net.send_tcp(socket, data)
 
     if err != .None {
-        Util.log(.ERROR, "RawTCPSendData", "Sent: %d bytes before encountering error: %s", data_written, err)
+        Util.log(.ERROR, "MAGMA_NET_BASIC_TCP_SEND", "Sent: %d bytes before encountering error: %s", data_written, err)
         return data_written, false
     }
     return data_written, true
@@ -103,9 +103,13 @@ ReciveTCPSocket :: proc(socket: TCP_SocketHandle, buf: []byte) -> (int, bool) {
     data_read, err := net.recv_tcp(socket, buf)
 
     if err != .None {
-        Util.log(.ERROR, "RawTCPReciveData", "Received: %d bytes before encountering error: %s", data_read, err)
+        Util.log(.ERROR, "MAGMA_NET_BASIC_TCP_RECIVE", "Received: %d bytes before encountering error: %s", data_read, err)
         return data_read, false
     }
 
     return data_read, true
+}
+
+CloseTCPSocket :: proc(socket: TCP_SocketHandle) {
+    net.close(socket)
 }

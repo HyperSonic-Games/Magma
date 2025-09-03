@@ -29,7 +29,7 @@ OpenUDPSocket :: proc(
 
     sock, err := net.create_socket(addr_type, .UDP)
     if err != .None {
-        Util.log(.ERROR, "RawUDPHandler", "UDP Socket creation failed: %s", err)
+        Util.log(.ERROR, "MAGMA_NET_BASIC_UDP_OPEN", "UDP Socket creation failed: %s", err)
         return nil
     }
 
@@ -56,7 +56,7 @@ OpenUDPSocket :: proc(
     if port != 0 {
         err := net.bind(sock, endpoint)
         if err != .None {
-            Util.log(.ERROR, "RawUDPHandler", "Failed to bind UDP socket: %s", err)
+            Util.log(.ERROR, "MAGMA_NET_BASIC_UDP_OPEN", "Failed to bind UDP socket: %s", err)
             net.close(sock)
             return nil
         }
@@ -91,14 +91,14 @@ SendUDPSocket :: proc(socket: UDP_SocketHandle, data: []byte, addr: IPAddr, port
     data_written, err := net.send_udp(socket, data, endpoint)
 
     if err != .None {
-        Util.log(.ERROR, "RawUDPSendData", "Sent: %d bytes before encountering error: %s", data_written, err)
+        Util.log(.ERROR, "MAGMA_NET_BASIC_UDP_SEND", "Sent: %d bytes before encountering error: %s", data_written, err)
         return data_written, false
     }
     return data_written, true
 }
 
 /*
- * ReciveUDPSocket Receives a UDP packet from a socket into the provided buffer.
+ * ReciveFromUDPSocket Receives a UDP packet from a socket into the provided buffer.
  *
  * @param socket The UDP socket handle to read data from.
  *
@@ -110,8 +110,12 @@ ReciveUDPSocket :: proc(socket: UDP_SocketHandle, buf: []byte) -> (int, IPAddr, 
     data_read, endpoint, err := net.recv_udp(socket, buf)
 
     if err != .None {
-        Util.log(.ERROR, "RawUDPReciveData", "Received: %d bytes before encountering error: %s", data_read, err)
+        Util.log(.ERROR, "MAGMA_NET_BASIC_UDP_RECIVE", "Received: %d bytes before encountering error: %s", data_read, err)
     }
 
     return data_read, endpoint.address, cast(u16)endpoint.port
+}
+
+CloseUDPSocket :: proc(socket: UDP_SocketHandle) {
+    net.close(socket)
 }
