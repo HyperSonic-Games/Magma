@@ -1,5 +1,6 @@
 package Physics
 
+
 import "../../Types"
 import "../../Util"
 import b2d "vendor:box2d"
@@ -8,6 +9,20 @@ import b2d "vendor:box2d"
 JointHandle :: b2d.JointId
 
 
+
+/*
+ * CreateDistanceJoint creates a distance joint between two objects.
+ * @param world the physics world
+ * @param obj_a first object
+ * @param obj_b second object
+ * @param anchor_a local anchor point on obj_a
+ * @param anchor_b local anchor point on obj_b
+ * @param rest_length the target distance between the anchors
+ * @param min_length minimum allowed distance
+ * @param max_length maximum allowed distance
+ * @param handle_collision whether the connected bodies should collide
+ * @return JointHandle handle to the created joint
+ */
 CreateDistanceJoint :: proc(
     world: World,
     obj_a: Obj,
@@ -35,6 +50,21 @@ CreateDistanceJoint :: proc(
     return b2d.CreateDistanceJoint(cast(b2d.WorldId)world, jointDef^)
 }
 
+/*
+ * CreateSpringJoint creates a spring joint between two objects.
+ * @param world the physics world
+ * @param obj_a first object
+ * @param obj_b second object
+ * @param anchor_a local anchor point on obj_a
+ * @param anchor_b local anchor point on obj_b
+ * @param rest_length the natural spring length
+ * @param min_length minimum allowed distance
+ * @param max_length maximum allowed distance
+ * @param hertz frequency of the spring oscillation
+ * @param damping damping ratio of the spring
+ * @param handle_collision whether the connected bodies should collide
+ * @return JointHandle handle to the created joint
+ */
 CreateSpringJoint :: proc(
     world: World,
     obj_a: Obj,
@@ -66,6 +96,21 @@ CreateSpringJoint :: proc(
     return b2d.CreateDistanceJoint(cast(b2d.WorldId)world, jointDef^)
 }
 
+/*
+ * CreateLinearActuatorJoint creates a linear actuator using a distance joint.
+ * @param world the physics world
+ * @param obj_a first object
+ * @param obj_b second object
+ * @param anchor_a local anchor point on obj_a
+ * @param anchor_b local anchor point on obj_b
+ * @param rest_length target distance when actuator is idle
+ * @param min_length minimum allowed distance
+ * @param max_length maximum allowed distance
+ * @param max_force maximum motor force
+ * @param speed speed of actuator movement
+ * @param handle_collision whether the connected bodies should collide
+ * @return JointHandle handle to the created joint
+ */
 CreateLinearActuatorJoint :: proc(
     world: World,
     obj_a: Obj,
@@ -97,6 +142,19 @@ CreateLinearActuatorJoint :: proc(
     return b2d.CreateDistanceJoint(cast(b2d.WorldId)world, jointDef^)
 }
 
+/*
+ * CreateMotorJoint creates a revolute motor joint between two objects.
+ * @param world the physics world
+ * @param obj_a first object
+ * @param obj_b second object
+ * @param anchor_a local anchor point on obj_a
+ * @param anchor_b local anchor point on obj_b
+ * @param motor_speed rotational speed of the motor
+ * @param max_torque maximum torque applied by the motor
+ * @param enable_motor whether the motor is enabled
+ * @param handle_collision whether the connected bodies should collide
+ * @return JointHandle handle to the created joint
+ */
 CreateMotorJoint :: proc(
     world: World,
     obj_a: Obj,
@@ -111,30 +169,27 @@ CreateMotorJoint :: proc(
     jointDef := new(b2d.RevoluteJointDef)
     defer free(jointDef)
 
-    // Bodies to connect
     jointDef.bodyIdA = cast(b2d.BodyId)obj_a
     jointDef.bodyIdB = cast(b2d.BodyId)obj_b
-
-    // Separate anchors for each body
     jointDef.localAnchorA = {cast(f32)Types.Vector2fGetX(anchor_a), cast(f32)Types.Vector2fGetY(anchor_a)}
     jointDef.localAnchorB = {cast(f32)Types.Vector2fGetX(anchor_b), cast(f32)Types.Vector2fGetY(anchor_b)}
-
-    // Motor settings
     jointDef.enableMotor = enable_motor
     jointDef.motorSpeed = motor_speed
     jointDef.maxMotorTorque = max_torque
-
-    // Let objects collide or not
     jointDef.collideConnected = handle_collision
 
     return b2d.CreateRevoluteJoint(cast(b2d.WorldId)world, jointDef^)
 }
 
+/*
+ * DestroyJoint destroys a previously created joint.
+ * @param joint handle to the joint
+ */
 DestroyJoint :: proc(joint: JointHandle) {
     b2d.DestroyJoint(joint)
 }
 
-
+/* -------- Distance Joint Getters -------- */
 
 DistanceJointGetRestLength :: proc(joint: JointHandle) -> Meters {
     return b2d.DistanceJoint_GetLength(joint)
@@ -152,6 +207,8 @@ DistanceJointGetCurrentLength :: proc(joint: JointHandle) -> Meters {
     return b2d.DistanceJoint_GetCurrentLength(joint)
 }
 
+/* -------- Distance Joint Setters -------- */
+
 DistanceJointSetRestLength :: proc(joint: JointHandle, length: Meters) {
     b2d.DistanceJoint_SetLength(joint, length)
 }
@@ -164,7 +221,7 @@ DistanceJointSetMaxLength :: proc(joint: JointHandle, max_length: Meters) {
     b2d.DistanceJoint_SetLengthRange(joint,DistanceJointGetMinLength(joint), max_length)
 }
 
-
+/* -------- Spring Joint Getters -------- */
 
 SpringJointGetRestLength :: proc(joint: JointHandle) -> Meters {
     return b2d.DistanceJoint_GetLength(joint)
@@ -190,6 +247,8 @@ SpringJointGetHertz :: proc(joint: JointHandle) -> Hertz {
     return b2d.DistanceJoint_GetSpringHertz(joint)
 }
 
+/* -------- Spring Joint Setters -------- */
+
 SpringJointSetRestLength :: proc(joint: JointHandle, length: Meters) {
     b2d.DistanceJoint_SetLength(joint, length)
 }
@@ -210,7 +269,7 @@ SpringJointSetHertz :: proc(joint: JointHandle, hertz: Hertz){
     b2d.DistanceJoint_SetSpringHertz(joint, hertz)
 }
 
-
+/* -------- Linear Actuator Joint Getters -------- */
 
 LinearActuatorJointGetRestLength :: proc(joint: JointHandle) -> Meters {
     return b2d.DistanceJoint_GetLength(joint)
@@ -236,6 +295,8 @@ LinearActuatorJointGetMaxForce :: proc(joint: JointHandle) -> Newtons {
     return b2d.DistanceJoint_GetMotorForce(joint)
 }
 
+/* -------- Linear Actuator Joint Setters -------- */
+
 LinearActuatorJointSetRestLength :: proc(joint: JointHandle, length: Meters) {
     b2d.DistanceJoint_SetLength(joint, length)
 }
@@ -254,4 +315,34 @@ LinearActuatorJointSetSpeed :: proc(joint: JointHandle, speed: MetersPerSecond) 
 
 LinearActuatorJointSetMaxForce :: proc(joint: JointHandle, force: Newtons) {
     b2d.DistanceJoint_SetMaxMotorForce(joint, force)
+}
+
+/* -------- Motor Joint Getters & Setters -------- */
+
+MotorJointGetEnabled :: proc(joint: JointHandle) -> bool {
+    return b2d.RevoluteJoint_IsMotorEnabled(joint)
+}
+
+MotorJointGetCurrentAngle :: proc(joint: JointHandle) -> Radians {
+    return b2d.RevoluteJoint_GetAngle(joint)
+}
+
+MotorJointGetSpeed :: proc(joint: JointHandle) -> RadiansPerSecond {
+    return b2d.RevoluteJoint_GetMotorSpeed(joint)
+}
+
+MotorJointGetMaxTorque :: proc(joint: JointHandle) -> NewtonMeters {
+    return b2d.RevoluteJoint_GetMotorTorque(joint)
+}
+
+MotorJointSetEnabled :: proc(joint: JointHandle, enabled: bool) {
+    b2d.RevoluteJoint_EnableMotor(joint, enabled)
+}
+
+MotorJointSetSpeed :: proc(joint: JointHandle, speed: RadiansPerSecond) {
+   b2d.RevoluteJoint_SetMotorSpeed(joint, speed)
+}
+
+MotorJointSetMaxTourque :: proc(joint: JointHandle, max_torque: NewtonMeters) {
+    b2d.RevoluteJoint_SetMaxMotorTorque(joint, max_torque)
 }

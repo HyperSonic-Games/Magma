@@ -38,9 +38,9 @@ InitMatRegistry :: proc() {
 
 /*
  * DestroyMatRegistry clears the material registry.
- * Called via @fini. No explicit memory freeing needed because Odin maps are GC-managed.
+ * Called via @fini.
 */
 @fini
 DestroyMatRegistry :: proc() {
-    MaterialRegistry = make(map[string]Material)
+    delete(MaterialRegistry)
 }
