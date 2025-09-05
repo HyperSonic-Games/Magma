@@ -13,7 +13,7 @@ import b2d "vendor:box2d"
  * @param radius The radius affected by the explosion
  * @param falloff How the force decreases with distance
  */
-Boom :: proc(world: World, position: Types.Vector2f, strength: f32, radius: f32, falloff: f32) {
+Boom :: proc(world: World, position: Types.Vector2f, strength: f32, radius: Meters, falloff: Meters) {
     expl_def := b2d.DefaultExplosionDef()
 
     expl_def.position[0] = cast(f32)Types.Vector2fGetX(position)
@@ -27,8 +27,8 @@ Boom :: proc(world: World, position: Types.Vector2f, strength: f32, radius: f32,
 
 /*
  * Impulse Applies a linear impulse to a body at its center of mass.
- * @param world The physics world (required by Box2D API)
- * @param body The body to apply the impulse to
+ * @param world The physics world
+ * @param body The body to apply the impulse to in Ns
  * @param impulse The vector force to apply
  */
 Impulse :: proc(world: World, body: Obj, impulse: Types.Vector2f) {
@@ -40,12 +40,12 @@ Impulse :: proc(world: World, body: Obj, impulse: Types.Vector2f) {
 }
 
 /*
- * Torque Applies a rotational impulse (torque) to a body.
- * @param world The physics world (required by Box2D API)
+ * Torque Applies a rotational impulse to a body.
+ * @param world The physics world
  * @param body The body to apply the torque to
  * @param torque The magnitude of the rotational force
  */
-Torque :: proc(world: World, body: Obj, torque: f32) {
+Torque :: proc(world: World, body: Obj, torque: NewtonMeters) {
     b2d.Body_ApplyTorque(
         cast(b2d.BodyId)body,
         torque,
@@ -59,9 +59,9 @@ Torque :: proc(world: World, body: Obj, torque: f32) {
  * and can disrupt the simulation if overused.
  * @param body The body to move
  * @param pos The target position
- * @param rot The target rotation in radians
+ * @param rot The target rotation
  */
-Move :: proc(body: Obj, pos: Types.Vector2f, rot: f32) {
+Move :: proc(body: Obj, pos: Types.Vector2f, rot: Radians) {
     b2d.Body_SetTransform(
         cast(b2d.BodyId)body, 
         {cast(f32)Types.Vector2fGetX(pos), cast(f32)Types.Vector2fGetY(pos)}, 

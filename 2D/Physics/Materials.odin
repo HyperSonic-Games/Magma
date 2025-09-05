@@ -7,6 +7,8 @@ import b2d "vendor:box2d"
 // --- Material registry ---
 MaterialRegistry: map[string]Material
 
+Material :: b2d.SurfaceMaterial
+
 /*
  * GetMaterial retrieves a material from the registry.
  * @param name the string identifier of the material

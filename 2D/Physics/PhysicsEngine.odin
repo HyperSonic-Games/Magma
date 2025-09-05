@@ -15,7 +15,7 @@ Obj :: distinct b2d.BodyId
 
 ObjPhysicsHandle :: distinct b2d.ShapeId
 
-Material :: b2d.SurfaceMaterial
+
 
 
 
@@ -58,7 +58,7 @@ DestroyPhysicsEngine :: proc (world: World) {
 */
 CreateStaticBody :: proc (world: World,
     pos: Types.Vector2f,
-    angle: f32 = 0,
+    angle: Radians = 0,
     can_sleep := true,
     no_physics_rot := true
 )-> Obj {
@@ -85,7 +85,7 @@ CreateStaticBody :: proc (world: World,
 */
 CreateDynamicBody :: proc (world: World,
     pos: Types.Vector2f,
-    angle: f32 = 0,
+    angle: Radians = 0,
     can_sleep := true,
     no_physics_rot := true
 )-> Obj {
