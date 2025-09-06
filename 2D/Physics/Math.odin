@@ -1,5 +1,6 @@
 package Util
 
+
 // Default scale value, can be overridden at runtime
 @private
 METER_TO_PIXEL_SCALE_VALUE :: #config(magma_meter_to_pixel_scale, 64.0)
@@ -12,7 +13,7 @@ meter_to_pixel_scale: f32 = METER_TO_PIXEL_SCALE_VALUE
 SetMeterToPixelScale :: proc(new_scale: f32) {
     // Prevent invalid values like zero or negative
     if new_scale <= 0.0 {
-        panic("METER_TO_PIXEL_SQUARE Can not be less than or equal to 0")
+        panic("METER_TO_PIXEL_SCALE Can't be less than or equal to 0")
     }
     meter_to_pixel_scale = new_scale
 }
