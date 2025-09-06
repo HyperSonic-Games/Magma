@@ -13,6 +13,7 @@ main :: proc () {
     keyboard := new(EventSys.Keyboard)
     win_state := new(EventSys.WindowState)
     running := true
+    Util.log(.ERROR, "BOB", "Hai")
     for running == true {
         EventSys.HandleEvents(mouse, keyboard, win_state)
         Renderer.Update(&ctx)

@@ -48,6 +48,6 @@ log :: proc(level: LogLevel, component_name: string, format: string, args: ..any
 
     delete(prefix)
     if len(args) > 0 {
-        free(&full_msg)
+        delete(full_msg)
     }
 }
