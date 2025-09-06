@@ -44,7 +44,10 @@ UUIDToRGBA :: proc(id: uuid.Identifier) -> Types.Color {
     color: Types.Color = {r, g, b, 255}
     return color
 }
-
+/*
+ * GenRandomColor Uses UUID version 4 to generate a random color
+ * @return The randomly generated color
+ */
 GenRandomColor :: proc() -> Types.Color {
     return UUIDToRGBA(uuid.generate_v4())
 }

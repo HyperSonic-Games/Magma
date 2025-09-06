@@ -109,7 +109,10 @@ ReciveTCPSocket :: proc(socket: TCP_SocketHandle, buf: []byte) -> (int, bool) {
 
     return data_read, true
 }
-
+/*
+ * CloseTCPSocket Closes a open TCP socket
+ * @param socket The handle to an open TCP socket
+ */
 CloseTCPSocket :: proc(socket: TCP_SocketHandle) {
     net.close(socket)
 }

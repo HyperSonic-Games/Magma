@@ -40,7 +40,7 @@ UDPServer :: struct {
 }
 
 /*
-*  InitUDPServerIPV4 Creates a new UDP server using IPv4
+* InitUDPServerIPV4 Creates a new UDP server using IPv4
 *
 * @param addr The IPv4 address to bind the server
 * @param port The UDP port number
@@ -76,7 +76,7 @@ InitUDPServerIPV4 :: proc(
 }
 
 /*
-*  InitUDPServerIPV6 Creates a new UDP server using IPv6
+* InitUDPServerIPV6 Creates a new UDP server using IPv6
 *
 * @param addr The IPv6 address to bind the server
 * @param port The UDP port number
@@ -114,7 +114,7 @@ InitUDPServerIPV6 :: proc(
 InitUDPServer :: proc { InitUDPServerIPV4, InitUDPServerIPV6 }
 
 /*
-*  UDPServerTick Processes incoming UDP packets and sends responses
+* UDPServerTick Processes incoming UDP packets and sends responses
 *
 * @param server Pointer to the UDPServer instance
 */
@@ -147,7 +147,7 @@ UDPServerTick :: proc(server: ^UDPServer) {
 }
 
 /*
-*  Worker loop for the server running in a separate thread
+* Worker loop for the server running in a separate thread
 *
 * @param thread_cxt Pointer to the thread context containing the server
 */
@@ -162,7 +162,7 @@ Worker :: proc(thread_cxt: ^thread.Thread) {
 }
 
 /*
-*  RunUDPServer Starts the server in a new worker thread
+* RunUDPServer Starts the server in a new worker thread
 *
 * @param server Pointer to the UDPServer instance
 */
@@ -178,7 +178,7 @@ RunUDPServer :: proc(server: ^UDPServer) {
 }
 
 /*
-*  StopUDPServer Stops the running UDP server and frees resources
+* StopUDPServer Stops the running UDP server and frees resources
 *
 * @param server Pointer to the UDPServer instance
 */

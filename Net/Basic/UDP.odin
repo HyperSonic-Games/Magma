@@ -116,6 +116,10 @@ ReciveUDPSocket :: proc(socket: UDP_SocketHandle, buf: []byte) -> (int, IPAddr, 
     return data_read, endpoint.address, cast(u16)endpoint.port
 }
 
+/*
+ * CloseUDPSocket Closes a open UDP socket
+ * @param socket The handle to an open TCP socket
+ */
 CloseUDPSocket :: proc(socket: UDP_SocketHandle) {
     net.close(socket)
 }

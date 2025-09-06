@@ -203,7 +203,6 @@ Worker :: proc(thread_cxt: ^thread.Thread) {
 *  RunTCPServer Starts the server in a new worker thread
 *
 * @param server Pointer to the TCPServer instance to run
-* @return void
 */
 RunTCPServer :: proc(server: ^TCPServer) {
     if sync.atomic_load(server.internal_running) {
@@ -221,7 +220,6 @@ RunTCPServer :: proc(server: ^TCPServer) {
 *  StopTCPServer Stops the running server, closes all clients and the server socket, and frees resources
 *
 * @param server Pointer to the TCPServer instance to stop
-* @return void
 */
 StopTCPServer :: proc(server: ^TCPServer) {
     Util.log(.INFO, "MAGMA_NET_PROTOCALS_CLIENT_SERVER_RAW_TCP_STOP_SERVER",

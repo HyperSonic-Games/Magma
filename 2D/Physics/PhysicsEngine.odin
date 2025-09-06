@@ -4,18 +4,14 @@ import "../../Types"
 import "../../Util"
 import b2d "vendor:box2d"
 
-// 60 fps
+// 60 fps physics timestep
 PHYSICS_TIMESTEP :: #config(magma_physics_timestep, 0.01666666666)
-// usually 4
+// Number of substeps per physics step, usually 4
 PHYSICS_SUB_TIMESTEP :: #config(magma_physics_sub_timestep, 4)
 
-World :: distinct b2d.WorldId
-
-Obj :: distinct b2d.BodyId
-
-ObjPhysicsHandle :: distinct b2d.ShapeId
-
-
+World :: distinct b2d.WorldId  // Physics world handle
+Obj :: distinct b2d.BodyId      // Physics body handle
+ObjPhysicsHandle :: distinct b2d.ShapeId  // Physics shape handle
 
 
 
@@ -102,7 +98,7 @@ CreateDynamicBody :: proc (world: World,
 }
 
 /*
- * AddPhysicsToBody attaches a polygon shape with physics properties to a body.
+ * AddPhysicsPolygonToBody attaches a polygon shape with physics properties to a body.
  * @param obj the body to attach to
  * @param vertices array of polygon vertices
  * @param radius rounding radius for edges
@@ -110,7 +106,7 @@ CreateDynamicBody :: proc (world: World,
  * @param mat_registry_name key to look up material in registry
  * @return ObjPhysicsHandle handle to the shape
 */
-AddPhysicsToBody :: proc (
+AddPhysicsPolygonToBody :: proc (
     obj: Obj, 
     vertices: [][2]f32, 
     radius: f32,
@@ -133,4 +129,24 @@ AddPhysicsToBody :: proc (
 Step :: proc(world: World, delta_time: f32) {
     time_step: f32 = PHYSICS_TIMESTEP * delta_time
     b2d.World_Step(cast(b2d.WorldId)world, time_step, PHYSICS_SUB_TIMESTEP)
+}
+
+/*
+ * GetObjectPos returns the current position of a physics object.
+ * @param obj the object to query
+ * @return Vector2f current position
+*/
+GetObjectPos :: proc(obj: Obj) -> Types.Vector2f {
+    obj_transform := b2d.Body_GetTransform(cast(b2d.BodyId)obj)
+    return {cast(f64)obj_transform.p[0], cast(f64)obj_transform.p[1]}
+}
+
+/*
+ * GetObjectRot returns the current rotation (angle in radians) of a physics object.
+ * @param obj the object to query
+ * @return Radians current rotation
+*/
+GetObjectRot :: proc(obj: Obj) -> Radians {
+    obj_transform := b2d.Body_GetTransform(cast(b2d.BodyId)obj)
+    return b2d.Rot_GetAngle(obj_transform.q)
 }
