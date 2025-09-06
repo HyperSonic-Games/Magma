@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Documentation for Vectors.odin</title>
+<style>
+body { margin: 0; font-family: Arial, sans-serif; background: #121212; color: #eee; }
+a { text-decoration: none; color: #80cbc4; }
+a:hover { text-decoration: underline; }
+header { padding: 1rem; background: #1e1e1e; font-size: 1.5rem; color: #80cbc4; }
+main { display: flex; min-height: 100vh; }
+nav { width: 250px; background: #1e1e1e; padding: 1rem; overflow-y: auto; }
+nav details { margin-bottom: 0.5rem; }
+nav summary { cursor: pointer; user-select: none; }
+nav .file { display: block; }
+nav .folder::before { content: "📂 "; }
+nav .file::before { content: "📄 "; }
+nav .file.current a { font-weight: bold; color: #ffb74d; }
+article { flex: 1; padding: 2rem; }
+.back-index { margin-bottom: 1rem; }
+section { background: #1e1e1e; border-radius: 8px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 0 8px #000; }
+h2 { color: #4db6ac; }
+pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: auto; color: #cfd8dc; }
+.code { font-family: monospace; }
+.params ul { padding-left: 1.2em; }
+.params li { margin-bottom: 0.3em; }
+.param-name { font-weight: 600; color: #80cbc4; }
+.return { font-weight: 600; color: #a5d6a7; margin-top: 1em; }
+</style>
+</head>
+<body>
+<header>Vectors.odin</header>
+<main>
+<nav>
+<details class='folder' style='padding-left: 0.0em;'><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/EventSys/EventSystem.html">EventSystem.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;'><summary>Physics</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/Forces.html">Forces.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/Joints.html">Joints.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/Materials.html">Materials.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/Math.html">Math.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/PhysicsEngine.html">PhysicsEngine.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;'><summary>Renderer</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/Draw.html">Draw.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/FileLoader.html">FileLoader.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/Renderer.html">Renderer.odin</a></div>
+</details>
+</details>
+<details class='folder' style='padding-left: 0.0em;'><summary>Net</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>Basic</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../Net/Basic/TCP.html">TCP.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../Net/Basic/UDP.html">UDP.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;'><summary>Protocols</summary>
+<details class='folder' style='padding-left: 3.0em;'><summary>ClientServer</summary>
+<details class='folder' style='padding-left: 4.5em;'><summary>Raw</summary>
+<details class='folder' style='padding-left: 6.0em;'><summary>TCP</summary>
+<div class="file" style="padding-left: 7.5em;"><a href="../Net/Protocols/ClientServer/Raw/TCP/Server.html">Server.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 6.0em;'><summary>UDP</summary>
+<div class="file" style="padding-left: 7.5em;"><a href="../Net/Protocols/ClientServer/Raw/UDP/Server.html">Server.odin</a></div>
+</details>
+</details>
+</details>
+</details>
+</details>
+<details class='folder' style='padding-left: 0.0em;' open><summary>Types</summary>
+<div class="file" style="padding-left: 1.5em;"><a href="Color.html">Color.odin</a></div>
+<div class="file" class='current' style="padding-left: 1.5em;"><a href="Vectors.html">Vectors.odin</a></div>
+</details>
+
+</nav>
+<article>
+<div class="back-index"><a href="../index.html">⬅ Back to Index</a></div>
+<section>
+  <h2>Vector2GetX</h2>
+  <pre class='code'>Vector2GetX (vec: Vector2) -&gt; i64</pre>
+  <p>Vector2GetX returns the x value of a 2D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read x from</li>
+  </ul></div>
+  <div class='return'>Returns: the x value</div>
+</section>
+<section>
+  <h2>Vector2GetY</h2>
+  <pre class='code'>Vector2GetY (vec: Vector2) -&gt; i64</pre>
+  <p>Vector2GetY returns the y value of a 2D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read y from</li>
+  </ul></div>
+  <div class='return'>Returns: the y value</div>
+</section>
+<section>
+  <h2>Vector2fGetX</h2>
+  <pre class='code'>Vector2fGetX (vec: Vector2f) -&gt; f64</pre>
+  <p>Vector2fGetX returns the x value of a 2D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read x from</li>
+  </ul></div>
+  <div class='return'>Returns: the x value</div>
+</section>
+<section>
+  <h2>Vector2fGetY</h2>
+  <pre class='code'>Vector2fGetY (vec: Vector2f) -&gt; f64</pre>
+  <p>Vector2fGetY returns the y value of a 2D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read y from</li>
+  </ul></div>
+  <div class='return'>Returns: the y value</div>
+</section>
+<section>
+  <h2>Vector2SetX</h2>
+  <pre class='code'>Vector2SetX (vec: Vector2, x: i64) -&gt; Vector2</pre>
+  <p>Vector2SetX sets the x value of a 2D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit x from</li>
+    <li><span class='param-name'>x</span>: the x value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector2SetY</h2>
+  <pre class='code'>Vector2SetY (vec: Vector2, y: i64) -&gt; Vector2</pre>
+  <p>Vector2SetY sets the y value of a 2D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit y from</li>
+    <li><span class='param-name'>y</span>: the y value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector2fSetX</h2>
+  <pre class='code'>Vector2fSetX (vec: Vector2f, x: f64) -&gt; Vector2f</pre>
+  <p>Vector2fSetX sets the x value of a 2D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit x from</li>
+    <li><span class='param-name'>x</span>: the x value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector2fSetY</h2>
+  <pre class='code'>Vector2fSetY (vec: Vector2f, y: f64) -&gt; Vector2f</pre>
+  <p>Vector2fSetY sets the y value of a 2D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit y from</li>
+    <li><span class='param-name'>y</span>: the y value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorAdd_Vector2</h2>
+  <pre class='code'>VectorAdd_Vector2 (a, b: Vector2) -&gt; Vector2</pre>
+  <p>VectorAdd_Vector2 adds two int 2D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to add</li>
+    <li><span class='param-name'>b</span>: a vector to add</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorAdd_Vector2f</h2>
+  <pre class='code'>VectorAdd_Vector2f (a, b: Vector2f) -&gt; Vector2f</pre>
+  <p>VectorAdd_Vector2f adds two float 2D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to add</li>
+    <li><span class='param-name'>b</span>: a vector to add</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorSub_Vector2</h2>
+  <pre class='code'>VectorSub_Vector2 (a, b: Vector2) -&gt; Vector2</pre>
+  <p>VectorSub_Vector2 subtracts two int 2D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to subtract</li>
+    <li><span class='param-name'>b</span>: a vector to subtract</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorSub_Vector2f</h2>
+  <pre class='code'>VectorSub_Vector2f (a, b: Vector2f) -&gt; Vector2f</pre>
+  <p>VectorSub_Vector2f subtracts two float 2D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to subtract</li>
+    <li><span class='param-name'>b</span>: a vector to subtract</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorMul_Vector2</h2>
+  <pre class='code'>VectorMul_Vector2 (a, b: Vector2) -&gt; Vector2</pre>
+  <p>VectorMul_Vector2 multiplys two int 2D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to multiply</li>
+    <li><span class='param-name'>b</span>: a vector to multiply</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorMul_Vector2f</h2>
+  <pre class='code'>VectorMul_Vector2f (a, b: Vector2f) -&gt; Vector2f</pre>
+  <p>VectorMul_Vector2f multiplys two float 2D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to multiply</li>
+    <li><span class='param-name'>b</span>: a vector to multiply</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorDiv_Vector2</h2>
+  <pre class='code'>VectorDiv_Vector2 (a, b: Vector2) -&gt; Vector2</pre>
+  <p>VectorDiv_Vector2 divides two int 2D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to divide</li>
+    <li><span class='param-name'>b</span>: a vector to divide</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorDiv_Vector2f</h2>
+  <pre class='code'>VectorDiv_Vector2f (a, b: Vector2f) -&gt; Vector2f</pre>
+  <p>VectorDiv_Vector2f divides two float 2D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to divide</li>
+    <li><span class='param-name'>b</span>: a vector to divide</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector3GetX</h2>
+  <pre class='code'>Vector3GetX (vec: Vector3) -&gt; i64</pre>
+  <p>Vector3GetX returns the x value of a 3D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read y from</li>
+  </ul></div>
+  <div class='return'>Returns: the y value</div>
+</section>
+<section>
+  <h2>Vector3fGetX</h2>
+  <pre class='code'>Vector3fGetX (vec: Vector3f) -&gt; f64</pre>
+  <p>Vector3fGetX returns the x value of a 3D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read y from</li>
+  </ul></div>
+  <div class='return'>Returns: the y value</div>
+</section>
+<section>
+  <h2>Vector3GetY</h2>
+  <pre class='code'>Vector3GetY (vec: Vector3) -&gt; i64</pre>
+  <p>Vector3GetY returns the y value of a 3D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read y from</li>
+  </ul></div>
+  <div class='return'>Returns: the y value</div>
+</section>
+<section>
+  <h2>Vector3fGetY</h2>
+  <pre class='code'>Vector3fGetY (vec: Vector3f) -&gt; f64</pre>
+  <p>Vector3fGetY returns the y value of a 3D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read y from</li>
+  </ul></div>
+  <div class='return'>Returns: the y value</div>
+</section>
+<section>
+  <h2>Vector3GetZ</h2>
+  <pre class='code'>Vector3GetZ (vec: Vector3) -&gt; i64</pre>
+  <p>Vector3GetZ returns the z value of a 3D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read z from</li>
+  </ul></div>
+  <div class='return'>Returns: the z value</div>
+</section>
+<section>
+  <h2>Vector3fGetZ</h2>
+  <pre class='code'>Vector3fGetZ (vec: Vector3f) -&gt; f64</pre>
+  <p>Vector3fGetZ returns the z value of a 3D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read z from</li>
+  </ul></div>
+  <div class='return'>Returns: the z value</div>
+</section>
+<section>
+  <h2>Vector3SetX</h2>
+  <pre class='code'>Vector3SetX (vec: Vector3, x: i64) -&gt; Vector3</pre>
+  <p>Vector3SetX sets the x value of a 3D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit x from</li>
+    <li><span class='param-name'>x</span>: the x value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector3SetY</h2>
+  <pre class='code'>Vector3SetY (vec: Vector3, y: i64) -&gt; Vector3</pre>
+  <p>Vector3SetY sets the y value of a 3D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit y from</li>
+    <li><span class='param-name'>y</span>: the y value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector3SetZ</h2>
+  <pre class='code'>Vector3SetZ (vec: Vector3, z: i64) -&gt; Vector3</pre>
+  <p>Vector3SetZ sets the z value of a 3D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit z from</li>
+    <li><span class='param-name'>z</span>: the z value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector3fSetX</h2>
+  <pre class='code'>Vector3fSetX (vec: Vector3f, x: f64) -&gt; Vector3f</pre>
+  <p>Vector3fSetX sets the x value of a 3D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit x from</li>
+    <li><span class='param-name'>x</span>: the x value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector3fSetY</h2>
+  <pre class='code'>Vector3fSetY (vec: Vector3f, y: f64) -&gt; Vector3f</pre>
+  <p>Vector3fSetY sets the y value of a 3D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit y from</li>
+    <li><span class='param-name'>y</span>: the y value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector3fSetZ</h2>
+  <pre class='code'>Vector3fSetZ (vec: Vector3f, z: f64) -&gt; Vector3f</pre>
+  <p>Vector3fSetZ sets the z value of a 3D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit z from</li>
+    <li><span class='param-name'>z</span>: the z value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorAdd_Vector3</h2>
+  <pre class='code'>VectorAdd_Vector3 (a, b: Vector3) -&gt; Vector3</pre>
+  <p>VectorAdd_Vector3 adds two int 3D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to add</li>
+    <li><span class='param-name'>b</span>: a vector to add</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorAdd_Vector3f</h2>
+  <pre class='code'>VectorAdd_Vector3f (a, b: Vector3f) -&gt; Vector3f</pre>
+  <p>VectorAdd_Vector3f adds two float 3D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to add</li>
+    <li><span class='param-name'>b</span>: a vector to add</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorSub_Vector3</h2>
+  <pre class='code'>VectorSub_Vector3 (a, b: Vector3) -&gt; Vector3</pre>
+  <p>VectorSub_Vector3 subtracts two int 3D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to subtract</li>
+    <li><span class='param-name'>b</span>: a vector to subtract</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorSub_Vector3f</h2>
+  <pre class='code'>VectorSub_Vector3f (a, b: Vector3f) -&gt; Vector3f</pre>
+  <p>VectorSub_Vector3f subtracts two float 3D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to subtract</li>
+    <li><span class='param-name'>b</span>: a vector to subtract</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorMul_Vector3</h2>
+  <pre class='code'>VectorMul_Vector3 (a, b: Vector3) -&gt; Vector3</pre>
+  <p>VectorMul_Vector3 multiplys two int 3D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to multiply</li>
+    <li><span class='param-name'>b</span>: a vector to multiply</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorMul_Vector3f</h2>
+  <pre class='code'>VectorMul_Vector3f (a, b: Vector3f) -&gt; Vector3f</pre>
+  <p>VectorMul_Vector3f multiplys two float 3D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to multiply</li>
+    <li><span class='param-name'>b</span>: a vector to multiply</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorDiv_Vector3</h2>
+  <pre class='code'>VectorDiv_Vector3 (a, b: Vector3) -&gt; Vector3</pre>
+  <p>VectorDiv_Vector3 divides two int 3D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to divide</li>
+    <li><span class='param-name'>b</span>: a vector to divide</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorDiv_Vector3f</h2>
+  <pre class='code'>VectorDiv_Vector3f (a, b: Vector3f) -&gt; Vector3f</pre>
+  <p>VectorDiv_Vector3f divides two float 3D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to divide</li>
+    <li><span class='param-name'>b</span>: a vector to divide</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector4GetX</h2>
+  <pre class='code'>Vector4GetX (vec: Vector4) -&gt; i64</pre>
+  <p>Vector4GetX returns the x value of a 4D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read x from</li>
+  </ul></div>
+  <div class='return'>Returns: the x value</div>
+</section>
+<section>
+  <h2>Vector4GetY</h2>
+  <pre class='code'>Vector4GetY (vec: Vector4) -&gt; i64</pre>
+  <p>Vector4GetY returns the y value of a 4D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read y from</li>
+  </ul></div>
+  <div class='return'>Returns: the y value</div>
+</section>
+<section>
+  <h2>Vector4GetZ</h2>
+  <pre class='code'>Vector4GetZ (vec: Vector4) -&gt; i64</pre>
+  <p>Vector4GetZ returns the x value of a 4D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read z from</li>
+  </ul></div>
+  <div class='return'>Returns: the z value</div>
+</section>
+<section>
+  <h2>Vector4GetW</h2>
+  <pre class='code'>Vector4GetW (vec: Vector4) -&gt; i64</pre>
+  <p>Vector4GetW returns the w value of a 4D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read w from</li>
+  </ul></div>
+  <div class='return'>Returns: the w value</div>
+</section>
+<section>
+  <h2>Vector4fGetX</h2>
+  <pre class='code'>Vector4fGetX (vec: Vector4f) -&gt; f64</pre>
+  <p>Vector4fGetX returns the x value of a 4D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read x from</li>
+  </ul></div>
+  <div class='return'>Returns: the x value</div>
+</section>
+<section>
+  <h2>Vector4fGetY</h2>
+  <pre class='code'>Vector4fGetY (vec: Vector4f) -&gt; f64</pre>
+  <p>Vector4fGetY returns the y value of a 4D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read y from</li>
+  </ul></div>
+  <div class='return'>Returns: the y value</div>
+</section>
+<section>
+  <h2>Vector4fGetZ</h2>
+  <pre class='code'>Vector4fGetZ (vec: Vector4f) -&gt; f64</pre>
+  <p>Vector4fGetZ returns the z value of a 4D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read z from</li>
+  </ul></div>
+  <div class='return'>Returns: the z value</div>
+</section>
+<section>
+  <h2>Vector4fGetW</h2>
+  <pre class='code'>Vector4fGetW (vec: Vector4f) -&gt; f64</pre>
+  <p>Vector4fGetW returns the w value of a 4D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: The vector to read w from</li>
+  </ul></div>
+  <div class='return'>Returns: the w value</div>
+</section>
+<section>
+  <h2>Vector4SetX</h2>
+  <pre class='code'>Vector4SetX (vec: Vector4, x: i64) -&gt; Vector4</pre>
+  <p>Vector4SetX sets the x value of a 4D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit x from</li>
+    <li><span class='param-name'>x</span>: the x value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector4SetY</h2>
+  <pre class='code'>Vector4SetY (vec: Vector4, y: i64) -&gt; Vector4</pre>
+  <p>Vector4SetY sets the y value of a 4D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit x from</li>
+    <li><span class='param-name'>y</span>: the y value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector4SetZ</h2>
+  <pre class='code'>Vector4SetZ (vec: Vector4, z: i64) -&gt; Vector4</pre>
+  <p>Vector4SetZ sets the z value of a 4D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit z from</li>
+    <li><span class='param-name'>z</span>: the z value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector4SetW</h2>
+  <pre class='code'>Vector4SetW (vec: Vector4, w: i64) -&gt; Vector4</pre>
+  <p>Vector4SetW sets the w value of a 4D int vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit w from</li>
+    <li><span class='param-name'>w</span>: the w value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector4fSetX</h2>
+  <pre class='code'>Vector4fSetX (vec: Vector4f, x: f64) -&gt; Vector4f</pre>
+  <p>Vector4fSetX sets the x value of a 4D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit x from</li>
+    <li><span class='param-name'>x</span>: the x value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector4fSetY</h2>
+  <pre class='code'>Vector4fSetY (vec: Vector4f, y: f64) -&gt; Vector4f</pre>
+  <p>Vector4fSetY sets the y value of a 4D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit y from</li>
+    <li><span class='param-name'>y</span>: the y value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector4fSetZ</h2>
+  <pre class='code'>Vector4fSetZ (vec: Vector4f, z: f64) -&gt; Vector4f</pre>
+  <p>Vector4fSetZ sets the z value of a 4D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit z from</li>
+    <li><span class='param-name'>z</span>: the z value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>Vector4fSetW</h2>
+  <pre class='code'>Vector4fSetW (vec: Vector4f, w: f64) -&gt; Vector4f</pre>
+  <p>Vector4fSetW sets the w value of a 4D float vector</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>vec</span>: the vector to edit w from</li>
+    <li><span class='param-name'>w</span>: the w value</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorAdd_Vector4</h2>
+  <pre class='code'>VectorAdd_Vector4 (a, b: Vector4) -&gt; Vector4</pre>
+  <p>VectorAdd_Vector4 adds two int 4D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to add</li>
+    <li><span class='param-name'>b</span>: a vector to add</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorAdd_Vector4f</h2>
+  <pre class='code'>VectorAdd_Vector4f (a, b: Vector4f) -&gt; Vector4f</pre>
+  <p>VectorAdd_Vector4f adds two float 4D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to add</li>
+    <li><span class='param-name'>b</span>: a vector to add</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorSub_Vector4</h2>
+  <pre class='code'>VectorSub_Vector4 (a, b: Vector4) -&gt; Vector4</pre>
+  <p>VectorSub_Vector4 subtracts two int 4D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to subtract</li>
+    <li><span class='param-name'>b</span>: a vector to subtract</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorSub_Vector4f</h2>
+  <pre class='code'>VectorSub_Vector4f (a, b: Vector4f) -&gt; Vector4f</pre>
+  <p>VectorSub_Vector4f subtracts two float 4D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to subtract</li>
+    <li><span class='param-name'>b</span>: a vector to subtract</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorMul_Vector4</h2>
+  <pre class='code'>VectorMul_Vector4 (a, b: Vector4) -&gt; Vector4</pre>
+  <p>VectorMul_Vector4 multiplys two int 4D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to multiply</li>
+    <li><span class='param-name'>b</span>: a vector to multiply</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorMul_Vector4f</h2>
+  <pre class='code'>VectorMul_Vector4f (a, b: Vector4f) -&gt; Vector4f</pre>
+  <p>VectorMul_Vector4f multiplys two float 4D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to multiply</li>
+    <li><span class='param-name'>b</span>: a vector to multiply</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorDiv_Vector4</h2>
+  <pre class='code'>VectorDiv_Vector4 (a, b: Vector4) -&gt; Vector4</pre>
+  <p>VectorDiv_Vector4 divides two int 4D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to divide</li>
+    <li><span class='param-name'>b</span>: a vector to divide</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+<section>
+  <h2>VectorDiv_Vector4f</h2>
+  <pre class='code'>VectorDiv_Vector4f (a, b: Vector4f) -&gt; Vector4f</pre>
+  <p>VectorDiv_Vector4f divides two float 4D vectors together</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>a</span>: a vector to divide</li>
+    <li><span class='param-name'>b</span>: a vector to divide</li>
+  </ul></div>
+  <div class='return'>Returns: the new vector data</div>
+</section>
+</article>
+</main>
+</body>
+</html>

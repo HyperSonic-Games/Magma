@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Documentation for Joints.odin</title>
+<style>
+body { margin: 0; font-family: Arial, sans-serif; background: #121212; color: #eee; }
+a { text-decoration: none; color: #80cbc4; }
+a:hover { text-decoration: underline; }
+header { padding: 1rem; background: #1e1e1e; font-size: 1.5rem; color: #80cbc4; }
+main { display: flex; min-height: 100vh; }
+nav { width: 250px; background: #1e1e1e; padding: 1rem; overflow-y: auto; }
+nav details { margin-bottom: 0.5rem; }
+nav summary { cursor: pointer; user-select: none; }
+nav .file { display: block; }
+nav .folder::before { content: "📂 "; }
+nav .file::before { content: "📄 "; }
+nav .file.current a { font-weight: bold; color: #ffb74d; }
+article { flex: 1; padding: 2rem; }
+.back-index { margin-bottom: 1rem; }
+section { background: #1e1e1e; border-radius: 8px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 0 8px #000; }
+h2 { color: #4db6ac; }
+pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: auto; color: #cfd8dc; }
+.code { font-family: monospace; }
+.params ul { padding-left: 1.2em; }
+.params li { margin-bottom: 0.3em; }
+.param-name { font-weight: 600; color: #80cbc4; }
+.return { font-weight: 600; color: #a5d6a7; margin-top: 1em; }
+</style>
+</head>
+<body>
+<header>Joints.odin</header>
+<main>
+<nav>
+<details class='folder' style='padding-left: 0.0em;' open><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../EventSys/EventSystem.html">EventSystem.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;' open><summary>Physics</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="Forces.html">Forces.odin</a></div>
+<div class="file" class='current' style="padding-left: 3.0em;"><a href="Joints.html">Joints.odin</a></div>
+</details>
+</details>
+
+</nav>
+<article>
+<div class="back-index"><a href="../../index.html">⬅ Back to Index</a></div>
+<section>
+  <h2>CreateDistanceJoint</h2>
+  <pre class='code'>CreateDistanceJoint (
+    world: World,
+    obj_a: Obj,
+    obj_b: Obj,
+    anchor_a: Types.Vector2f,
+    anchor_b: Types.Vector2f,
+    rest_length: Meters,
+    min_length: Meters,
+    max_length: Meters,
+    handle_collision: bool = true
+) -&gt; JointHandle</pre>
+  <p>CreateDistanceJoint creates a distance joint between two objects.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: the physics world</li>
+    <li><span class='param-name'>obj_a</span>: first object</li>
+    <li><span class='param-name'>obj_b</span>: second object</li>
+    <li><span class='param-name'>anchor_a</span>: local anchor point on obj_a</li>
+    <li><span class='param-name'>anchor_b</span>: local anchor point on obj_b</li>
+    <li><span class='param-name'>rest_length</span>: the target distance between the anchors</li>
+    <li><span class='param-name'>min_length</span>: minimum allowed distance</li>
+    <li><span class='param-name'>max_length</span>: maximum allowed distance</li>
+    <li><span class='param-name'>handle_collision</span>: whether the connected bodies should collide</li>
+  </ul></div>
+  <div class='return'>Returns: JointHandle handle to the created joint</div>
+</section>
+<section>
+  <h2>CreateSpringJoint</h2>
+  <pre class='code'>CreateSpringJoint (
+    world: World,
+    obj_a: Obj,
+    obj_b: Obj,
+    anchor_a: Types.Vector2f,
+    anchor_b: Types.Vector2f,
+    rest_length: Meters,
+    min_length: Meters,
+    max_length: Meters,
+    hertz: Hertz,
+    damping: f32,
+    handle_collision: bool = true
+) -&gt; JointHandle</pre>
+  <p>CreateSpringJoint creates a spring joint between two objects.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: the physics world</li>
+    <li><span class='param-name'>obj_a</span>: first object</li>
+    <li><span class='param-name'>obj_b</span>: second object</li>
+    <li><span class='param-name'>anchor_a</span>: local anchor point on obj_a</li>
+    <li><span class='param-name'>anchor_b</span>: local anchor point on obj_b</li>
+    <li><span class='param-name'>rest_length</span>: the natural spring length</li>
+    <li><span class='param-name'>min_length</span>: minimum allowed distance</li>
+    <li><span class='param-name'>max_length</span>: maximum allowed distance</li>
+    <li><span class='param-name'>hertz</span>: frequency of the spring oscillation</li>
+    <li><span class='param-name'>damping</span>: damping ratio of the spring</li>
+    <li><span class='param-name'>handle_collision</span>: whether the connected bodies should collide</li>
+  </ul></div>
+  <div class='return'>Returns: JointHandle handle to the created joint</div>
+</section>
+<section>
+  <h2>CreateLinearActuatorJoint</h2>
+  <pre class='code'>CreateLinearActuatorJoint (
+    world: World,
+    obj_a: Obj,
+    obj_b: Obj,
+    anchor_a: Types.Vector2f,
+    anchor_b: Types.Vector2f,
+    rest_length: Meters,
+    min_length: Meters,
+    max_length: Meters,
+    max_force: Newtons,
+    speed: MetersPerSecond,
+    handle_collision: bool = true
+) -&gt; JointHandle</pre>
+  <p>CreateLinearActuatorJoint creates a linear actuator using a distance joint.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: the physics world</li>
+    <li><span class='param-name'>obj_a</span>: first object</li>
+    <li><span class='param-name'>obj_b</span>: second object</li>
+    <li><span class='param-name'>anchor_a</span>: local anchor point on obj_a</li>
+    <li><span class='param-name'>anchor_b</span>: local anchor point on obj_b</li>
+    <li><span class='param-name'>rest_length</span>: target distance when actuator is idle</li>
+    <li><span class='param-name'>min_length</span>: minimum allowed distance</li>
+    <li><span class='param-name'>max_length</span>: maximum allowed distance</li>
+    <li><span class='param-name'>max_force</span>: maximum motor force</li>
+    <li><span class='param-name'>speed</span>: speed of actuator movement</li>
+    <li><span class='param-name'>handle_collision</span>: whether the connected bodies should collide</li>
+  </ul></div>
+  <div class='return'>Returns: JointHandle handle to the created joint</div>
+</section>
+<section>
+  <h2>CreateMotorJoint</h2>
+  <pre class='code'>CreateMotorJoint (
+    world: World,
+    obj_a: Obj,
+    obj_b: Obj,
+    anchor_a: Types.Vector2f,
+    anchor_b: Types.Vector2f,
+    motor_speed: RadiansPerSecond,
+    max_torque: NewtonMeters,
+    enable_motor: bool = true,
+    handle_collision: bool = true,
+) -&gt; JointHandle</pre>
+  <p>CreateMotorJoint creates a revolute motor joint between two objects.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: the physics world</li>
+    <li><span class='param-name'>obj_a</span>: first object</li>
+    <li><span class='param-name'>obj_b</span>: second object</li>
+    <li><span class='param-name'>anchor_a</span>: local anchor point on obj_a</li>
+    <li><span class='param-name'>anchor_b</span>: local anchor point on obj_b</li>
+    <li><span class='param-name'>motor_speed</span>: rotational speed of the motor</li>
+    <li><span class='param-name'>max_torque</span>: maximum torque applied by the motor</li>
+    <li><span class='param-name'>enable_motor</span>: whether the motor is enabled</li>
+    <li><span class='param-name'>handle_collision</span>: whether the connected bodies should collide</li>
+  </ul></div>
+  <div class='return'>Returns: JointHandle handle to the created joint</div>
+</section>
+<section>
+  <h2>DestroyJoint</h2>
+  <pre class='code'>DestroyJoint (joint: JointHandle)</pre>
+  <p>DestroyJoint destroys a previously created joint.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>joint</span>: handle to the joint</li>
+  </ul></div>
+</section>
+<section>
+  <h2>DistanceJointGetRestLength</h2>
+  <pre class='code'>DistanceJointGetRestLength (joint: JointHandle) -&gt; Meters</pre>
+  <p>-------- Distance Joint Getters --------</p>
+</section>
+<section>
+  <h2>DistanceJointSetRestLength</h2>
+  <pre class='code'>DistanceJointSetRestLength (joint: JointHandle, length: Meters)</pre>
+  <p>-------- Distance Joint Setters --------</p>
+</section>
+<section>
+  <h2>SpringJointGetRestLength</h2>
+  <pre class='code'>SpringJointGetRestLength (joint: JointHandle) -&gt; Meters</pre>
+  <p>-------- Spring Joint Getters --------</p>
+</section>
+<section>
+  <h2>SpringJointSetRestLength</h2>
+  <pre class='code'>SpringJointSetRestLength (joint: JointHandle, length: Meters)</pre>
+  <p>-------- Spring Joint Setters --------</p>
+</section>
+<section>
+  <h2>LinearActuatorJointGetRestLength</h2>
+  <pre class='code'>LinearActuatorJointGetRestLength (joint: JointHandle) -&gt; Meters</pre>
+  <p>-------- Linear Actuator Joint Getters --------</p>
+</section>
+<section>
+  <h2>LinearActuatorJointSetRestLength</h2>
+  <pre class='code'>LinearActuatorJointSetRestLength (joint: JointHandle, length: Meters)</pre>
+  <p>-------- Linear Actuator Joint Setters --------</p>
+</section>
+<section>
+  <h2>MotorJointGetEnabled</h2>
+  <pre class='code'>MotorJointGetEnabled (joint: JointHandle) -&gt; bool</pre>
+  <p>-------- Motor Joint Getters &amp; Setters --------</p>
+</section>
+</article>
+</main>
+</body>
+</html>

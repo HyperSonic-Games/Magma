@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Documentation for UDP.odin</title>
+<style>
+body { margin: 0; font-family: Arial, sans-serif; background: #121212; color: #eee; }
+a { text-decoration: none; color: #80cbc4; }
+a:hover { text-decoration: underline; }
+header { padding: 1rem; background: #1e1e1e; font-size: 1.5rem; color: #80cbc4; }
+main { display: flex; min-height: 100vh; }
+nav { width: 250px; background: #1e1e1e; padding: 1rem; overflow-y: auto; }
+nav details { margin-bottom: 0.5rem; }
+nav summary { cursor: pointer; user-select: none; }
+nav .file { display: block; }
+nav .folder::before { content: "📂 "; }
+nav .file::before { content: "📄 "; }
+nav .file.current a { font-weight: bold; color: #ffb74d; }
+article { flex: 1; padding: 2rem; }
+.back-index { margin-bottom: 1rem; }
+section { background: #1e1e1e; border-radius: 8px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 0 8px #000; }
+h2 { color: #4db6ac; }
+pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: auto; color: #cfd8dc; }
+.code { font-family: monospace; }
+.params ul { padding-left: 1.2em; }
+.params li { margin-bottom: 0.3em; }
+.param-name { font-weight: 600; color: #80cbc4; }
+.return { font-weight: 600; color: #a5d6a7; margin-top: 1em; }
+</style>
+</head>
+<body>
+<header>UDP.odin</header>
+<main>
+<nav>
+<details class='folder' style='padding-left: 0.0em;'><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../../2D/EventSys/EventSystem.html">EventSystem.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;'><summary>Physics</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../../2D/Physics/Forces.html">Forces.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../../2D/Physics/Joints.html">Joints.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../../2D/Physics/Materials.html">Materials.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../../2D/Physics/Math.html">Math.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../../2D/Physics/PhysicsEngine.html">PhysicsEngine.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;'><summary>Renderer</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../../2D/Renderer/Draw.html">Draw.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../../2D/Renderer/FileLoader.html">FileLoader.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../../2D/Renderer/Renderer.html">Renderer.odin</a></div>
+</details>
+</details>
+<details class='folder' style='padding-left: 0.0em;' open><summary>Net</summary>
+<details class='folder' style='padding-left: 1.5em;' open><summary>Basic</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="TCP.html">TCP.odin</a></div>
+<div class="file" class='current' style="padding-left: 3.0em;"><a href="UDP.html">UDP.odin</a></div>
+</details>
+</details>
+
+</nav>
+<article>
+<div class="back-index"><a href="../../index.html">⬅ Back to Index</a></div>
+<section>
+  <h2>OpenUDPSocket</h2>
+  <pre class='code'>OpenUDPSocket (
+    port: u16,
+    addr_type: IPAddrFamily,
+    addr: IPAddr,
+    is_blocking: bool = false,
+    allow_broadcast: bool = false
+) -&gt; Maybe</pre>
+  <p>OpenUDPSocket Creates and configures a UDP socket optimized for low-latency game networking.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>port</span>: The local port to bind the socket to. If 0, no bind occurs (useful for clients).</li>
+    <li><span class='param-name'>addr_type</span>: The IP address family for the socket (e.g., IPv4, IPv6).</li>
+    <li><span class='param-name'>addr</span>: The local IP address to bind to. Used when acting as a server or listener.</li>
+    <li><span class='param-name'>is_blocking</span>: If true, socket operations block until completion. If false, the socket is non-blocking and suitable for integration into a game engine&#x27;s main loop.</li>
+    <li><span class='param-name'>allow_broadcast</span>: If true, enables sending to and receiving from broadcast addresses.</li>
+  </ul></div>
+  <div class='return'>Returns: A Maybe(UDP_SocketHandle)</div>
+</section>
+<section>
+  <h2>SendUDPSocket</h2>
+  <pre class='code'>SendUDPSocket (socket: UDP_SocketHandle, data: []byte, addr: IPAddr, port: u16)</pre>
+  <p>SendUDPSocket  Sends a buffer of bytes over a UDP socket to a specified endpoint.  The UDP socket handle to send data through.  A slice of bytes containing the data to send.  The destination IP address for the UDP packet.  The destination port for the UDP packet.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>@param socket</span>: </li>
+    <li><span class='param-name'>@param data</span>: </li>
+    <li><span class='param-name'>@param addr</span>: </li>
+    <li><span class='param-name'>@param port</span>: </li>
+  </ul></div>
+  <div class='return'>Returns: The number of bytes successfully written. true if the send completed without error; false if an error occurred.</div>
+</section>
+<section>
+  <h2>ReciveUDPSocket</h2>
+  <pre class='code'>ReciveUDPSocket (socket: UDP_SocketHandle, buf: []byte)</pre>
+  <p>ReciveFromUDPSocket Receives a UDP packet from a socket into the provided buffer.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>socket</span>: The UDP socket handle to read data from.</li>
+    <li><span class='param-name'>buf</span>: A slice of bytes that will be filled with the received data.</li>
+  </ul></div>
+  <div class='return'>Returns: The number of bytes successfully read. The sender&#x27;s IP address. The sender&#x27;s port.</div>
+</section>
+<section>
+  <h2>CloseUDPSocket</h2>
+  <pre class='code'>CloseUDPSocket (socket: UDP_SocketHandle)</pre>
+  <p>CloseUDPSocket Closes a open UDP socket</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>socket</span>: The handle to an open TCP socket</li>
+  </ul></div>
+</section>
+</article>
+</main>
+</body>
+</html>

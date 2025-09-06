@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Documentation for Materials.odin</title>
+<style>
+body { margin: 0; font-family: Arial, sans-serif; background: #121212; color: #eee; }
+a { text-decoration: none; color: #80cbc4; }
+a:hover { text-decoration: underline; }
+header { padding: 1rem; background: #1e1e1e; font-size: 1.5rem; color: #80cbc4; }
+main { display: flex; min-height: 100vh; }
+nav { width: 250px; background: #1e1e1e; padding: 1rem; overflow-y: auto; }
+nav details { margin-bottom: 0.5rem; }
+nav summary { cursor: pointer; user-select: none; }
+nav .file { display: block; }
+nav .folder::before { content: "📂 "; }
+nav .file::before { content: "📄 "; }
+nav .file.current a { font-weight: bold; color: #ffb74d; }
+article { flex: 1; padding: 2rem; }
+.back-index { margin-bottom: 1rem; }
+section { background: #1e1e1e; border-radius: 8px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 0 8px #000; }
+h2 { color: #4db6ac; }
+pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: auto; color: #cfd8dc; }
+.code { font-family: monospace; }
+.params ul { padding-left: 1.2em; }
+.params li { margin-bottom: 0.3em; }
+.param-name { font-weight: 600; color: #80cbc4; }
+.return { font-weight: 600; color: #a5d6a7; margin-top: 1em; }
+</style>
+</head>
+<body>
+<header>Materials.odin</header>
+<main>
+<nav>
+<details class='folder' style='padding-left: 0.0em;' open><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../EventSys/EventSystem.html">EventSystem.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;' open><summary>Physics</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="Forces.html">Forces.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="Joints.html">Joints.odin</a></div>
+<div class="file" class='current' style="padding-left: 3.0em;"><a href="Materials.html">Materials.odin</a></div>
+</details>
+</details>
+
+</nav>
+<article>
+<div class="back-index"><a href="../../index.html">⬅ Back to Index</a></div>
+<section>
+  <h2>GetMaterial</h2>
+  <pre class='code'>GetMaterial (name: string) -&gt; Material</pre>
+  <p>GetMaterial retrieves a material from the registry.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>name</span>: the string identifier of the material</li>
+  </ul></div>
+  <div class='return'>Returns: the Material struct corresponding to the name</div>
+</section>
+<section>
+  <h2>RegisterMaterial</h2>
+  <pre class='code'>RegisterMaterial (name: string, mat: Material)</pre>
+  <p>RegisterMaterial adds a material to the registry.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>name</span>: the string identifier for the material</li>
+    <li><span class='param-name'>mat</span>: the Material struct to register</li>
+  </ul></div>
+</section>
+</article>
+</main>
+</body>
+</html>

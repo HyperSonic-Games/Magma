@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Documentation for FileLoader.odin</title>
+<style>
+body { margin: 0; font-family: Arial, sans-serif; background: #121212; color: #eee; }
+a { text-decoration: none; color: #80cbc4; }
+a:hover { text-decoration: underline; }
+header { padding: 1rem; background: #1e1e1e; font-size: 1.5rem; color: #80cbc4; }
+main { display: flex; min-height: 100vh; }
+nav { width: 250px; background: #1e1e1e; padding: 1rem; overflow-y: auto; }
+nav details { margin-bottom: 0.5rem; }
+nav summary { cursor: pointer; user-select: none; }
+nav .file { display: block; }
+nav .folder::before { content: "📂 "; }
+nav .file::before { content: "📄 "; }
+nav .file.current a { font-weight: bold; color: #ffb74d; }
+article { flex: 1; padding: 2rem; }
+.back-index { margin-bottom: 1rem; }
+section { background: #1e1e1e; border-radius: 8px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 0 8px #000; }
+h2 { color: #4db6ac; }
+pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: auto; color: #cfd8dc; }
+.code { font-family: monospace; }
+.params ul { padding-left: 1.2em; }
+.params li { margin-bottom: 0.3em; }
+.param-name { font-weight: 600; color: #80cbc4; }
+.return { font-weight: 600; color: #a5d6a7; margin-top: 1em; }
+</style>
+</head>
+<body>
+<header>FileLoader.odin</header>
+<main>
+<nav>
+<details class='folder' style='padding-left: 0.0em;' open><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../EventSys/EventSystem.html">EventSystem.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;'><summary>Physics</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../Physics/Forces.html">Forces.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../Physics/Joints.html">Joints.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../Physics/Materials.html">Materials.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../Physics/Math.html">Math.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../Physics/PhysicsEngine.html">PhysicsEngine.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;' open><summary>Renderer</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="Draw.html">Draw.odin</a></div>
+<div class="file" class='current' style="padding-left: 3.0em;"><a href="FileLoader.html">FileLoader.odin</a></div>
+</details>
+</details>
+
+</nav>
+<article>
+<div class="back-index"><a href="../../index.html">⬅ Back to Index</a></div>
+<section>
+  <h2>UnloadTexture</h2>
+  <pre class='code'>UnloadTexture (texture: ^sdl2.Texture)</pre>
+  <p>UnloadTexture Frees an SDL2 allocated texture</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>texture</span>: The texture to free</li>
+  </ul></div>
+</section>
+<section>
+  <h2>LoadEmbeddedBMP</h2>
+  <pre class='code'>LoadEmbeddedBMP (cxt: RenderContext, data: []byte)</pre>
+  <p>LoadEmbeddedBMP Loads a BMP image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The array of bytes to load</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadEmbeddedCUR</h2>
+  <pre class='code'>LoadEmbeddedCUR (cxt: RenderContext, data: []byte)</pre>
+  <p>LoadEmbeddedCUR Loads a CUR image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The array of bytes to load</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadEmbeddedGIF</h2>
+  <pre class='code'>LoadEmbeddedGIF (cxt: RenderContext, data: []byte)</pre>
+  <p>LoadEmbeddedGIF Loads a GIF image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The array of bytes to load</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadEmbeddedICO</h2>
+  <pre class='code'>LoadEmbeddedICO (cxt: RenderContext, data: []byte)</pre>
+  <p>LoadEmbeddedICO Loads a ICO image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The array of bytes to load</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadEmbeddedJPEG</h2>
+  <pre class='code'>LoadEmbeddedJPEG (cxt: RenderContext, data: []byte)</pre>
+  <p>LoadEmbeddedJPEG Loads a JPEG image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The array of bytes to load</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadEmbeddedLBM</h2>
+  <pre class='code'>LoadEmbeddedLBM (cxt: RenderContext, data: []byte)</pre>
+  <p>LoadEmbeddedLBM Loads a LBM image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The array of bytes to load</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadEmbeddedPCX</h2>
+  <pre class='code'>LoadEmbeddedPCX (cxt: RenderContext, data: []byte)</pre>
+  <p>LoadEmbeddedPCX Loads a PCX image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The array of bytes to load</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadEmbeddedPNG</h2>
+  <pre class='code'>LoadEmbeddedPNG (cxt: RenderContext, data: []byte)</pre>
+  <p>LoadEmbeddedPNG Loads a PNG image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The array of bytes to load</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadEmbeddedPNM</h2>
+  <pre class='code'>LoadEmbeddedPNM (cxt: RenderContext, data: []byte)</pre>
+  <p>LoadEmbeddedPNM Loads a PNM image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The array of bytes to load</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadEmbeddedSVG</h2>
+  <pre class='code'>LoadEmbeddedSVG (cxt: RenderContext, data: string)</pre>
+  <p>LoadEmbeddedSVG Loads a SVG image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The string of SVG code</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadEmbeddedTGA</h2>
+  <pre class='code'>LoadEmbeddedTGA (cxt: RenderContext, data: []byte)</pre>
+  <p>LoadEmbeddedTGA Loads a TGA image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The array of bytes to load</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadEmbeddedXCF</h2>
+  <pre class='code'>LoadEmbeddedXCF (cxt: RenderContext, data: []byte)</pre>
+  <p>LoadEmbeddedXCF Loads a XCF image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The array of bytes to load</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadEmbeddedXPM</h2>
+  <pre class='code'>LoadEmbeddedXPM (cxt: RenderContext, data: []byte)</pre>
+  <p>LoadEmbeddedXPM Loads a XPM image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The array of bytes to load</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadEmbeddedXV</h2>
+  <pre class='code'>LoadEmbeddedXV (cxt: RenderContext, data: []byte)</pre>
+  <p>LoadEmbeddedXV Loads a XV image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The array of bytes to load</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadEmbeddedWebP</h2>
+  <pre class='code'>LoadEmbeddedWebP (cxt: RenderContext, data: []byte)</pre>
+  <p>LoadEmbeddedWebP Loads a WebP image from an array of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>data</span>: The array of bytes to load</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadBMPFile</h2>
+  <pre class='code'>LoadBMPFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadBMPFile Loads a BMP image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadCURFile</h2>
+  <pre class='code'>LoadCURFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadCURFile Loads a CUR image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadGIFFile</h2>
+  <pre class='code'>LoadGIFFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadGIFFile Loads a GIF image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadICOFile</h2>
+  <pre class='code'>LoadICOFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadICOFile Loads a ICO image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadJPEGFile</h2>
+  <pre class='code'>LoadJPEGFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadJPEGFile Loads a JPEG image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadLBMFile</h2>
+  <pre class='code'>LoadLBMFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadLBMFile Loads a LBM image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadPCXFile</h2>
+  <pre class='code'>LoadPCXFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadPCXFile Loads a PCX image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadPNGFile</h2>
+  <pre class='code'>LoadPNGFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadPNGFile Loads a PNG image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadPNMFile</h2>
+  <pre class='code'>LoadPNMFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadPNMFile Loads a PNM image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadSVGFile</h2>
+  <pre class='code'>LoadSVGFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadSVGFile Loads a SVG image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadTGAFile</h2>
+  <pre class='code'>LoadTGAFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadTGAFile Loads a TGA image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadXCFFile</h2>
+  <pre class='code'>LoadXCFFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadXCFFile Loads a XCF image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadXPMFile</h2>
+  <pre class='code'>LoadXPMFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadXMPFile Loads a XMP image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadXVFile</h2>
+  <pre class='code'>LoadXVFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadXVFile Loads a XV image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+<section>
+  <h2>LoadWebPFile</h2>
+  <pre class='code'>LoadWebPFile (cxt: RenderContext, file_path: cstring)</pre>
+  <p>LoadWebPFile Loads a WebP image from a file</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The rendering context used to create the texture</li>
+    <li><span class='param-name'>file_path</span>: The path to the image file</li>
+  </ul></div>
+  <div class='return'>Returns: An SDL texture to pass to DrawTexture</div>
+</section>
+</article>
+</main>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Documentation for Forces.odin</title>
+<style>
+body { margin: 0; font-family: Arial, sans-serif; background: #121212; color: #eee; }
+a { text-decoration: none; color: #80cbc4; }
+a:hover { text-decoration: underline; }
+header { padding: 1rem; background: #1e1e1e; font-size: 1.5rem; color: #80cbc4; }
+main { display: flex; min-height: 100vh; }
+nav { width: 250px; background: #1e1e1e; padding: 1rem; overflow-y: auto; }
+nav details { margin-bottom: 0.5rem; }
+nav summary { cursor: pointer; user-select: none; }
+nav .file { display: block; }
+nav .folder::before { content: "📂 "; }
+nav .file::before { content: "📄 "; }
+nav .file.current a { font-weight: bold; color: #ffb74d; }
+article { flex: 1; padding: 2rem; }
+.back-index { margin-bottom: 1rem; }
+section { background: #1e1e1e; border-radius: 8px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 0 8px #000; }
+h2 { color: #4db6ac; }
+pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: auto; color: #cfd8dc; }
+.code { font-family: monospace; }
+.params ul { padding-left: 1.2em; }
+.params li { margin-bottom: 0.3em; }
+.param-name { font-weight: 600; color: #80cbc4; }
+.return { font-weight: 600; color: #a5d6a7; margin-top: 1em; }
+</style>
+</head>
+<body>
+<header>Forces.odin</header>
+<main>
+<nav>
+<details class='folder' style='padding-left: 0.0em;' open><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../EventSys/EventSystem.html">EventSystem.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;' open><summary>Physics</summary>
+<div class="file" class='current' style="padding-left: 3.0em;"><a href="Forces.html">Forces.odin</a></div>
+</details>
+</details>
+
+</nav>
+<article>
+<div class="back-index"><a href="../../index.html">⬅ Back to Index</a></div>
+<section>
+  <h2>Boom</h2>
+  <pre class='code'>Boom (world: World, position: Types.Vector2f, strength: f32, radius: Meters, falloff: Meters)</pre>
+  <p>Boom creates an explosion in the physics world</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: The physics world</li>
+    <li><span class='param-name'>position</span>: The center position of the explosion</li>
+    <li><span class='param-name'>strength</span>: The force of the explosion</li>
+    <li><span class='param-name'>radius</span>: The radius affected by the explosion</li>
+    <li><span class='param-name'>falloff</span>: How the force decreases with distance</li>
+  </ul></div>
+</section>
+<section>
+  <h2>Impulse</h2>
+  <pre class='code'>Impulse (world: World, body: Obj, impulse: Types.Vector2f)</pre>
+  <p>Impulse Applies a linear impulse to a body at its center of mass.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: The physics world</li>
+    <li><span class='param-name'>body</span>: The body to apply the impulse to in Ns</li>
+    <li><span class='param-name'>impulse</span>: The vector force to apply</li>
+  </ul></div>
+</section>
+<section>
+  <h2>Torque</h2>
+  <pre class='code'>Torque (world: World, body: Obj, torque: NewtonMeters)</pre>
+  <p>Torque Applies a rotational impulse to a body.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: The physics world</li>
+    <li><span class='param-name'>body</span>: The body to apply the torque to</li>
+    <li><span class='param-name'>torque</span>: The magnitude of the rotational force</li>
+  </ul></div>
+</section>
+<section>
+  <h2>Move</h2>
+  <pre class='code'>Move (body: Obj, pos: Types.Vector2f, rot: Radians)</pre>
+  <p>Move Instantly moves a body to a specific position and rotation. WARNING: This is a VERY EXPENSIVE operation and can disrupt the simulation if overused.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>body</span>: The body to move</li>
+    <li><span class='param-name'>pos</span>: The target position</li>
+    <li><span class='param-name'>rot</span>: The target rotation</li>
+  </ul></div>
+</section>
+</article>
+</main>
+</body>
+</html>

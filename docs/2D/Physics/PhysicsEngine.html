@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Documentation for PhysicsEngine.odin</title>
+<style>
+body { margin: 0; font-family: Arial, sans-serif; background: #121212; color: #eee; }
+a { text-decoration: none; color: #80cbc4; }
+a:hover { text-decoration: underline; }
+header { padding: 1rem; background: #1e1e1e; font-size: 1.5rem; color: #80cbc4; }
+main { display: flex; min-height: 100vh; }
+nav { width: 250px; background: #1e1e1e; padding: 1rem; overflow-y: auto; }
+nav details { margin-bottom: 0.5rem; }
+nav summary { cursor: pointer; user-select: none; }
+nav .file { display: block; }
+nav .folder::before { content: "📂 "; }
+nav .file::before { content: "📄 "; }
+nav .file.current a { font-weight: bold; color: #ffb74d; }
+article { flex: 1; padding: 2rem; }
+.back-index { margin-bottom: 1rem; }
+section { background: #1e1e1e; border-radius: 8px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 0 8px #000; }
+h2 { color: #4db6ac; }
+pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: auto; color: #cfd8dc; }
+.code { font-family: monospace; }
+.params ul { padding-left: 1.2em; }
+.params li { margin-bottom: 0.3em; }
+.param-name { font-weight: 600; color: #80cbc4; }
+.return { font-weight: 600; color: #a5d6a7; margin-top: 1em; }
+</style>
+</head>
+<body>
+<header>PhysicsEngine.odin</header>
+<main>
+<nav>
+<details class='folder' style='padding-left: 0.0em;' open><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../EventSys/EventSystem.html">EventSystem.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;' open><summary>Physics</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="Forces.html">Forces.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="Joints.html">Joints.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="Materials.html">Materials.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="Math.html">Math.odin</a></div>
+<div class="file" class='current' style="padding-left: 3.0em;"><a href="PhysicsEngine.html">PhysicsEngine.odin</a></div>
+</details>
+</details>
+
+</nav>
+<article>
+<div class="back-index"><a href="../../index.html">⬅ Back to Index</a></div>
+<section>
+  <h2>InitPhysicsEngine</h2>
+  <pre class='code'>InitPhysicsEngine (grav_vector: Types.Vector2f, can_sleep := true, collision_is_continuous := true) -&gt; World</pre>
+  <p>InitPhysicsEngine initializes a Box2D world with gravity and settings.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>grav_vector</span>: gravity vector (x, y)</li>
+    <li><span class='param-name'>can_sleep</span>: whether bodies can go to sleep for performance</li>
+    <li><span class='param-name'>collision_is_continuous</span>: enables continuous collision detection</li>
+  </ul></div>
+  <div class='return'>Returns: World physics world handle</div>
+</section>
+<section>
+  <h2>DestroyPhysicsEngine</h2>
+  <pre class='code'>DestroyPhysicsEngine (world: World)</pre>
+  <p>DestroyPhysicsEngine destroys a physics world and frees resources.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: the world to destroy</li>
+  </ul></div>
+</section>
+<section>
+  <h2>CreateStaticBody</h2>
+  <pre class='code'>CreateStaticBody (world: World,
+    pos: Types.Vector2f,
+    angle: Radians = 0,
+    can_sleep := true,
+    no_physics_rot := true
+)-&gt; Obj</pre>
+  <p>CreateStaticBody creates a static (immovable) body in the physics world.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: the physics world</li>
+    <li><span class='param-name'>pos</span>: body position</li>
+    <li><span class='param-name'>angle</span>: body angle in radians</li>
+    <li><span class='param-name'>can_sleep</span>: whether the body can sleep</li>
+    <li><span class='param-name'>no_physics_rot</span>: prevents physics-based rotation if true</li>
+  </ul></div>
+  <div class='return'>Returns: Obj handle to the body</div>
+</section>
+<section>
+  <h2>CreateDynamicBody</h2>
+  <pre class='code'>CreateDynamicBody (world: World,
+    pos: Types.Vector2f,
+    angle: Radians = 0,
+    can_sleep := true,
+    no_physics_rot := true
+)-&gt; Obj</pre>
+  <p>CreateDynamicBody creates a dynamic (movable) body in the physics world.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: the physics world</li>
+    <li><span class='param-name'>pos</span>: body position</li>
+    <li><span class='param-name'>angle</span>: body angle in radians</li>
+    <li><span class='param-name'>can_sleep</span>: whether the body can sleep</li>
+    <li><span class='param-name'>no_physics_rot</span>: prevents physics-based rotation if true</li>
+  </ul></div>
+  <div class='return'>Returns: Obj handle to the body</div>
+</section>
+<section>
+  <h2>AddPhysicsPolygonToBody</h2>
+  <pre class='code'>AddPhysicsPolygonToBody (
+    obj: Obj, 
+    vertices: [][2]f32, 
+    radius: f32,
+    density: f32,
+    mat_registry_name: string
+) -&gt; ObjPhysicsHandle</pre>
+  <p>AddPhysicsPolygonToBody attaches a polygon shape with physics properties to a body.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>obj</span>: the body to attach to</li>
+    <li><span class='param-name'>vertices</span>: array of polygon vertices</li>
+    <li><span class='param-name'>radius</span>: rounding radius for edges</li>
+    <li><span class='param-name'>density</span>: material density</li>
+    <li><span class='param-name'>mat_registry_name</span>: key to look up material in registry</li>
+  </ul></div>
+  <div class='return'>Returns: ObjPhysicsHandle handle to the shape</div>
+</section>
+<section>
+  <h2>Step</h2>
+  <pre class='code'>Step (world: World, delta_time: f32)</pre>
+  <p>Step advances the physics simulation forward in time.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: the physics world</li>
+    <li><span class='param-name'>delta_time</span>: delta time multiplier</li>
+  </ul></div>
+</section>
+<section>
+  <h2>GetObjectPos</h2>
+  <pre class='code'>GetObjectPos (obj: Obj) -&gt; Types</pre>
+  <p>GetObjectPos returns the current position of a physics object.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>obj</span>: the object to query</li>
+  </ul></div>
+  <div class='return'>Returns: Vector2f current position</div>
+</section>
+<section>
+  <h2>GetObjectRot</h2>
+  <pre class='code'>GetObjectRot (obj: Obj) -&gt; Radians</pre>
+  <p>GetObjectRot returns the current rotation (angle in radians) of a physics object.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>obj</span>: the object to query</li>
+  </ul></div>
+  <div class='return'>Returns: Radians current rotation</div>
+</section>
+</article>
+</main>
+</body>
+</html>

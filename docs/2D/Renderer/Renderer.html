@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Documentation for Renderer.odin</title>
+<style>
+body { margin: 0; font-family: Arial, sans-serif; background: #121212; color: #eee; }
+a { text-decoration: none; color: #80cbc4; }
+a:hover { text-decoration: underline; }
+header { padding: 1rem; background: #1e1e1e; font-size: 1.5rem; color: #80cbc4; }
+main { display: flex; min-height: 100vh; }
+nav { width: 250px; background: #1e1e1e; padding: 1rem; overflow-y: auto; }
+nav details { margin-bottom: 0.5rem; }
+nav summary { cursor: pointer; user-select: none; }
+nav .file { display: block; }
+nav .folder::before { content: "📂 "; }
+nav .file::before { content: "📄 "; }
+nav .file.current a { font-weight: bold; color: #ffb74d; }
+article { flex: 1; padding: 2rem; }
+.back-index { margin-bottom: 1rem; }
+section { background: #1e1e1e; border-radius: 8px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 0 8px #000; }
+h2 { color: #4db6ac; }
+pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: auto; color: #cfd8dc; }
+.code { font-family: monospace; }
+.params ul { padding-left: 1.2em; }
+.params li { margin-bottom: 0.3em; }
+.param-name { font-weight: 600; color: #80cbc4; }
+.return { font-weight: 600; color: #a5d6a7; margin-top: 1em; }
+</style>
+</head>
+<body>
+<header>Renderer.odin</header>
+<main>
+<nav>
+<details class='folder' style='padding-left: 0.0em;' open><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../EventSys/EventSystem.html">EventSystem.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;'><summary>Physics</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../Physics/Forces.html">Forces.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../Physics/Joints.html">Joints.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../Physics/Materials.html">Materials.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../Physics/Math.html">Math.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../Physics/PhysicsEngine.html">PhysicsEngine.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;' open><summary>Renderer</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="Draw.html">Draw.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="FileLoader.html">FileLoader.odin</a></div>
+<div class="file" class='current' style="padding-left: 3.0em;"><a href="Renderer.html">Renderer.odin</a></div>
+</details>
+</details>
+
+</nav>
+<article>
+<div class="back-index"><a href="../../index.html">⬅ Back to Index</a></div>
+<section>
+  <h2>Init</h2>
+  <pre class='code'>Init (
+    app_name: cstring, window_name: cstring, width: i32, height: i32,
+    backend: GraphicsBackend = .OPEN_GL,
+    debug_mode: bool = true
+) -&gt; RenderContext</pre>
+  <p>Init Creates a new window and SDL2 renderer for drawing on</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>app_name</span>: the internal name used by drivers like audio for identification</li>
+    <li><span class='param-name'>window_name</span>: the name displayed in the title bar in ANCI</li>
+    <li><span class='param-name'>width</span>: the width of the window in pixels</li>
+    <li><span class='param-name'>height</span>: the height of the window in pixels</li>
+    <li><span class='param-name'>GraphicsBackend</span>: defaults to OpenGL but can be set to Software on all platforms, Metal on Apple devices, and DirectX3D11 on Windows devices</li>
+    <li><span class='param-name'>debug_mode</span>: flag that tells SDL2 to run in debug mode NOTE: cluters up STDIO use only if MAGMA will not tell you the error</li>
+  </ul></div>
+  <div class='return'>Returns: RenderContext a renderer context for the window you just created</div>
+</section>
+<section>
+  <h2>Update</h2>
+  <pre class='code'>Update (ctx: ^RenderContext)</pre>
+  <p>Update Updates the renderer with whatever should be rendered to the screen</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: The renderer context for the window you want to update</li>
+  </ul></div>
+</section>
+<section>
+  <h2>SetFullscreen</h2>
+  <pre class='code'>SetFullscreen (ctx: RenderContext, fullscreen: bool)</pre>
+  <p>SetFullscreen controls if the window in the renderer context is fullscreen or not</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: the renderer context of the window you want to toggle fullscreen on</li>
+    <li><span class='param-name'>fullscreen</span>: the flag that sets if the window is fullscreen or not</li>
+  </ul></div>
+</section>
+<section>
+  <h2>Shutdown</h2>
+  <pre class='code'>Shutdown (ctx: RenderContext)</pre>
+  <p>Shutdown cleans up the window and renderer then quits SDL2</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: the context to clean up</li>
+  </ul></div>
+</section>
+<section>
+  <h2>FPSLimiter</h2>
+  <pre class='code'>FPSLimiter (target_fps: u32)</pre>
+  <p>FPSLimiter limits the FPS to a specific value</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>target_fps</span>: the number for the fps you want to limit to</li>
+  </ul></div>
+</section>
+<section>
+  <h2>GetDeltaTime</h2>
+  <pre class='code'>GetDeltaTime () -&gt; f32</pre>
+  <p>GetDeltaTime returns the time in seconds between the current frame and the previous frame. It only updates the previous frame time every second call, effectively measuring delta over two frames.</p>
+  <div class='return'>Returns: delta time in seconds (f32)</div>
+</section>
+</article>
+</main>
+</body>
+</html>

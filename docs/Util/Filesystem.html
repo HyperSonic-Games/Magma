@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Documentation for Filesystem.odin</title>
+<style>
+body { margin: 0; font-family: Arial, sans-serif; background: #121212; color: #eee; }
+a { text-decoration: none; color: #80cbc4; }
+a:hover { text-decoration: underline; }
+header { padding: 1rem; background: #1e1e1e; font-size: 1.5rem; color: #80cbc4; }
+main { display: flex; min-height: 100vh; }
+nav { width: 250px; background: #1e1e1e; padding: 1rem; overflow-y: auto; }
+nav details { margin-bottom: 0.5rem; }
+nav summary { cursor: pointer; user-select: none; }
+nav .file { display: block; }
+nav .folder::before { content: "📂 "; }
+nav .file::before { content: "📄 "; }
+nav .file.current a { font-weight: bold; color: #ffb74d; }
+article { flex: 1; padding: 2rem; }
+.back-index { margin-bottom: 1rem; }
+section { background: #1e1e1e; border-radius: 8px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 0 8px #000; }
+h2 { color: #4db6ac; }
+pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: auto; color: #cfd8dc; }
+.code { font-family: monospace; }
+.params ul { padding-left: 1.2em; }
+.params li { margin-bottom: 0.3em; }
+.param-name { font-weight: 600; color: #80cbc4; }
+.return { font-weight: 600; color: #a5d6a7; margin-top: 1em; }
+</style>
+</head>
+<body>
+<header>Filesystem.odin</header>
+<main>
+<nav>
+<details class='folder' style='padding-left: 0.0em;'><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/EventSys/EventSystem.html">EventSystem.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;'><summary>Physics</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/Forces.html">Forces.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/Joints.html">Joints.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/Materials.html">Materials.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/Math.html">Math.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/PhysicsEngine.html">PhysicsEngine.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;'><summary>Renderer</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/Draw.html">Draw.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/FileLoader.html">FileLoader.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/Renderer.html">Renderer.odin</a></div>
+</details>
+</details>
+<details class='folder' style='padding-left: 0.0em;'><summary>Net</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>Basic</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../Net/Basic/TCP.html">TCP.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../Net/Basic/UDP.html">UDP.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;'><summary>Protocols</summary>
+<details class='folder' style='padding-left: 3.0em;'><summary>ClientServer</summary>
+<details class='folder' style='padding-left: 4.5em;'><summary>Raw</summary>
+<details class='folder' style='padding-left: 6.0em;'><summary>TCP</summary>
+<div class="file" style="padding-left: 7.5em;"><a href="../Net/Protocols/ClientServer/Raw/TCP/Server.html">Server.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 6.0em;'><summary>UDP</summary>
+<div class="file" style="padding-left: 7.5em;"><a href="../Net/Protocols/ClientServer/Raw/UDP/Server.html">Server.odin</a></div>
+</details>
+</details>
+</details>
+</details>
+</details>
+<details class='folder' style='padding-left: 0.0em;'><summary>Types</summary>
+<div class="file" style="padding-left: 1.5em;"><a href="../Types/Color.html">Color.odin</a></div>
+<div class="file" style="padding-left: 1.5em;"><a href="../Types/Vectors.html">Vectors.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 0.0em;' open><summary>Util</summary>
+<div class="file" class='current' style="padding-left: 1.5em;"><a href="Filesystem.html">Filesystem.odin</a></div>
+</details>
+
+</nav>
+<article>
+<div class="back-index"><a href="../index.html">⬅ Back to Index</a></div>
+<section>
+  <h2>WriteCompressedStringFile</h2>
+  <pre class='code'>WriteCompressedStringFile (filepath: string, text: []string)</pre>
+  <p>WriteCompressedStringFile writes an array of strings to a file. Each line is compressed using Shoco compression before being written.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>filepath</span>: Destination file path</li>
+    <li><span class='param-name'>text</span>: Array of strings to compress and write</li>
+  </ul></div>
+</section>
+<section>
+  <h2>ReadCompressedStringFile</h2>
+  <pre class='code'>ReadCompressedStringFile (filepath: string)</pre>
+  <p>ReadCompressedStringFile reads a Shoco-compressed file, decompresses its content, and returns the result split by lines.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>filepath</span>: Path to the compressed file</li>
+  </ul></div>
+  <div class='return'>Returns: Decompressed lines as an array of strings</div>
+</section>
+<section>
+  <h2>ReadCSVFile</h2>
+  <pre class='code'>ReadCSVFile (filepath: string)</pre>
+  <p>ReadCSVFile reads and parses a CSV file into a flat array of all fields.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>filepath</span>: Path to the CSV file</li>
+  </ul></div>
+  <div class='return'>Returns: Flat array of all CSV fields</div>
+</section>
+<section>
+  <h2>WriteCSVFile</h2>
+  <pre class='code'>WriteCSVFile (filepath: string, values: []string)</pre>
+  <p>WriteCSVFile writes a flat array of values as a single CSV line to a file.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>filepath</span>: File to write to</li>
+    <li><span class='param-name'>values</span>: Flat array of values to write</li>
+  </ul></div>
+  <div class='return'>Returns: True if write succeeded</div>
+</section>
+<section>
+  <h2>ReadBase32File</h2>
+  <pre class='code'>ReadBase32File (filepath: string)</pre>
+  <p>ReadBase32File reads a Base32-encoded file and decodes it into raw bytes.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>filepath</span>: Path to encoded file</li>
+  </ul></div>
+  <div class='return'>Returns: Decoded byte slice or nil on error</div>
+</section>
+<section>
+  <h2>WriteBase32File</h2>
+  <pre class='code'>WriteBase32File (filepath: string, data: []byte) -&gt; bool</pre>
+  <p>WriteBase32File encodes the given data to Base32 and writes it to a file.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>filepath</span>: Destination file</li>
+    <li><span class='param-name'>data</span>: Byte slice to encode</li>
+  </ul></div>
+  <div class='return'>Returns: True if write succeeded</div>
+</section>
+<section>
+  <h2>ReadBase64File</h2>
+  <pre class='code'>ReadBase64File (filepath: string)</pre>
+  <p>ReadBase64File reads a Base64-encoded file and decodes it into raw bytes.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>filepath</span>: Input file path</li>
+  </ul></div>
+  <div class='return'>Returns: Decoded byte slice or nil on error</div>
+</section>
+<section>
+  <h2>WriteBase64File</h2>
+  <pre class='code'>WriteBase64File (filepath: string, data: []byte) -&gt; bool</pre>
+  <p>WriteBase64File encodes the given data to Base64 and writes it to a file.  param: filepath Output file path</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>data</span>: Byte slice to encode</li>
+  </ul></div>
+  <div class='return'>Returns: True if write succeeded</div>
+</section>
+<section>
+  <h2>LoadDynamicLibrary</h2>
+  <pre class='code'>LoadDynamicLibrary (filepath: string, symbol_table: ^$T)</pre>
+  <p>LoadDynamicLibrary loads a dynamic library and resolves its symbols into a struct.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>filepath</span>: Path to the dynamic library</li>
+    <li><span class='param-name'>symbol_table</span>: Pointer to struct to receive function pointers</li>
+  </ul></div>
+</section>
+<section>
+  <h2>UnloadDynamicLibrary</h2>
+  <pre class='code'>UnloadDynamicLibrary (symbol_table: $T)</pre>
+  <p>UnloadDynamicLibrary unloads a previously loaded dynamic library.</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>symbol_table</span>: Struct containing the dynamic library handle</li>
+  </ul></div>
+</section>
+</article>
+</main>
+</body>
+</html>
