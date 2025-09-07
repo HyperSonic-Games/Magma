@@ -3,8 +3,10 @@ package Renderer
 import "core:c"
 import "core:simd"
 import "core:fmt"
+import "core:math"
 import "../../Util"
 import "../../Types"
+import "../Physics"
 
 import "vendor:sdl2"
 import "vendor:sdl2/image"
@@ -101,13 +103,13 @@ DrawLine :: proc(ctx: ^RenderContext, point1: Types.Vector2f, point2: Types.Vect
 
 /*
  * DrawTexture draws an SDL2 texture to the renderer with optional rotation
- * Meant to be used with a image loader
+ * Meant to be used with an image loader
  * @param ctx the renderer to draw to
  * @param texture the SDL2 texture to render
  * @param pos the top-left position to draw the texture
- * @param rot the rotation angle (in degrees, clockwise)
+ * @param rot the rotation angle (in Radians, clockwise)
 */
-DrawTexture :: proc(ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vector2f, rot: f64) {
+DrawTexture :: proc(ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vector2f, rot: Physics.Radians) {
     w, h: i32
     _ = sdl2.QueryTexture(texture, nil, nil, &w, &h)
 
@@ -123,6 +125,9 @@ DrawTexture :: proc(ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vect
         y = dst.h / 2.0,
     }
 
+    // Convert radians to degrees because SDL expects degrees
+    degrees := cast(f64)(rot * (180.0 / math.PI))
+
     sdl2.SetRenderTarget(ctx.Renderer, ctx.RenderSurface)
-    sdl2.RenderCopyExF(ctx.Renderer, texture, nil, &dst, rot, &center, .NONE)
+    sdl2.RenderCopyExF(ctx.Renderer, texture, nil, &dst, degrees, &center, .NONE)
 }
