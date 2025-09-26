@@ -13,7 +13,9 @@ main :: proc () {
     keyboard := new(EventSys.Keyboard)
     win_state := new(EventSys.WindowState)
     running := true
-    Util.log(.ERROR, "BOB", "Hai")
+    
+    Renderer.DrawRect(&ctx, {52, 50}, {100, 100}, {255, 255, 255, 100})
+
     for running == true {
         EventSys.HandleEvents(mouse, keyboard, win_state)
         Renderer.Update(&ctx)
@@ -22,9 +24,11 @@ main :: proc () {
             running = false
             continue
         }
+        free_all(context.temp_allocator)
     
     }
     free(mouse)
     free(keyboard)
     free(win_state)
+
 }

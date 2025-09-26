@@ -1,5 +1,6 @@
 package Renderer
 
+import "core:strings"
 import "core:c"
 import "core:simd"
 import "core:fmt"
@@ -131,3 +132,4 @@ DrawTexture :: proc(ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vect
     sdl2.SetRenderTarget(ctx.Renderer, ctx.RenderSurface)
     sdl2.RenderCopyExF(ctx.Renderer, texture, nil, &dst, degrees, &center, .NONE)
 }
+

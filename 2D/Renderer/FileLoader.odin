@@ -5,6 +5,7 @@ import "vendor:sdl2"
 import "vendor:sdl2/image"
 import stbrp "vendor:stb/rect_pack"
 import stbv "vendor:stb/vorbis"
+import "vendor:sdl2/ttf"
 
 import "../../Util"
 /*

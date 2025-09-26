@@ -2,7 +2,7 @@ package Physics
 
 // Default scale value, can be overridden at runtime
 @private
-METER_TO_PIXEL_SCALE_VALUE_DEFAULT :: #config(magma_meter_to_pixel_scale_default, 64.0)
+METER_TO_PIXEL_SCALE_VALUE_DEFAULT :: #config(magma_physics_meter_to_pixel_scale_default, 64.0)
 
 // Current scale factor (mutable)
 @private
