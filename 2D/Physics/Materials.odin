@@ -5,6 +5,8 @@ import "../../Util"
 import b2d "vendor:box2d"
 
 // --- Material registry ---
+@private
+@(link_section="MAGMA_ENGINE_GLOBALS")
 MaterialRegistry: map[string]Material
 
 Material :: b2d.SurfaceMaterial
@@ -27,20 +29,16 @@ RegisterMaterial :: proc(name: string, mat: Material) {
     MaterialRegistry[name] = mat
 }
 
-/*
- * InitMatRegistry initializes the material registry at program start.
- * This is automatically called via @init.
-*/
+
+
 @init
+@private
 InitMatRegistry :: proc() {
     MaterialRegistry = make(map[string]Material)
 }
 
-/*
- * DestroyMatRegistry clears the material registry.
- * Called via @fini.
-*/
 @fini
+@private
 DestroyMatRegistry :: proc() {
     delete(MaterialRegistry)
 }

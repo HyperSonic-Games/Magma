@@ -1,6 +1,3 @@
-[submodule "third_party/odin-bgfx"]
-	path = third_party/odin-bgfx
-	url = https://github.com/elaeja/odin-bgfx.git
 [submodule "Odin-Docgen"]
 	path = Odin-Docgen
 	url = https://github.com/HyperSonic-Games/Odin-Docgen.git

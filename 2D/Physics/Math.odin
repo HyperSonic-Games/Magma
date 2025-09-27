@@ -6,6 +6,7 @@ METER_TO_PIXEL_SCALE_VALUE_DEFAULT :: #config(magma_physics_meter_to_pixel_scale
 
 // Current scale factor (mutable)
 @private
+@(link_section="MAGMA_ENGINE_GLOBALS")
 meter_to_pixel_scale: f32 = METER_TO_PIXEL_SCALE_VALUE_DEFAULT
 
 /*

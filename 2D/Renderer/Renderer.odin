@@ -4,8 +4,12 @@ import "core:fmt"
 import "core:math"
 import "../../Util"
 
-SplashImage := #load("../../MagmaEngine.png", []byte)
+@(link_section="MAGMA_ENGINE_GLOBALS")
 @private
+SplashImage := #load("../../MagmaEngine.png", []byte)
+
+@private
+@(link_section="MAGMA_ENGINE_GLOBALS")
 Frames: u128
 
 import "vendor:sdl2"

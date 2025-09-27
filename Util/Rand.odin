@@ -8,6 +8,7 @@ import "core:encoding/uuid"
 import "../Types"
 
 @init
+@private
 SeedTheRand :: proc() {
     libc.srand(libc.uint32_t(libc.time(nil)))
 }
