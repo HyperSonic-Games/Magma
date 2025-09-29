@@ -1,7 +1,7 @@
-package Internal
+package GUI
 
 import "core:encoding/base64"
-import "../../Util"
+import "../Util"
 
 /*
 Handle to an item in the clipboard.
@@ -76,7 +76,7 @@ DestroyClipboard :: proc(cb: ^Clipboard) {
 
 
 // Copy a ClipboardData item into a clipboard
-Copy :: proc(clipboard: ^Clipboard, data: ClipboardData) -> ClipboardItemHandle {
+Copy :: proc(data: ClipboardData, clipboard: ^Clipboard = GLOBAL_CLIPBOARD, ) -> ClipboardItemHandle {
     item: ClipboardItem
     item.data = data
     append(&clipboard.data, item)
@@ -85,7 +85,7 @@ Copy :: proc(clipboard: ^Clipboard, data: ClipboardData) -> ClipboardItemHandle 
 }
 
 // Paste a ClipboardData item from a clipboard using a handle
-Paste :: proc(clipboard: ^Clipboard, handle: ClipboardItemHandle) -> ClipboardData {
+Paste :: proc(handle: ClipboardItemHandle, clipboard: ^Clipboard = GLOBAL_CLIPBOARD, ) -> ClipboardData {
     idx: int = cast(int)handle
     if idx < 0 || idx >= len(clipboard.data) {
         // Invalid handle: return an empty union
