@@ -32,17 +32,17 @@ GetMeterToPixelScale :: proc() -> f32 {
 /*
  * MetersToPixels converts a distance in meters to pixels using the current scale factor.
  * @param meters distance in meters
- * @return f32 equivalent distance in pixels
+ * @return equivalent distance in pixels
 */
-MetersToPixels :: proc(meters: f32) -> f32 {
+MetersToPixels :: proc(meters: Meters) -> f32 {
     return meters * meter_to_pixel_scale
 }
 
 /*
  * PixelsToMeters converts a distance in pixels to meters using the current scale factor.
  * @param pixels distance in pixels
- * @return f32 equivalent distance in meters
+ * @return equivalent distance in meters
 */
-PixelsToMeters :: proc(pixels: f32) -> f32 {
+PixelsToMeters :: proc(pixels: f32) -> Meters {
     return pixels / meter_to_pixel_scale
 }

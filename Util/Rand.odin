@@ -1,17 +1,12 @@
 package Util
 
+import "core:math/rand"
 import "core:strings"
-import "core:c/libc"
 import "core:hash"
 import "core:encoding/uuid"
 
 import "../Types"
 
-@init
-@private
-SeedTheRand :: proc() {
-    libc.srand(libc.uint32_t(libc.time(nil)))
-}
 
 /*
  * RandomRange Randomly Generates a number in a provided range
@@ -21,7 +16,7 @@ SeedTheRand :: proc() {
  * @return a random int in the range of the two values
 */
 RandomRange :: proc(min: int, max: int) -> int {
-    return cast(int)(cast(i32)min + (libc.rand() % cast(i32)(max - min + 1)))
+    return cast(int)(cast(i32)min + (rand.int31() % cast(i32)(max - min + 1)))
 }
 
 

@@ -19,7 +19,7 @@ GraphicsBackend :: enum {
     OPEN_GL,
     DIRECTX3D11,
     METAL,
-    SOFWARE
+    SOFTWARE
 }
 
 RenderContext :: struct {
@@ -64,7 +64,7 @@ Init :: proc(
     sdl2.SetHint(sdl2.HINT_RENDER_VSYNC, "0" if debug_mode else "1")
     sdl2.SetHint(sdl2.HINT_EVENT_LOGGING, "1" if debug_mode else "0")
     sdl2.SetHint(sdl2.HINT_RENDER_BATCHING, "1")
-    sdl2.LogSetAllPriority(.WARN)
+    sdl2.LogSetAllPriority(.INFO)
 
 
     switch backend {
@@ -80,7 +80,7 @@ Init :: proc(
         case .METAL:
             sdl2.SetHint(sdl2.HINT_RENDER_DRIVER, "metal")
             sdl2.SetHint(sdl2.HINT_FRAMEBUFFER_ACCELERATION, "metal")
-        case .SOFWARE:
+        case .SOFTWARE:
             sdl2.SetHint(sdl2.HINT_RENDER_DRIVER, "software")
             sdl2.SetHint(sdl2.HINT_FRAMEBUFFER_ACCELERATION, "software")
     }
@@ -104,7 +104,7 @@ Init :: proc(
 
     renderer_flags: sdl2.RendererFlags
     switch backend {
-        case .SOFWARE:
+        case .SOFTWARE:
             renderer_flags = {.SOFTWARE}
         case .DIRECTX3D11, .METAL, .OPEN_GL:
             renderer_flags = {.ACCELERATED}
