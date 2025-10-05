@@ -19,23 +19,23 @@ main :: proc() {
     // Rectangle state
     rect_pos: Types.Vector2f = { 52, 50 }
     rect_size: Types.Vector2f = { 100, 100 }
-    speed: f32 = 1.0 // pixels per second
+    speed: f32 = 100.0 // pixels per second
 
     for running {
         // Update keyboard & mouse state
         EventSys.HandleEvents(mouse, keyboard, win_state)
         delta_time: f32 = Renderer.GetDeltaTime()
 
-        // Move rectangle based on the last key pressed, scaled by delta_time
-        if delta_time < 1 {
-            delta_time = 1
+        // Clamp delta_time if needed
+        if delta_time < 0.001 {
+            delta_time = 0.001
         }
-        #partial switch keyboard.key {
-            case .W: rect_pos.y -= speed * delta_time
-            case .S: rect_pos.y += speed * delta_time
-            case .A: rect_pos.x -= speed * delta_time
-            case .D: rect_pos.x += speed * delta_time
-        }
+
+        // Move rectangle based on currently pressed keys
+        if keyboard.states[EventSys.KEYS.W] { rect_pos.y -= speed * delta_time }
+        if keyboard.states[EventSys.KEYS.S] { rect_pos.y += speed * delta_time }
+        if keyboard.states[EventSys.KEYS.A] { rect_pos.x -= speed * delta_time }
+        if keyboard.states[EventSys.KEYS.D] { rect_pos.x += speed * delta_time }
 
         // Render
         Renderer.ClearScreen(&ctx, {0,0,0,255})

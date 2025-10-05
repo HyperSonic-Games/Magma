@@ -3,7 +3,6 @@ package EventSys
 import "core:c"
 import "../../Types"
 import "../../Util"
-import "core:simd"
 import "vendor:sdl2"
 
 MOD_KEYS :: enum {
@@ -20,6 +19,7 @@ KEYS :: enum {
     N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
     ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, ZERO,
     ENTER, ESCAPE, BACKSPACE, TAB, SPACE,
+    MAX_KEYS  // keep this as the count of keys
 }
 
 Mouse :: struct {
@@ -30,7 +30,7 @@ Mouse :: struct {
 
 Keyboard :: struct {
     mod: MOD_KEYS,
-    key: KEYS,
+    states: [KEYS.MAX_KEYS]bool, // true if key is currently held
 }
 
 WindowState :: struct {
@@ -46,11 +46,6 @@ WindowState :: struct {
     mouse_left:     bool,
 }
 
-/*
- * ResetWindowFlags sets all the window state flags to a known state (should be called after game logic in the main loop)
- *
- * @param state a pointer to a stucture that holds the window state data
-*/
 ResetWindowFlags :: proc(state: ^WindowState) {
     state.should_quit   = false
     state.resized       = false
@@ -123,71 +118,57 @@ ConvertSDLModToMODKEYS :: proc(mod: sdl2.Keymod) -> MOD_KEYS {
     else {return MOD_KEYS.NONE}
 }
 
-/*
- * HandleEvents When called updates all of the event structures passed to it
- *
- * @param mouse a pointer to a stucture that holds mouse data
- * @param keyboard a pointer to a structure that contains all ot the keys and mod keys being pressed
- * @param win a pointer to a structure that holds general window state (fullscreen, quit state, ect)
-*/
 HandleEvents :: proc(mouse: ^Mouse, keyboard: ^Keyboard, win: ^WindowState) {
     ResetWindowFlags(win)
 
     event: sdl2.Event
     for sdl2.PollEvent(&event) != false {
         #partial switch event.type {
-        case sdl2.EventType.QUIT:
-            win.should_quit = true
+            case sdl2.EventType.QUIT:
+                win.should_quit = true
 
-        case sdl2.EventType.MOUSEMOTION:
-            motion := event.motion
-            mouse.position[0] = motion.x
-            mouse.position[1] = motion.y
+            case sdl2.EventType.MOUSEMOTION:
+                motion := event.motion
+                mouse.position[0] = motion.x
+                mouse.position[1] = motion.y
 
-        case sdl2.EventType.MOUSEBUTTONDOWN:
-            btn := event.button
-            if btn.button == sdl2.BUTTON_LEFT {
-                mouse.LClick = true
-            } else if btn.button == sdl2.BUTTON_RIGHT {
-                mouse.RClick = true
-            }
+            case sdl2.EventType.MOUSEBUTTONDOWN:
+                btn := event.button
+                if btn.button == sdl2.BUTTON_LEFT { mouse.LClick = true }
+                if btn.button == sdl2.BUTTON_RIGHT { mouse.RClick = true }
 
-        case sdl2.EventType.MOUSEBUTTONUP:
-            btn := event.button
-            if btn.button == sdl2.BUTTON_LEFT {
-                mouse.LClick = false
-            } else if btn.button == sdl2.BUTTON_RIGHT {
-                mouse.RClick = false
-            }
+            case sdl2.EventType.MOUSEBUTTONUP:
+                btn := event.button
+                if btn.button == sdl2.BUTTON_LEFT { mouse.LClick = false }
+                if btn.button == sdl2.BUTTON_RIGHT { mouse.RClick = false }
 
-        case sdl2.EventType.KEYDOWN:
-            keysym := event.key.keysym
-            keyboard.key = ConvertSDLKeycodeToKEYS(keysym.sym)
-            keyboard.mod = ConvertSDLModToMODKEYS(keysym.mod)
+            case sdl2.EventType.KEYDOWN:
+                k := ConvertSDLKeycodeToKEYS(event.key.keysym.sym)
+                if k != KEYS.NONE { keyboard.states[k] = true }
+                keyboard.mod = ConvertSDLModToMODKEYS(event.key.keysym.mod)
 
-        case sdl2.EventType.KEYUP:
-            keyboard.key = KEYS.NONE
-            keyboard.mod = ConvertSDLModToMODKEYS(event.key.keysym.mod)
+            case sdl2.EventType.KEYUP:
+                k := ConvertSDLKeycodeToKEYS(event.key.keysym.sym)
+                if k != KEYS.NONE { keyboard.states[k] = false }
+                keyboard.mod = ConvertSDLModToMODKEYS(event.key.keysym.mod)
 
-        case sdl2.EventType.WINDOWEVENT:
-            win_event := event.window
-            #partial switch win_event.event {
-                case sdl2.WindowEventID.RESIZED:
-                    win.resized    = true
-                    win.new_width  = win_event.data1
-                    win.new_height = win_event.data2
+            case sdl2.EventType.WINDOWEVENT:
+                we := event.window
+                #partial switch we.event {
+                    case sdl2.WindowEventID.RESIZED:
+                        win.resized    = true
+                        win.new_width  = we.data1
+                        win.new_height = we.data2
+                    case sdl2.WindowEventID.MINIMIZED:    win.minimized     = true
+                    case sdl2.WindowEventID.MAXIMIZED:    win.maximized     = true
+                    case sdl2.WindowEventID.FOCUS_GAINED: win.focus_gained  = true
+                    case sdl2.WindowEventID.FOCUS_LOST:   win.focus_lost    = true
+                    case sdl2.WindowEventID.ENTER:        win.mouse_entered = true
+                    case sdl2.WindowEventID.LEAVE:        win.mouse_left    = true
+                    case: {}
+                }
 
-                case sdl2.WindowEventID.MINIMIZED:    win.minimized     = true
-                case sdl2.WindowEventID.MAXIMIZED:    win.maximized     = true
-                case sdl2.WindowEventID.FOCUS_GAINED: win.focus_gained  = true
-                case sdl2.WindowEventID.FOCUS_LOST:   win.focus_lost    = true
-                case sdl2.WindowEventID.ENTER:        win.mouse_entered = true
-                case sdl2.WindowEventID.LEAVE:        win.mouse_left    = true
-
-                case: {} // ignore unhandled window events
-            }
-
-        case: {} // ignore all other unknown events safely
+            case: {}
         }
     }
 }
