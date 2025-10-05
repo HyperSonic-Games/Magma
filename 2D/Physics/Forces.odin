@@ -16,8 +16,7 @@ import b2d "vendor:box2d"
 Boom :: proc(world: World, position: Types.Vector2f, strength: f32, radius: Meters, falloff: Meters) {
     expl_def := b2d.DefaultExplosionDef()
 
-    expl_def.position[0] = cast(f32)Types.Vector2fGetX(position)
-    expl_def.position[1] = cast(f32)Types.Vector2fGetY(position)
+    expl_def.position = position
     expl_def.radius = radius
     expl_def.impulsePerLength = strength
     expl_def.falloff = falloff
@@ -34,7 +33,7 @@ Boom :: proc(world: World, position: Types.Vector2f, strength: f32, radius: Mete
 Impulse :: proc(world: World, body: Obj, impulse: Types.Vector2f) {
     b2d.Body_ApplyLinearImpulseToCenter(
         cast(b2d.BodyId)body, 
-        cast(b2d.Vec2){cast(f32)Types.Vector2fGetX(impulse), cast(f32)Types.Vector2fGetY(impulse)}, 
+        cast(b2d.Vec2){impulse[0], impulse[1]}, 
         true
     )
 }
@@ -64,7 +63,7 @@ Torque :: proc(world: World, body: Obj, torque: NewtonMeters) {
 Move :: proc(body: Obj, pos: Types.Vector2f, rot: Radians) {
     b2d.Body_SetTransform(
         cast(b2d.BodyId)body, 
-        {cast(f32)Types.Vector2fGetX(pos), cast(f32)Types.Vector2fGetY(pos)}, 
+        {pos[0], pos[1]}, 
         b2d.MakeRot(rot)
     )
 }

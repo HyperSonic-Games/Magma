@@ -44,10 +44,10 @@ PresentScreen :: proc(ctx: ^RenderContext) {
 */
 DrawRect :: proc(ctx: ^RenderContext, pos: Types.Vector2f, size: Types.Vector2f, color: Types.Color, filled: bool = true, rot: f32 = 0.0) {
     rect: sdl2.FRect = sdl2.FRect{
-        x = auto_cast Types.Vector2fGetX(pos),
-        y = auto_cast Types.Vector2fGetY(pos),
-        w = auto_cast Types.Vector2fGetX(size),
-        h = auto_cast Types.Vector2fGetY(size),
+        x = pos[0],
+        y = pos[1],
+        w = size[0],
+        h = size[1]
     }
 
     center: sdl2.FPoint = sdl2.FPoint{
@@ -96,10 +96,10 @@ DrawLine :: proc(ctx: ^RenderContext, point1: Types.Vector2f, point2: Types.Vect
     sdl2.SetRenderTarget(ctx.Renderer, ctx.RenderSurface)
     sdl2.SetRenderDrawColor(ctx.Renderer, simd.extract(color, 0), simd.extract(color, 1), simd.extract(color, 2), simd.extract(color, 3))
     sdl2.RenderDrawLineF(ctx.Renderer,
-        auto_cast Types.Vector2fGetX(point1),
-        auto_cast Types.Vector2fGetY(point1),
-        auto_cast Types.Vector2fGetX(point2),
-        auto_cast Types.Vector2fGetY(point2))
+        point1[0],
+        point1[1],
+        point2[0],
+        point2[1])
 }
 
 /*
@@ -115,8 +115,8 @@ DrawTexture :: proc(ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vect
     _ = sdl2.QueryTexture(texture, nil, nil, &w, &h)
 
     dst: sdl2.FRect = sdl2.FRect{
-        x = auto_cast Types.Vector2fGetX(pos),
-        y = auto_cast Types.Vector2fGetY(pos),
+        x = pos[0],
+        y = pos[1],
         w = cast(f32)w,
         h = cast(f32)h,
     }

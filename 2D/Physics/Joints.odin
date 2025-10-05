@@ -45,8 +45,8 @@ CreateDistanceJoint :: proc(
     jointDef.enableLimit = true
     jointDef.enableMotor = false
     jointDef.enableSpring = false
-    jointDef.localAnchorA = {cast(f32)Types.Vector2fGetX(anchor_a), cast(f32)Types.Vector2fGetY(anchor_a)}
-    jointDef.localAnchorB = {cast(f32)Types.Vector2fGetX(anchor_b), cast(f32)Types.Vector2fGetY(anchor_b)}
+    jointDef.localAnchorA = anchor_a
+    jointDef.localAnchorB = anchor_b
     return b2d.CreateDistanceJoint(cast(b2d.WorldId)world, jointDef^)
 }
 
@@ -91,8 +91,8 @@ CreateSpringJoint :: proc(
     jointDef.enableSpring = true
     jointDef.hertz = hertz
     jointDef.dampingRatio = damping
-    jointDef.localAnchorA = {cast(f32)Types.Vector2fGetX(anchor_a), cast(f32)Types.Vector2fGetY(anchor_a)}
-    jointDef.localAnchorB = {cast(f32)Types.Vector2fGetX(anchor_b), cast(f32)Types.Vector2fGetY(anchor_b)}
+    jointDef.localAnchorA = anchor_a
+    jointDef.localAnchorB = anchor_b
     return b2d.CreateDistanceJoint(cast(b2d.WorldId)world, jointDef^)
 }
 
@@ -137,8 +137,8 @@ CreateLinearActuatorJoint :: proc(
     jointDef.maxMotorForce = max_force
     jointDef.motorSpeed = speed
     jointDef.enableSpring = false
-    jointDef.localAnchorA = {cast(f32)Types.Vector2fGetX(anchor_a), cast(f32)Types.Vector2fGetY(anchor_a)}
-    jointDef.localAnchorB = {cast(f32)Types.Vector2fGetX(anchor_b), cast(f32)Types.Vector2fGetY(anchor_b)}
+    jointDef.localAnchorA = anchor_a
+    jointDef.localAnchorB = anchor_b
     return b2d.CreateDistanceJoint(cast(b2d.WorldId)world, jointDef^)
 }
 
@@ -171,8 +171,8 @@ CreateMotorJoint :: proc(
 
     jointDef.bodyIdA = cast(b2d.BodyId)obj_a
     jointDef.bodyIdB = cast(b2d.BodyId)obj_b
-    jointDef.localAnchorA = {cast(f32)Types.Vector2fGetX(anchor_a), cast(f32)Types.Vector2fGetY(anchor_a)}
-    jointDef.localAnchorB = {cast(f32)Types.Vector2fGetX(anchor_b), cast(f32)Types.Vector2fGetY(anchor_b)}
+    jointDef.localAnchorA = anchor_a
+    jointDef.localAnchorB = anchor_b
     jointDef.enableMotor = enable_motor
     jointDef.motorSpeed = motor_speed
     jointDef.maxMotorTorque = max_torque

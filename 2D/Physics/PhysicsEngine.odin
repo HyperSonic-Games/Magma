@@ -27,8 +27,7 @@ InitPhysicsEngine :: proc(grav_vector: Types.Vector2f, can_sleep := true, collis
 
     world_def := b2d.DefaultWorldDef()
     world_def.enableSleep = can_sleep
-    world_def.gravity[0] = cast(f32) Types.Vector2fGetX(grav_vector)
-    world_def.gravity[1] = cast(f32) Types.Vector2fGetY(grav_vector)
+    world_def.gravity = grav_vector
     world_def.enableContinuous = collision_is_continuous
 
     world = cast(World)b2d.CreateWorld(world_def)
@@ -62,8 +61,7 @@ CreateStaticBody :: proc (world: World,
     body_def.allowFastRotation = false
     body_def.enableSleep = can_sleep
     body_def.fixedRotation = no_physics_rot
-    body_def.position[0] = cast(f32)Types.Vector2fGetX(pos)
-    body_def.position[1] = cast(f32)Types.Vector2fGetY(pos)
+    body_def.position = pos
     body_def.rotation = b2d.MakeRot(angle)
     body_def.type = .staticBody
 
@@ -89,8 +87,7 @@ CreateDynamicBody :: proc (world: World,
     body_def.allowFastRotation = false
     body_def.enableSleep = can_sleep
     body_def.fixedRotation = no_physics_rot
-    body_def.position[0] = cast(f32)Types.Vector2fGetX(pos)
-    body_def.position[1] = cast(f32)Types.Vector2fGetY(pos)
+    body_def.position = pos
     body_def.rotation = b2d.MakeRot(angle)
     body_def.type = .dynamicBody
 
@@ -138,7 +135,7 @@ Step :: proc(world: World, delta_time: f32) {
 */
 GetObjectPos :: proc(obj: Obj) -> Types.Vector2f {
     obj_transform := b2d.Body_GetTransform(cast(b2d.BodyId)obj)
-    return {cast(f64)obj_transform.p[0], cast(f64)obj_transform.p[1]}
+    return obj_transform.p
 }
 
 /*

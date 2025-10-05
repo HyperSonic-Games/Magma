@@ -64,7 +64,9 @@ Init :: proc(
     sdl2.SetHint(sdl2.HINT_RENDER_VSYNC, "0" if debug_mode else "1")
     sdl2.SetHint(sdl2.HINT_EVENT_LOGGING, "1" if debug_mode else "0")
     sdl2.SetHint(sdl2.HINT_RENDER_BATCHING, "1")
-    sdl2.LogSetAllPriority(.INFO)
+    if !debug_mode {
+        sdl2.LogSetAllPriority(.WARN)
+    }
 
 
     switch backend {
