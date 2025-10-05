@@ -11,7 +11,7 @@ Around 2023, we faced a challenge: finding the right game engine for our project
 
   From these experiences, we realized the need for a lightweight, fast, and flexible engine designed to suit our workflow—hence, Magma.
 
-* Magma: Built from the ground up and leveraging the excellent SDL2 library for 2D rendering and BGFX for cross-GPU 3D rendering, Magma includes a custom, game-optimized networking system. It supports VOIP, TCP and UDP server/client architectures, TCP and UDP P2P, and raw socket send/receive functionality—all built to make networking and multiplayer development straightforward and efficient.
+* Magma: Built from the ground up and leveraging the excellent SDL2 library for 2D rendering and 3D rendering with OpenGL or DirectX3D 11. Magma includes a custom, game-optimized networking system. It supports VOIP, TCP/UDP server/client architectures and TCP/UDP P2P
 
 # Usage
 
@@ -21,7 +21,7 @@ Magma is designed to compile alongside your game code, giving you full control o
 
    Add Magma to your project as a submodule and initialize it recursively:
 
-   `git submodule add --recursive <Magma-repo-URL> Magma`
+   `git submodule add --recursive https://github.com/HyperSonic-Games/Magma Magma`
 
 
    `git submodule update --init --recursive`
