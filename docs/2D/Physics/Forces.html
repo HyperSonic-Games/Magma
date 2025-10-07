@@ -34,6 +34,9 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <main>
 <nav>
 <details class='folder' style='padding-left: 0.0em;' open><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>Audio</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../Audio/Audio.html">Audio.odin</a></div>
+</details>
 <details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
 <div class="file" style="padding-left: 3.0em;"><a href="../EventSys/EventSystem.html">EventSystem.odin</a></div>
 </details>
@@ -47,7 +50,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <div class="back-index"><a href="../../index.html">⬅ Back to Index</a></div>
 <section>
   <h2>Boom</h2>
-  <pre class='code'>Boom (world: World, position: Types.Vector2f, strength: f32, radius: Meters, falloff: Meters)</pre>
+  <pre class='code'>Boom (world: World, position: Types.Vector2f, strength: f32, radius: Types.Meters, falloff: Types.Meters)</pre>
   <p>Boom creates an explosion in the physics world</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>world</span>: The physics world</li>
@@ -69,7 +72,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 </section>
 <section>
   <h2>Torque</h2>
-  <pre class='code'>Torque (world: World, body: Obj, torque: NewtonMeters)</pre>
+  <pre class='code'>Torque (world: World, body: Obj, torque: Types.NewtonMeters)</pre>
   <p>Torque Applies a rotational impulse to a body.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>world</span>: The physics world</li>
@@ -79,7 +82,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 </section>
 <section>
   <h2>Move</h2>
-  <pre class='code'>Move (body: Obj, pos: Types.Vector2f, rot: Radians)</pre>
+  <pre class='code'>Move (body: Obj, pos: Types.Vector2f, rot: Types.Radians)</pre>
   <p>Move Instantly moves a body to a specific position and rotation. WARNING: This is a VERY EXPENSIVE operation and can disrupt the simulation if overused.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>body</span>: The body to move</li>

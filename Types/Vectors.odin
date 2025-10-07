@@ -12,5 +12,5 @@ Vector3w :: [3]i64
 
 Vector4f :: [4]f32
 Vector4d :: [4]f64
-Vector4  :: [4]i32
-Vector4w  :: [4]i64
+Vector4 :: [4]i32
+Vector4w :: [4]i64

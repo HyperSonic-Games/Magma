@@ -1,38 +1,41 @@
-# About
-Around 2023, we faced a challenge: finding the right game engine for our projects. We tried multiple engines:
+About
+=====
 
-* Godot: It was good in some ways but bad in others. Its GDscript made writing code simple, and being open source meant we could fork it or see how things worked. However, its theme system was a headache, and the deeply nested node system was often confusing.
+In 2023, we struggled to find the right game engine for our projects. We tried several options:
 
-* Unity: Being popular and well-established was a plus—most people could pick it up quickly. But for our purposes, it didn’t fit well, and the licensing terms were a dealbreaker.
+*   **Godot:** Simple GDscript and open-source, but cumbersome theme system and nested nodes.
+*   **Unity:** Popular and easy to pick up, but licensing and workflow mismatched our needs.
+*   **Unreal Engine:** Huge (~43 GiB), 3D-focused, and C++-heavy—unsuitable for rapid 2D prototyping.
+*   **Pygame:** Simple API for 2D games, but limited performance and no built-in networking.
 
-* Unreal Engine: Huge engine (about 43 GiB) mainly for 3D games. Its size and focus on 3D made it unsuitable for the 2D games we wanted to make. Plus, it uses C++, which wasn’t ideal for rapid prototyping.
+We needed a **lightweight, fast, and flexible engine**—thus, **Magma**.
 
-* Pygame: We loved the simplicity of its API and how easy it was to prototype in Python. It was great for small 2D games but not performant enough for larger projects, limiting our creativity. The lack of built-in networking meant we often had to reinvent the wheel.
+*   **Magma:** Built on SDL2 for 2D rendering, with optional 3D via OpenGL (raylib) Includes custom networking with VOIP, TCP/UDP server-client, and P2P support.
 
-  From these experiences, we realized the need for a lightweight, fast, and flexible engine designed to suit our workflow—hence, Magma.
+Usage
+-----
 
-* Magma: Built from the ground up and leveraging the excellent SDL2 library for 2D rendering and 3D rendering with OpenGL or DirectX3D 11. Magma includes a custom, game-optimized networking system. It supports VOIP, TCP/UDP server/client architectures and TCP/UDP P2P
+Magma compiles **alongside your game code**. We recommend using the SDK for the easiest setup:
 
-# Usage
+### 1\. Using the SDK (Recommended)
 
-Magma is designed to compile alongside your game code, giving you full control over the engine. You can set it up in two ways:
+The Magma SDK automatically creates a ready-to-build project:
+```bash
+python magma-sdk.py create <release-tag (optional, put 'none' for master)> <project-name> && cd <project-name>
+```
 
-1. Using Git Submodule
+This sets up a fully configured project with Magma linked. You can still edit the engine itself to extend or tweak functionality.
 
-   Add Magma to your project as a submodule and initialize it recursively:
+**Recommended:** Using the SDK is the easiest and most streamlined way to start a new project.
 
-   `git submodule add --recursive https://github.com/HyperSonic-Games/Magma Magma`
+### 2\. Git Submodule (Advanced)
 
+For full manual control, add Magma as a submodule:
+```bash
+git submodule add --recursive https://github.com/HyperSonic-Games/Magma Magma
+git submodule update --init --recursive
+```
 
-   `git submodule update --init --recursive`
-   
-   This includes Magma in your project folder, so you can modify the engine code directly if you need custom features.
+This places Magma in your project folder for direct engine modifications.
 
-
-2. Using the SDK
-    
-    The Magma SDK can automatically create a new project with everything configured:
-    
-    `./magma-sdk create <project-name> && cd <project-name>`
-    
-    This sets up a ready-to-build project with Magma linked. Since the engine compiles alongside your code, you can edit the engine itself whenever you need to extend or tweak functionality.
+Note **Windows** When using Magma from a git submodule: Copy the required SDL2 DLLs (SDL2.dll, SDL2_image.dll, SDL2_mixer.dll) and all other dependencies in the SDL2 folders from your Odin compiler's vendor folder to the folder containing your compiled program.

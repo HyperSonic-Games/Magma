@@ -1,27 +1,24 @@
 package Physics
 
-
 import "../../Types"
 import "../../Util"
 import b2d "vendor:box2d"
 
-
 JointHandle :: b2d.JointId
 
-
-
 /*
- * CreateDistanceJoint creates a distance joint between two objects.
- * @param world the physics world
- * @param obj_a first object
- * @param obj_b second object
- * @param anchor_a local anchor point on obj_a
- * @param anchor_b local anchor point on obj_b
- * @param rest_length the target distance between the anchors
- * @param min_length minimum allowed distance
- * @param max_length maximum allowed distance
- * @param handle_collision whether the connected bodies should collide
- * @return JointHandle handle to the created joint
+ * CreateDistanceJoint creates a fixed-length joint between two objects.
+ * The distance between anchor points on the two bodies is constrained.
+ * @param world Physics world
+ * @param obj_a First object
+ * @param obj_b Second object
+ * @param anchor_a Local anchor point on obj_a
+ * @param anchor_b Local anchor point on obj_b
+ * @param rest_length Target length of the joint
+ * @param min_length Minimum allowed length
+ * @param max_length Maximum allowed length
+ * @param handle_collision Whether connected bodies should collide
+ * @return JointHandle Handle to the created joint
  */
 CreateDistanceJoint :: proc(
     world: World,
@@ -29,9 +26,9 @@ CreateDistanceJoint :: proc(
     obj_b: Obj,
     anchor_a: Types.Vector2f,
     anchor_b: Types.Vector2f,
-    rest_length: Meters,
-    min_length: Meters,
-    max_length: Meters,
+    rest_length: Types.Meters,
+    min_length: Types.Meters,
+    max_length: Types.Meters,
     handle_collision: bool = true
 ) -> JointHandle {
     jointDef := new(b2d.DistanceJointDef)
@@ -51,19 +48,11 @@ CreateDistanceJoint :: proc(
 }
 
 /*
- * CreateSpringJoint creates a spring joint between two objects.
- * @param world the physics world
- * @param obj_a first object
- * @param obj_b second object
- * @param anchor_a local anchor point on obj_a
- * @param anchor_b local anchor point on obj_b
- * @param rest_length the natural spring length
- * @param min_length minimum allowed distance
- * @param max_length maximum allowed distance
- * @param hertz frequency of the spring oscillation
- * @param damping damping ratio of the spring
- * @param handle_collision whether the connected bodies should collide
- * @return JointHandle handle to the created joint
+ * CreateSpringJoint creates a spring-like distance joint.
+ * Oscillates based on the provided hertz and damping ratio.
+ * @param hertz Frequency of spring oscillation
+ * @param damping Damping ratio for spring motion
+ * @param handle_collision Whether connected bodies should collide
  */
 CreateSpringJoint :: proc(
     world: World,
@@ -71,10 +60,10 @@ CreateSpringJoint :: proc(
     obj_b: Obj,
     anchor_a: Types.Vector2f,
     anchor_b: Types.Vector2f,
-    rest_length: Meters,
-    min_length: Meters,
-    max_length: Meters,
-    hertz: Hertz,
+    rest_length: Types.Meters,
+    min_length: Types.Meters,
+    max_length: Types.Meters,
+    hertz: Types.Hertz,
     damping: f32,
     handle_collision: bool = true
 ) -> JointHandle {
@@ -97,19 +86,11 @@ CreateSpringJoint :: proc(
 }
 
 /*
- * CreateLinearActuatorJoint creates a linear actuator using a distance joint.
- * @param world the physics world
- * @param obj_a first object
- * @param obj_b second object
- * @param anchor_a local anchor point on obj_a
- * @param anchor_b local anchor point on obj_b
- * @param rest_length target distance when actuator is idle
- * @param min_length minimum allowed distance
- * @param max_length maximum allowed distance
- * @param max_force maximum motor force
- * @param speed speed of actuator movement
- * @param handle_collision whether the connected bodies should collide
- * @return JointHandle handle to the created joint
+ * CreateLinearActuatorJoint creates a distance joint acting as a linear actuator.
+ * Motor properties move the actuator between min and max lengths.
+ * @param max_force Maximum motor force
+ * @param speed Speed of actuator movement
+ * @param handle_collision Whether connected bodies should collide
  */
 CreateLinearActuatorJoint :: proc(
     world: World,
@@ -117,11 +98,11 @@ CreateLinearActuatorJoint :: proc(
     obj_b: Obj,
     anchor_a: Types.Vector2f,
     anchor_b: Types.Vector2f,
-    rest_length: Meters,
-    min_length: Meters,
-    max_length: Meters,
-    max_force: Newtons,
-    speed: MetersPerSecond,
+    rest_length: Types.Meters,
+    min_length: Types.Meters,
+    max_length: Types.Meters,
+    max_force: Types.Newtons,
+    speed: Types.MetersPerSecond,
     handle_collision: bool = true
 ) -> JointHandle {
     jointDef := new(b2d.DistanceJointDef)
@@ -144,16 +125,11 @@ CreateLinearActuatorJoint :: proc(
 
 /*
  * CreateMotorJoint creates a revolute motor joint between two objects.
- * @param world the physics world
- * @param obj_a first object
- * @param obj_b second object
- * @param anchor_a local anchor point on obj_a
- * @param anchor_b local anchor point on obj_b
- * @param motor_speed rotational speed of the motor
- * @param max_torque maximum torque applied by the motor
- * @param enable_motor whether the motor is enabled
- * @param handle_collision whether the connected bodies should collide
- * @return JointHandle handle to the created joint
+ * Rotational movement is controlled by motor speed and max torque.
+ * @param motor_speed Rotational speed of the motor
+ * @param max_torque Maximum torque applied by the motor
+ * @param enable_motor Whether motor is enabled
+ * @param handle_collision Whether connected bodies should collide
  */
 CreateMotorJoint :: proc(
     world: World,
@@ -161,14 +137,13 @@ CreateMotorJoint :: proc(
     obj_b: Obj,
     anchor_a: Types.Vector2f,
     anchor_b: Types.Vector2f,
-    motor_speed: RadiansPerSecond,
-    max_torque: NewtonMeters,
+    motor_speed: Types.RadiansPerSecond,
+    max_torque: Types.NewtonMeters,
     enable_motor: bool = true,
     handle_collision: bool = true,
 ) -> JointHandle {
     jointDef := new(b2d.RevoluteJointDef)
     defer free(jointDef)
-
     jointDef.bodyIdA = cast(b2d.BodyId)obj_a
     jointDef.bodyIdB = cast(b2d.BodyId)obj_b
     jointDef.localAnchorA = anchor_a
@@ -177,13 +152,12 @@ CreateMotorJoint :: proc(
     jointDef.motorSpeed = motor_speed
     jointDef.maxMotorTorque = max_torque
     jointDef.collideConnected = handle_collision
-
     return b2d.CreateRevoluteJoint(cast(b2d.WorldId)world, jointDef^)
 }
 
 /*
- * DestroyJoint destroys a previously created joint.
- * @param joint handle to the joint
+ * DestroyJoint removes a joint from the physics world.
+ * @param joint Handle of the joint to destroy
  */
 DestroyJoint :: proc(joint: JointHandle) {
     b2d.DestroyJoint(joint)
@@ -191,158 +165,69 @@ DestroyJoint :: proc(joint: JointHandle) {
 
 /* -------- Distance Joint Getters -------- */
 
-DistanceJointGetRestLength :: proc(joint: JointHandle) -> Meters {
+/*
+ * DistanceJointGetRestLength returns the rest length of a distance joint.
+ * @param joint Handle to the distance joint
+ * @return Current rest length of the joint
+ */
+DistanceJointGetRestLength :: proc(joint: JointHandle) -> Types.Meters {
     return b2d.DistanceJoint_GetLength(joint)
 }
 
-DistanceJointGetMaxLength :: proc(joint: JointHandle) -> Meters {
+/*
+ * DistanceJointGetMaxLength returns the maximum allowed length of a distance joint.
+ * @param joint Handle to the distance joint
+ * @return Maximum length of the joint
+ */
+DistanceJointGetMaxLength :: proc(joint: JointHandle) -> Types.Meters {
     return b2d.DistanceJoint_GetMaxLength(joint)
 }
 
-DistanceJointGetMinLength :: proc(joint: JointHandle) -> Meters {
+/*
+ * DistanceJointGetMinLength returns the minimum allowed length of a distance joint.
+ * @param joint Handle to the distance joint
+ * @return Minimum length of the joint
+ */
+DistanceJointGetMinLength :: proc(joint: JointHandle) -> Types.Meters {
     return b2d.DistanceJoint_GetMinLength(joint)
 }
 
-DistanceJointGetCurrentLength :: proc(joint: JointHandle) -> Meters {
+/*
+ * DistanceJointGetCurrentLength returns the current length of a distance joint.
+ * @param joint Handle to the distance joint
+ * @return Current distance between the two anchor points
+ */
+DistanceJointGetCurrentLength :: proc(joint: JointHandle) -> Types.Meters {
     return b2d.DistanceJoint_GetCurrentLength(joint)
 }
 
 /* -------- Distance Joint Setters -------- */
 
-DistanceJointSetRestLength :: proc(joint: JointHandle, length: Meters) {
+/*
+ * DistanceJointSetRestLength sets the rest length of a distance joint.
+ * @param joint Handle to the distance joint
+ * @param length New rest length to set
+ */
+DistanceJointSetRestLength :: proc(joint: JointHandle, length: Types.Meters) {
     b2d.DistanceJoint_SetLength(joint, length)
 }
 
-DistanceJointSetMinLength :: proc(joint: JointHandle, min_length: Meters) {
+/*
+ * DistanceJointSetMinLength sets the minimum allowed length of a distance joint.
+ * The maximum length remains unchanged.
+ * @param joint Handle to the distance joint
+ * @param min_length New minimum length to set
+ */
+DistanceJointSetMinLength :: proc(joint: JointHandle, min_length: Types.Meters) {
     b2d.DistanceJoint_SetLengthRange(joint, min_length, DistanceJointGetMaxLength(joint))
 }
 
-DistanceJointSetMaxLength :: proc(joint: JointHandle, max_length: Meters) {
-    b2d.DistanceJoint_SetLengthRange(joint,DistanceJointGetMinLength(joint), max_length)
-}
-
-/* -------- Spring Joint Getters -------- */
-
-SpringJointGetRestLength :: proc(joint: JointHandle) -> Meters {
-    return b2d.DistanceJoint_GetLength(joint)
-}
-
-SpringJointGetMaxLength :: proc(joint: JointHandle) -> Meters {
-    return b2d.DistanceJoint_GetMaxLength(joint)
-}
-
-SpringJointGetMinLength :: proc(joint: JointHandle) -> Meters {
-    return b2d.DistanceJoint_GetMinLength(joint)
-}
-
-SpringJointGetCurrentLength :: proc(joint: JointHandle) -> Meters {
-    return b2d.DistanceJoint_GetCurrentLength(joint)
-}
-
-SpringJointGetDampingRatio :: proc(joint: JointHandle) -> f32 {
-    return b2d.DistanceJoint_GetSpringDampingRatio(joint)
-}
-
-SpringJointGetHertz :: proc(joint: JointHandle) -> Hertz {
-    return b2d.DistanceJoint_GetSpringHertz(joint)
-}
-
-/* -------- Spring Joint Setters -------- */
-
-SpringJointSetRestLength :: proc(joint: JointHandle, length: Meters) {
-    b2d.DistanceJoint_SetLength(joint, length)
-}
-
-SpringJointSetMinLength :: proc(joint: JointHandle, min_length: Meters) {
-    b2d.DistanceJoint_SetLengthRange(joint, min_length, DistanceJointGetMaxLength(joint))
-}
-
-SpringJointSetMaxLength :: proc(joint: JointHandle, max_length: Meters) {
-    b2d.DistanceJoint_SetLengthRange(joint,DistanceJointGetMinLength(joint), max_length)
-}
-
-SpringJointSetDampingRatio :: proc(joint: JointHandle, damping_ratio: f32) {
-    b2d.DistanceJoint_SetSpringDampingRatio(joint, damping_ratio)
-}
-
-SpringJointSetHertz :: proc(joint: JointHandle, hertz: Hertz){
-    b2d.DistanceJoint_SetSpringHertz(joint, hertz)
-}
-
-/* -------- Linear Actuator Joint Getters -------- */
-
-LinearActuatorJointGetRestLength :: proc(joint: JointHandle) -> Meters {
-    return b2d.DistanceJoint_GetLength(joint)
-}
-
-LinearActuatorJointGetMaxLength :: proc(joint: JointHandle) -> Meters {
-    return b2d.DistanceJoint_GetMaxLength(joint)
-}
-
-LinearActuatorJointGetMinLength :: proc(joint: JointHandle) -> Meters {
-    return b2d.DistanceJoint_GetMinLength(joint)
-}
-
-LinearActuatorJointGetCurrentLength :: proc(joint: JointHandle) -> Meters {
-    return b2d.DistanceJoint_GetCurrentLength(joint)
-}
-
-LinearActuatorJointGetSpeed :: proc(joint: JointHandle) -> MetersPerSecond {
-    return b2d.DistanceJoint_GetMotorSpeed(joint)
-}
-
-LinearActuatorJointGetMaxForce :: proc(joint: JointHandle) -> Newtons {
-    return b2d.DistanceJoint_GetMotorForce(joint)
-}
-
-/* -------- Linear Actuator Joint Setters -------- */
-
-LinearActuatorJointSetRestLength :: proc(joint: JointHandle, length: Meters) {
-    b2d.DistanceJoint_SetLength(joint, length)
-}
-
-LinearActuatorJointSetMinLength :: proc(joint: JointHandle, min_length: Meters) {
-    b2d.DistanceJoint_SetLengthRange(joint, min_length, DistanceJointGetMaxLength(joint))
-}
-
-LinearActuatorJointSetMaxLength :: proc(joint: JointHandle, max_length: Meters) {
-    b2d.DistanceJoint_SetLengthRange(joint,DistanceJointGetMinLength(joint), max_length)
-}
-
-LinearActuatorJointSetSpeed :: proc(joint: JointHandle, speed: MetersPerSecond) {
-    b2d.DistanceJoint_SetMotorSpeed(joint, speed)
-}
-
-LinearActuatorJointSetMaxForce :: proc(joint: JointHandle, force: Newtons) {
-    b2d.DistanceJoint_SetMaxMotorForce(joint, force)
-}
-
-/* -------- Motor Joint Getters & Setters -------- */
-
-MotorJointGetEnabled :: proc(joint: JointHandle) -> bool {
-    return b2d.RevoluteJoint_IsMotorEnabled(joint)
-}
-
-MotorJointGetCurrentAngle :: proc(joint: JointHandle) -> Radians {
-    return b2d.RevoluteJoint_GetAngle(joint)
-}
-
-MotorJointGetSpeed :: proc(joint: JointHandle) -> RadiansPerSecond {
-    return b2d.RevoluteJoint_GetMotorSpeed(joint)
-}
-
-MotorJointGetMaxTorque :: proc(joint: JointHandle) -> NewtonMeters {
-    return b2d.RevoluteJoint_GetMotorTorque(joint)
-}
-
-MotorJointSetEnabled :: proc(joint: JointHandle, enabled: bool) {
-    b2d.RevoluteJoint_EnableMotor(joint, enabled)
-}
-
-MotorJointSetSpeed :: proc(joint: JointHandle, speed: RadiansPerSecond) {
-   b2d.RevoluteJoint_SetMotorSpeed(joint, speed)
-}
-
-MotorJointSetMaxTourque :: proc(joint: JointHandle, max_torque: NewtonMeters) {
-    b2d.RevoluteJoint_SetMaxMotorTorque(joint, max_torque)
+/*
+ * DistanceJointSetMaxLength sets the maximum allowed length of a distance joint.
+ * The minimum length remains unchanged.
+ * @param joint Handle to the distance joint
+ * @param max_length New maximum length to set
+ */
+DistanceJointSetMaxLength :: proc(joint: JointHandle, max_length: Types.Meters) {
+    b2d.DistanceJoint_SetLengthRange(joint, DistanceJointGetMinLength(joint), max_length)
 }

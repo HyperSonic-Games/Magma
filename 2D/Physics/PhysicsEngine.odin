@@ -53,7 +53,7 @@ DestroyPhysicsEngine :: proc (world: World) {
 */
 CreateStaticBody :: proc (world: World,
     pos: Types.Vector2f,
-    angle: Radians = 0,
+    angle: Types.Radians = 0,
     can_sleep := true,
     no_physics_rot := true
 )-> Obj {
@@ -79,7 +79,7 @@ CreateStaticBody :: proc (world: World,
 */
 CreateDynamicBody :: proc (world: World,
     pos: Types.Vector2f,
-    angle: Radians = 0,
+    angle: Types.Radians = 0,
     can_sleep := true,
     no_physics_rot := true
 )-> Obj {
@@ -143,7 +143,7 @@ GetObjectPos :: proc(obj: Obj) -> Types.Vector2f {
  * @param obj the object to query
  * @return Radians current rotation
 */
-GetObjectRot :: proc(obj: Obj) -> Radians {
+GetObjectRot :: proc(obj: Obj) -> Types.Radians {
     obj_transform := b2d.Body_GetTransform(cast(b2d.BodyId)obj)
     return b2d.Rot_GetAngle(obj_transform.q)
 }

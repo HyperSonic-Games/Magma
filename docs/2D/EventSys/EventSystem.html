@@ -34,6 +34,9 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <main>
 <nav>
 <details class='folder' style='padding-left: 0.0em;' open><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>Audio</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../Audio/Audio.html">Audio.odin</a></div>
+</details>
 <details class='folder' style='padding-left: 1.5em;' open><summary>EventSys</summary>
 <div class="file" class='current' style="padding-left: 3.0em;"><a href="EventSystem.html">EventSystem.odin</a></div>
 </details>
@@ -45,19 +48,37 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ResetWindowFlags</h2>
   <pre class='code'>ResetWindowFlags (state: ^WindowState)</pre>
-  <p>ResetWindowFlags sets all the window state flags to a known state (should be called after game logic in the main loop)</p>
+  <p>ResetWindowFlags resets all transient window flags in preparation for the next frame. This should be called at the start of every frame.</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>state</span>: a pointer to a stucture that holds the window state data</li>
+    <li><span class='param-name'>state</span>: Pointer to the WindowState struct to reset</li>
   </ul></div>
+</section>
+<section>
+  <h2>ConvertSDLKeycodeToKEYS</h2>
+  <pre class='code'>ConvertSDLKeycodeToKEYS (sym: sdl2.Keycode) -&gt; KEYS</pre>
+  <p>ConvertSDLKeycodeToKEYS converts an SDL2 keycode to the engine&#x27;s KEYS enum. Returns KEYS.NONE if no match is found. NOTE: This is internal and only documented for internal use</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>sym</span>: SDL2 keycode</li>
+  </ul></div>
+  <div class='return'>Returns: Corresponding KEYS enum value</div>
+</section>
+<section>
+  <h2>ConvertSDLModToMODKEYS</h2>
+  <pre class='code'>ConvertSDLModToMODKEYS (mod: sdl2.Keymod) -&gt; MOD_KEYS</pre>
+  <p>ConvertSDLModToMODKEYS converts SDL2 modifier flags into the engine&#x27;s MOD_KEYS enum. Only returns one modifier at a time. Returns MOD_KEYS.NONE if no relevant modifier is active. NOTE: This is internal and only documented for internal use</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>mod</span>: SDL2 modifier bitfield</li>
+  </ul></div>
+  <div class='return'>Returns: Corresponding MOD_KEYS value</div>
 </section>
 <section>
   <h2>HandleEvents</h2>
   <pre class='code'>HandleEvents (mouse: ^Mouse, keyboard: ^Keyboard, win: ^WindowState)</pre>
-  <p>HandleEvents When called updates all of the event structures passed to it</p>
+  <p>HandleEvents polls SDL2 for all events and updates the engine&#x27;s input and window state. This function should be called once per frame.</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>mouse</span>: a pointer to a stucture that holds mouse data</li>
-    <li><span class='param-name'>keyboard</span>: a pointer to a structure that contains all ot the keys and mod keys being pressed</li>
-    <li><span class='param-name'>win</span>: a pointer to a structure that holds general window state (fullscreen, quit state, ect)</li>
+    <li><span class='param-name'>mouse</span>: Pointer to the Mouse struct to update</li>
+    <li><span class='param-name'>keyboard</span>: Pointer to the Keyboard struct to update</li>
+    <li><span class='param-name'>win</span>: Pointer to the WindowState struct to update</li>
   </ul></div>
 </section>
 </article>

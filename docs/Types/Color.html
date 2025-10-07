@@ -34,6 +34,9 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <main>
 <nav>
 <details class='folder' style='padding-left: 0.0em;'><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>Audio</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Audio/Audio.html">Audio.odin</a></div>
+</details>
 <details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
 <div class="file" style="padding-left: 3.0em;"><a href="../2D/EventSys/EventSystem.html">EventSystem.odin</a></div>
 </details>
@@ -48,24 +51,6 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/Draw.html">Draw.odin</a></div>
 <div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/FileLoader.html">FileLoader.odin</a></div>
 <div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/Renderer.html">Renderer.odin</a></div>
-</details>
-</details>
-<details class='folder' style='padding-left: 0.0em;'><summary>Net</summary>
-<details class='folder' style='padding-left: 1.5em;'><summary>Basic</summary>
-<div class="file" style="padding-left: 3.0em;"><a href="../Net/Basic/TCP.html">TCP.odin</a></div>
-<div class="file" style="padding-left: 3.0em;"><a href="../Net/Basic/UDP.html">UDP.odin</a></div>
-</details>
-<details class='folder' style='padding-left: 1.5em;'><summary>Protocols</summary>
-<details class='folder' style='padding-left: 3.0em;'><summary>ClientServer</summary>
-<details class='folder' style='padding-left: 4.5em;'><summary>Raw</summary>
-<details class='folder' style='padding-left: 6.0em;'><summary>TCP</summary>
-<div class="file" style="padding-left: 7.5em;"><a href="../Net/Protocols/ClientServer/Raw/TCP/Server.html">Server.odin</a></div>
-</details>
-<details class='folder' style='padding-left: 6.0em;'><summary>UDP</summary>
-<div class="file" style="padding-left: 7.5em;"><a href="../Net/Protocols/ClientServer/Raw/UDP/Server.html">Server.odin</a></div>
-</details>
-</details>
-</details>
 </details>
 </details>
 <details class='folder' style='padding-left: 0.0em;' open><summary>Types</summary>
@@ -116,7 +101,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorMul</h2>
   <pre class='code'>ColorMul (a, b: Color) -&gt; Color</pre>
-  <p>ColorMul performs per-channel multiplication of two Colors, clamped to valid RGBA ranges.  The alpha channel is clamped to a maximum of 100 to avoid full opacity.</p>
+  <p>ColorMul performs per-channel multiplication of two Colors, clamped to valid RGBA ranges. The alpha channel is clamped to a maximum of 100 to avoid full opacity.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: first Color operand</li>
     <li><span class='param-name'>b</span>: second Color operand</li>
@@ -126,7 +111,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorDiv</h2>
   <pre class='code'>ColorDiv (a, b: Color) -&gt; Color</pre>
-  <p>ColorDiv performs per-channel division of two Colors, with float casting for precision.  The result is clamped to valid RGBA ranges, with alpha clamped to 100 max.</p>
+  <p>ColorDiv performs per-channel division of two Colors, with float casting for precision. The result is clamped to valid RGBA ranges, with alpha clamped to 100 max.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: numerator Color</li>
     <li><span class='param-name'>b</span>: denominator Color</li>
@@ -136,11 +121,20 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorNegate</h2>
   <pre class='code'>ColorNegate (a: Color) -&gt; Color</pre>
-  <p>ColorNegate returns the color negation (inversion) of the RGB channels.  The alpha channel is left unchanged but clamped to a maximum of 100. Note: this operation is not performed using SIMD intrinsics directly.</p>
+  <p>ColorNegate returns the color negation (inversion) of the RGB channels. Note: this operation is not performed using SIMD intrinsics directly.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: Color to negate</li>
   </ul></div>
   <div class='return'>Returns: Negated Color with clamped alpha</div>
+</section>
+<section>
+  <h2>ColorToArray</h2>
+  <pre class='code'>ColorToArray (color: Color)</pre>
+  <p>ColorToArray converts a color to an array</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>color</span>: The color to convert to an array</li>
+  </ul></div>
+  <div class='return'>Returns: an u8 array of four values in the format (R, G, B, A)</div>
 </section>
 </article>
 </main>

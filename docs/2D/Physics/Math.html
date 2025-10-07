@@ -34,6 +34,9 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <main>
 <nav>
 <details class='folder' style='padding-left: 0.0em;' open><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>Audio</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../Audio/Audio.html">Audio.odin</a></div>
+</details>
 <details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
 <div class="file" style="padding-left: 3.0em;"><a href="../EventSys/EventSystem.html">EventSystem.odin</a></div>
 </details>
@@ -51,7 +54,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>SetMeterToPixelScale</h2>
   <pre class='code'>SetMeterToPixelScale (new_scale: f32)</pre>
-  <p>SetMeterToPixelScale sets a new meters-to-pixels scale value at runtime. @note Panics if new_scale is &lt;= 0</p>
+  <p>SetMeterToPixelScale sets a new meters-to-pixels scale value at runtime. Panics if new_scale is &lt;= 0</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>new_scale</span>: the new scale factor to use</li>
   </ul></div>
@@ -64,21 +67,21 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 </section>
 <section>
   <h2>MetersToPixels</h2>
-  <pre class='code'>MetersToPixels (meters: f32) -&gt; f32</pre>
+  <pre class='code'>MetersToPixels (meters: Types.Meters) -&gt; f32</pre>
   <p>MetersToPixels converts a distance in meters to pixels using the current scale factor.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>meters</span>: distance in meters</li>
   </ul></div>
-  <div class='return'>Returns: f32 equivalent distance in pixels</div>
+  <div class='return'>Returns: equivalent distance in pixels</div>
 </section>
 <section>
   <h2>PixelsToMeters</h2>
-  <pre class='code'>PixelsToMeters (pixels: f32) -&gt; f32</pre>
+  <pre class='code'>PixelsToMeters (pixels: f32) -&gt; Types</pre>
   <p>PixelsToMeters converts a distance in pixels to meters using the current scale factor.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>pixels</span>: distance in pixels</li>
   </ul></div>
-  <div class='return'>Returns: f32 equivalent distance in meters</div>
+  <div class='return'>Returns: equivalent distance in meters</div>
 </section>
 </article>
 </main>

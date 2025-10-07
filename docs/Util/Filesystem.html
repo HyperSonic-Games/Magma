@@ -34,6 +34,9 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <main>
 <nav>
 <details class='folder' style='padding-left: 0.0em;'><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>Audio</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Audio/Audio.html">Audio.odin</a></div>
+</details>
 <details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
 <div class="file" style="padding-left: 3.0em;"><a href="../2D/EventSys/EventSystem.html">EventSystem.odin</a></div>
 </details>
@@ -50,27 +53,8 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/Renderer.html">Renderer.odin</a></div>
 </details>
 </details>
-<details class='folder' style='padding-left: 0.0em;'><summary>Net</summary>
-<details class='folder' style='padding-left: 1.5em;'><summary>Basic</summary>
-<div class="file" style="padding-left: 3.0em;"><a href="../Net/Basic/TCP.html">TCP.odin</a></div>
-<div class="file" style="padding-left: 3.0em;"><a href="../Net/Basic/UDP.html">UDP.odin</a></div>
-</details>
-<details class='folder' style='padding-left: 1.5em;'><summary>Protocols</summary>
-<details class='folder' style='padding-left: 3.0em;'><summary>ClientServer</summary>
-<details class='folder' style='padding-left: 4.5em;'><summary>Raw</summary>
-<details class='folder' style='padding-left: 6.0em;'><summary>TCP</summary>
-<div class="file" style="padding-left: 7.5em;"><a href="../Net/Protocols/ClientServer/Raw/TCP/Server.html">Server.odin</a></div>
-</details>
-<details class='folder' style='padding-left: 6.0em;'><summary>UDP</summary>
-<div class="file" style="padding-left: 7.5em;"><a href="../Net/Protocols/ClientServer/Raw/UDP/Server.html">Server.odin</a></div>
-</details>
-</details>
-</details>
-</details>
-</details>
 <details class='folder' style='padding-left: 0.0em;'><summary>Types</summary>
 <div class="file" style="padding-left: 1.5em;"><a href="../Types/Color.html">Color.odin</a></div>
-<div class="file" style="padding-left: 1.5em;"><a href="../Types/Vectors.html">Vectors.odin</a></div>
 </details>
 <details class='folder' style='padding-left: 0.0em;' open><summary>Util</summary>
 <div class="file" class='current' style="padding-left: 1.5em;"><a href="Filesystem.html">Filesystem.odin</a></div>
@@ -147,7 +131,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>WriteBase64File</h2>
   <pre class='code'>WriteBase64File (filepath: string, data: []byte) -&gt; bool</pre>
-  <p>WriteBase64File encodes the given data to Base64 and writes it to a file.  param: filepath Output file path</p>
+  <p>WriteBase64File encodes the given data to Base64 and writes it to a file. param: filepath Output file path</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>data</span>: Byte slice to encode</li>
   </ul></div>
@@ -169,6 +153,11 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>symbol_table</span>: Struct containing the dynamic library handle</li>
   </ul></div>
+</section>
+<section>
+  <h2>ReadGenericFile</h2>
+  <pre class='code'>ReadGenericFile (path: string)</pre>
+  <p>ReadGenericFile reads a file into buffer of bytes</p>
 </section>
 </article>
 </main>

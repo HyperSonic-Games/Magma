@@ -252,7 +252,9 @@ UnloadDynamicLibrary :: proc(symbol_table: $T) {
     dynlib.unload_library(symbol_table.__handle)
 }
 
-
+/*
+ * ReadGenericFile reads a file into buffer of bytes
+ */
 ReadGenericFile :: proc(path: string) -> (data: []byte, ok: bool) {
     return os.read_entire_file_from_filename(path)
 }

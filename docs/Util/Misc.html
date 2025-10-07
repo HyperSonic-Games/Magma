@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Documentation for Logger.odin</title>
+<title>Documentation for Misc.odin</title>
 <style>
 body { margin: 0; font-family: Arial, sans-serif; background: #121212; color: #eee; }
 a { text-decoration: none; color: #80cbc4; }
@@ -30,7 +30,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 </style>
 </head>
 <body>
-<header>Logger.odin</header>
+<header>Misc.odin</header>
 <main>
 <nav>
 <details class='folder' style='padding-left: 0.0em;'><summary>2D</summary>
@@ -58,21 +58,30 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 </details>
 <details class='folder' style='padding-left: 0.0em;' open><summary>Util</summary>
 <div class="file" style="padding-left: 1.5em;"><a href="Filesystem.html">Filesystem.odin</a></div>
-<div class="file" class='current' style="padding-left: 1.5em;"><a href="Logger.html">Logger.odin</a></div>
+<div class="file" style="padding-left: 1.5em;"><a href="Logger.html">Logger.odin</a></div>
+<div class="file" class='current' style="padding-left: 1.5em;"><a href="Misc.html">Misc.odin</a></div>
 </details>
 
 </nav>
 <article>
 <div class="back-index"><a href="../index.html">⬅ Back to Index</a></div>
 <section>
-  <h2>log</h2>
-  <pre class='code'>log (level: LogLevel, component_name: string, format: string, args: ..any)</pre>
-  <p>log logs a message to stdout/stderr calls to log with the .DEBUG level will only output if your game is compiled as a debug build</p>
+  <h2>CompressString</h2>
+  <pre class='code'>CompressString (text: string) -&gt; CompressedString</pre>
+  <p>CompressString compresses a string to save space in memory this works best for English but will still work on other languages</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>level</span>: the level to log at. options are (DEBUG, INFO, WARN, ERROR)</li>
-    <li><span class='param-name'>component_name</span>: the name associated to what called this function</li>
-    <li><span class='param-name'>format</span>: a regular odin format string followed by the vars to print out</li>
+    <li><span class='param-name'>text</span>: The string to compress</li>
   </ul></div>
+  <div class='return'>Returns: The string after it has undergone compresion</div>
+</section>
+<section>
+  <h2>UncompressString</h2>
+  <pre class='code'>UncompressString (compressed_text: CompressedString) -&gt; string</pre>
+  <p>UncompressString decompresses a CompressedString back to a normal string</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>compressed_text</span>: The compressed string</li>
+  </ul></div>
+  <div class='return'>Returns: The original string</div>
 </section>
 </article>
 </main>

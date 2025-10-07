@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Documentation for Audio.odin</title>
+<style>
+body { margin: 0; font-family: Arial, sans-serif; background: #121212; color: #eee; }
+a { text-decoration: none; color: #80cbc4; }
+a:hover { text-decoration: underline; }
+header { padding: 1rem; background: #1e1e1e; font-size: 1.5rem; color: #80cbc4; }
+main { display: flex; min-height: 100vh; }
+nav { width: 250px; background: #1e1e1e; padding: 1rem; overflow-y: auto; }
+nav details { margin-bottom: 0.5rem; }
+nav summary { cursor: pointer; user-select: none; }
+nav .file { display: block; }
+nav .folder::before { content: "📂 "; }
+nav .file::before { content: "📄 "; }
+nav .file.current a { font-weight: bold; color: #ffb74d; }
+article { flex: 1; padding: 2rem; }
+.back-index { margin-bottom: 1rem; }
+section { background: #1e1e1e; border-radius: 8px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 0 8px #000; }
+h2 { color: #4db6ac; }
+pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: auto; color: #cfd8dc; }
+.code { font-family: monospace; }
+.params ul { padding-left: 1.2em; }
+.params li { margin-bottom: 0.3em; }
+.param-name { font-weight: 600; color: #80cbc4; }
+.return { font-weight: 600; color: #a5d6a7; margin-top: 1em; }
+</style>
+</head>
+<body>
+<header>Audio.odin</header>
+<main>
+<nav>
+<details class='folder' style='padding-left: 0.0em;' open><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;' open><summary>Audio</summary>
+<div class="file" class='current' style="padding-left: 3.0em;"><a href="Audio.html">Audio.odin</a></div>
+</details>
+</details>
+
+</nav>
+<article>
+<div class="back-index"><a href="../../index.html">⬅ Back to Index</a></div>
+<section>
+  <h2>ShowVersionInfo</h2>
+  <pre class='code'>ShowVersionInfo ()</pre>
+  <p>ShowVersionInfo prints the compiled and linked SDL2_mixer version</p>
+</section>
+<section>
+  <h2>Init</h2>
+  <pre class='code'>Init ()</pre>
+  <p>Init initializes the SDL2_mixer audio system and returns a new AudioContext</p>
+  <div class='return'>Returns: ^AudioContext A pointer to the initialized audio context</div>
+</section>
+<section>
+  <h2>Shutdown</h2>
+  <pre class='code'>Shutdown (ctx: ^AudioContext)</pre>
+  <p>Shutdown cleans up the audio system and frees all loaded chunks and music</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext to shut down</li>
+  </ul></div>
+</section>
+<section>
+  <h2>LoadFX</h2>
+  <pre class='code'>LoadFX (ctx: ^AudioContext, wav_file: cstring)</pre>
+  <p>LoadFX loads a WAV file into the FX channel</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+    <li><span class='param-name'>wav_file</span>: Path to the WAV file</li>
+  </ul></div>
+</section>
+<section>
+  <h2>LoadBackground</h2>
+  <pre class='code'>LoadBackground (ctx: ^AudioContext, wav_file: cstring)</pre>
+  <p>LoadBackground loads a WAV file into the Background channel</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+    <li><span class='param-name'>wav_file</span>: Path to the WAV file</li>
+  </ul></div>
+</section>
+<section>
+  <h2>LoadVoice</h2>
+  <pre class='code'>LoadVoice (ctx: ^AudioContext, wav_file: cstring)</pre>
+  <p>LoadVoice loads a WAV file into the Voice channel</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+    <li><span class='param-name'>wav_file</span>: Path to the WAV file</li>
+  </ul></div>
+</section>
+<section>
+  <h2>LoadAmbience</h2>
+  <pre class='code'>LoadAmbience (ctx: ^AudioContext, wav_file: cstring)</pre>
+  <p>LoadAmbience loads a WAV file into the Ambience channel</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+    <li><span class='param-name'>wav_file</span>: Path to the WAV file</li>
+  </ul></div>
+</section>
+<section>
+  <h2>LoadUI</h2>
+  <pre class='code'>LoadUI (ctx: ^AudioContext, wav_file: cstring)</pre>
+  <p>LoadUI loads a WAV file into the UI channel</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+    <li><span class='param-name'>wav_file</span>: Path to the WAV file</li>
+  </ul></div>
+</section>
+<section>
+  <h2>LoadCustom1</h2>
+  <pre class='code'>LoadCustom1 (ctx: ^AudioContext, wav_file: cstring)</pre>
+  <p>LoadCustom1 loads a WAV file into the Custom1 channel</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+    <li><span class='param-name'>wav_file</span>: Path to the WAV file</li>
+  </ul></div>
+</section>
+<section>
+  <h2>LoadCustom2</h2>
+  <pre class='code'>LoadCustom2 (ctx: ^AudioContext, wav_file: cstring)</pre>
+  <p>LoadCustom2 loads a WAV file into the Custom2 channel</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+    <li><span class='param-name'>wav_file</span>: Path to the WAV file</li>
+  </ul></div>
+</section>
+<section>
+  <h2>LoadCustom3</h2>
+  <pre class='code'>LoadCustom3 (ctx: ^AudioContext, wav_file: cstring)</pre>
+  <p>LoadCustom3 loads a WAV file into the Custom3 channel</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+    <li><span class='param-name'>wav_file</span>: Path to the WAV file</li>
+  </ul></div>
+</section>
+<section>
+  <h2>PlayFX</h2>
+  <pre class='code'>PlayFX (ctx: ^AudioContext)</pre>
+  <p>PlayFX plays the FX channel if it has a loaded chunk</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+  </ul></div>
+</section>
+<section>
+  <h2>PlayBackground</h2>
+  <pre class='code'>PlayBackground (ctx: ^AudioContext)</pre>
+  <p>PlayBackground plays the Background channel if it has a loaded chunk</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+  </ul></div>
+</section>
+<section>
+  <h2>PlayVoice</h2>
+  <pre class='code'>PlayVoice (ctx: ^AudioContext)</pre>
+  <p>PlayVoice plays the Voice channel if it has a loaded chunk</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+  </ul></div>
+</section>
+<section>
+  <h2>PlayAmbience</h2>
+  <pre class='code'>PlayAmbience (ctx: ^AudioContext)</pre>
+  <p>PlayAmbience plays the Ambience channel if it has a loaded chunk</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+  </ul></div>
+</section>
+<section>
+  <h2>PlayUI</h2>
+  <pre class='code'>PlayUI (ctx: ^AudioContext)</pre>
+  <p>PlayUI plays the UI channel if it has a loaded chunk</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+  </ul></div>
+</section>
+<section>
+  <h2>PlayCustom1</h2>
+  <pre class='code'>PlayCustom1 (ctx: ^AudioContext)</pre>
+  <p>PlayCustom1 plays the Custom1 channel if it has a loaded chunk</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+  </ul></div>
+</section>
+<section>
+  <h2>PlayCustom2</h2>
+  <pre class='code'>PlayCustom2 (ctx: ^AudioContext)</pre>
+  <p>PlayCustom2 plays the Custom2 channel if it has a loaded chunk</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+  </ul></div>
+</section>
+<section>
+  <h2>PlayCustom3</h2>
+  <pre class='code'>PlayCustom3 (ctx: ^AudioContext)</pre>
+  <p>PlayCustom3 plays the Custom3 channel if it has a loaded chunk</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+  </ul></div>
+</section>
+<section>
+  <h2>LoadMusicFromOpus</h2>
+  <pre class='code'>LoadMusicFromOpus (ctx: ^AudioContext, opus_file: cstring)</pre>
+  <p>LoadMusicFromOpus loads an Opus file into the Music context</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+    <li><span class='param-name'>opus_file</span>: Path to the Opus file</li>
+  </ul></div>
+</section>
+<section>
+  <h2>LoadMusicFromOgg</h2>
+  <pre class='code'>LoadMusicFromOgg (ctx: ^AudioContext, ogg_file: cstring)</pre>
+  <p>LoadMusicFromOgg loads an OGG file into the Music context</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+    <li><span class='param-name'>ogg_file</span>: Path to the OGG file</li>
+  </ul></div>
+</section>
+<section>
+  <h2>LoadMusicFromMP3</h2>
+  <pre class='code'>LoadMusicFromMP3 (ctx: ^AudioContext, mp3_file: cstring)</pre>
+  <p>LoadMusicFromMP3 loads an MP3 file into the Music context</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+    <li><span class='param-name'>mp3_file</span>: Path to the MP3 file</li>
+  </ul></div>
+</section>
+<section>
+  <h2>LoadMusicFromFLAC</h2>
+  <pre class='code'>LoadMusicFromFLAC (ctx: ^AudioContext, flac_file: cstring)</pre>
+  <p>LoadMusicFromFLAC loads a FLAC file into the Music context</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+    <li><span class='param-name'>flac_file</span>: Path to the FLAC file</li>
+  </ul></div>
+</section>
+<section>
+  <h2>PlayMusic</h2>
+  <pre class='code'>PlayMusic (ctx: AudioContext, loops: i32)</pre>
+  <p>PlayMusic plays the currently loaded music for a given number of loops</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+    <li><span class='param-name'>loops</span>: Number of times to loop the music (-1 for infinite)</li>
+  </ul></div>
+</section>
+<section>
+  <h2>ToggleMusic</h2>
+  <pre class='code'>ToggleMusic (ctx: ^AudioContext)</pre>
+  <p>ToggleMusic pauses or resumes the currently loaded music</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext</li>
+  </ul></div>
+</section>
+<section>
+  <h2>StopMusic</h2>
+  <pre class='code'>StopMusic (ctx: ^AudioContext)</pre>
+  <p>StopMusic stops the music that is currently playing</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: The AudioContext that is managing the music you want to stop</li>
+  </ul></div>
+</section>
+</article>
+</main>
+</body>
+</html>

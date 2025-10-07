@@ -68,7 +68,7 @@ ColorSub :: proc(a, b: Color) -> Color {
  * @return Resulting Color after multiplication and clamping
 */
 ColorMul :: proc(a, b: Color) -> Color {
-    return simd.clamp(simd.mul(a, b), {0, 0, 0 ,0}, {255, 255, 255, 100})
+    return simd.clamp(simd.mul(a, b), {0, 0, 0 ,0}, {255, 255, 255, 255})
 }
 
 /*
@@ -85,14 +85,13 @@ ColorDiv :: proc(a, b: Color) -> Color {
     return simd.clamp(
         cast(#simd[4]u8) simd.div(cast(#simd[4]f32)a, cast(#simd[4]f32)b), 
         {0, 0, 0, 0}, 
-        {255, 255, 255, 100}
+        {255, 255, 255, 255}
     )
 }
 
 /*
  * ColorNegate returns the color negation (inversion) of the RGB channels.
  *
- * The alpha channel is left unchanged but clamped to a maximum of 100.
  * Note: this operation is not performed using SIMD intrinsics directly.
  *
  * @param a Color to negate
@@ -105,6 +104,21 @@ ColorNegate :: proc(a: Color) -> Color {
     for i = 0; i < len(NegColorMap); i += 1 {
         Color[i] = NegColorMap[i] - Color[i]
     }
-    // Clamp to ensure valid RGBA range, alpha capped at 100 max
-    return simd.clamp(simd.from_array(Color), {0, 0, 0, 0}, {255, 255, 255, 100})
+    // Clamp to ensure valid RGBA range
+    return simd.clamp(simd.from_array(Color), {0, 0, 0, 0}, {255, 255, 255, 255})
+}
+
+/*
+ * ColorToArray converts a color to an array
+ *
+ * @param color The color to convert to an array
+ * @return an u8 array of four values in the format (R, G, B, A)
+*/
+ColorToArray :: proc(color: Color) -> [4]u8 {
+    array: [4]u8
+    array[0] = simd.extract(color, 0)
+    array[1] = simd.extract(color, 1)
+    array[2] = simd.extract(color, 2)
+    array[3] = simd.extract(color, 3)
+    return array
 }

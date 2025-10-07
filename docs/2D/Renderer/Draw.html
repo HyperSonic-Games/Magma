@@ -34,6 +34,9 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <main>
 <nav>
 <details class='folder' style='padding-left: 0.0em;' open><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>Audio</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../Audio/Audio.html">Audio.odin</a></div>
+</details>
 <details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
 <div class="file" style="padding-left: 3.0em;"><a href="../EventSys/EventSystem.html">EventSystem.odin</a></div>
 </details>
@@ -95,13 +98,13 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 </section>
 <section>
   <h2>DrawTexture</h2>
-  <pre class='code'>DrawTexture (ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vector2f, rot: f64)</pre>
-  <p>DrawTexture draws an SDL2 texture to the renderer with optional rotation Meant to be used with a image loader</p>
+  <pre class='code'>DrawTexture (ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vector2f, rot: Types.Radians)</pre>
+  <p>DrawTexture draws an SDL2 texture to the renderer with optional rotation Meant to be used with an image loader</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>ctx</span>: the renderer to draw to</li>
     <li><span class='param-name'>texture</span>: the SDL2 texture to render</li>
     <li><span class='param-name'>pos</span>: the top-left position to draw the texture</li>
-    <li><span class='param-name'>rot</span>: the rotation angle (in degrees, clockwise)</li>
+    <li><span class='param-name'>rot</span>: the rotation angle (in Radians, clockwise)</li>
   </ul></div>
 </section>
 </article>

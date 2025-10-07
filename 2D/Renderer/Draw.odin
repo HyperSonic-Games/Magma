@@ -110,7 +110,7 @@ DrawLine :: proc(ctx: ^RenderContext, point1: Types.Vector2f, point2: Types.Vect
  * @param pos the top-left position to draw the texture
  * @param rot the rotation angle (in Radians, clockwise)
 */
-DrawTexture :: proc(ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vector2f, rot: Physics.Radians) {
+DrawTexture :: proc(ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vector2f, rot: Types.Radians) {
     w, h: i32
     _ = sdl2.QueryTexture(texture, nil, nil, &w, &h)
 

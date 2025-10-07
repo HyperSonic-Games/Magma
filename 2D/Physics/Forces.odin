@@ -13,7 +13,7 @@ import b2d "vendor:box2d"
  * @param radius The radius affected by the explosion
  * @param falloff How the force decreases with distance
  */
-Boom :: proc(world: World, position: Types.Vector2f, strength: f32, radius: Meters, falloff: Meters) {
+Boom :: proc(world: World, position: Types.Vector2f, strength: f32, radius: Types.Meters, falloff: Types.Meters) {
     expl_def := b2d.DefaultExplosionDef()
 
     expl_def.position = position
@@ -44,7 +44,7 @@ Impulse :: proc(world: World, body: Obj, impulse: Types.Vector2f) {
  * @param body The body to apply the torque to
  * @param torque The magnitude of the rotational force
  */
-Torque :: proc(world: World, body: Obj, torque: NewtonMeters) {
+Torque :: proc(world: World, body: Obj, torque: Types.NewtonMeters) {
     b2d.Body_ApplyTorque(
         cast(b2d.BodyId)body,
         torque,
@@ -60,7 +60,7 @@ Torque :: proc(world: World, body: Obj, torque: NewtonMeters) {
  * @param pos The target position
  * @param rot The target rotation
  */
-Move :: proc(body: Obj, pos: Types.Vector2f, rot: Radians) {
+Move :: proc(body: Obj, pos: Types.Vector2f, rot: Types.Radians) {
     b2d.Body_SetTransform(
         cast(b2d.BodyId)body, 
         {pos[0], pos[1]}, 

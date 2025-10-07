@@ -34,6 +34,9 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <main>
 <nav>
 <details class='folder' style='padding-left: 0.0em;' open><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>Audio</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../Audio/Audio.html">Audio.odin</a></div>
+</details>
 <details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
 <div class="file" style="padding-left: 3.0em;"><a href="../EventSys/EventSystem.html">EventSystem.odin</a></div>
 </details>
@@ -72,7 +75,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
   <h2>CreateStaticBody</h2>
   <pre class='code'>CreateStaticBody (world: World,
     pos: Types.Vector2f,
-    angle: Radians = 0,
+    angle: Types.Radians = 0,
     can_sleep := true,
     no_physics_rot := true
 )-&gt; Obj</pre>
@@ -90,7 +93,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
   <h2>CreateDynamicBody</h2>
   <pre class='code'>CreateDynamicBody (world: World,
     pos: Types.Vector2f,
-    angle: Radians = 0,
+    angle: Types.Radians = 0,
     can_sleep := true,
     no_physics_rot := true
 )-&gt; Obj</pre>
@@ -143,7 +146,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 </section>
 <section>
   <h2>GetObjectRot</h2>
-  <pre class='code'>GetObjectRot (obj: Obj) -&gt; Radians</pre>
+  <pre class='code'>GetObjectRot (obj: Obj) -&gt; Types</pre>
   <p>GetObjectRot returns the current rotation (angle in radians) of a physics object.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>obj</span>: the object to query</li>

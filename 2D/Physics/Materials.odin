@@ -6,7 +6,6 @@ import b2d "vendor:box2d"
 
 // --- Material registry ---
 @private
-@(link_section="MAGMA_ENGINE_GLOBALS")
 MaterialRegistry: map[string]Material
 
 Material :: b2d.SurfaceMaterial

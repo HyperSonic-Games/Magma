@@ -1,18 +1,19 @@
 package Physics
 
+import "../../Types"
+
 // Default scale value, can be overridden at runtime
 @private
 METER_TO_PIXEL_SCALE_VALUE_DEFAULT :: #config(magma_physics_meter_to_pixel_scale_default, 64.0)
 
 // Current scale factor (mutable)
 @private
-@(link_section="MAGMA_ENGINE_GLOBALS")
 meter_to_pixel_scale: f32 = METER_TO_PIXEL_SCALE_VALUE_DEFAULT
 
 /*
  * SetMeterToPixelScale sets a new meters-to-pixels scale value at runtime.
+ * Panics if new_scale is <= 0
  * @param new_scale the new scale factor to use
- * @note Panics if new_scale is <= 0
 */
 SetMeterToPixelScale :: proc(new_scale: f32) {
     if new_scale <= 0.0 {
@@ -34,7 +35,7 @@ GetMeterToPixelScale :: proc() -> f32 {
  * @param meters distance in meters
  * @return equivalent distance in pixels
 */
-MetersToPixels :: proc(meters: Meters) -> f32 {
+MetersToPixels :: proc(meters: Types.Meters) -> f32 {
     return meters * meter_to_pixel_scale
 }
 
@@ -43,6 +44,6 @@ MetersToPixels :: proc(meters: Meters) -> f32 {
  * @param pixels distance in pixels
  * @return equivalent distance in meters
 */
-PixelsToMeters :: proc(pixels: f32) -> Meters {
+PixelsToMeters :: proc(pixels: f32) -> Types.Meters {
     return pixels / meter_to_pixel_scale
 }
