@@ -7,8 +7,7 @@ import "../../Util"
 
 @private
 SplashImage := #load("../../Icons/MagmaEngine.png", []byte)
-@private
-SplashImage2 := #load("../../Icons/Splash2.png", []byte)
+
 
 @private
 Frames: u128
@@ -154,46 +153,6 @@ Init :: proc(
             sdl2.DestroyTexture(splash_texture)
         } else {
             Util.log(.ERROR, "MAGMA_2D_RENDERER_INIT", "Failed to create splash texture: %s", sdl2.GetErrorString())
-        }
-    }
-    // --- Second Splash Screen ---
-    splash_rw2 := sdl2.RWFromConstMem(&SplashImage2[0], cast(i32)len(SplashImage2))
-    splash_surface2 := image.Load_RW(splash_rw2, true)
-    
-    if splash_surface2 == nil {
-        Util.log(.ERROR, "MAGMA_2D_RENDERER_INIT", "Failed to load second splash image: %s", sdl2.GetErrorString())
-    } else {
-        splash_texture2 := sdl2.CreateTextureFromSurface(renderer, splash_surface2)
-        sdl2.FreeSurface(splash_surface2)
-        
-        if splash_texture2 != nil {
-            tex_w2, tex_h2: i32
-            sdl2.QueryTexture(splash_texture2, nil, nil, &tex_w2, &tex_h2)
-            
-            win_w, win_h: i32
-            sdl2.GetRendererOutputSize(renderer, &win_w, &win_h)
-            
-            scale2 := math.min(f32(win_w) / f32(tex_w2), f32(win_h) / f32(tex_h2))
-            dst_w2 := cast(i32)(f32(tex_w2) * scale2)
-            dst_h2 := cast(i32)(f32(tex_h2) * scale2)
-        
-            dst_rect2 := sdl2.Rect{
-                x = (win_w - dst_w2) / 2,
-                y = (win_h - dst_h2) / 2,
-                w = dst_w2,
-                h = dst_h2,
-            }
-            
-            // Render second splash
-            sdl2.RenderClear(renderer)
-            sdl2.RenderCopy(renderer, splash_texture2, nil, &dst_rect2)
-            sdl2.RenderPresent(renderer)
-            sdl2.Delay(3000)
-            
-            sdl2.DestroyTexture(splash_texture2)
-        
-        } else {
-            Util.log(.ERROR, "MAGMA_2D_RENDERER_INIT", "Failed to create second splash texture: %s", sdl2.GetErrorString())
         }
     }
 
