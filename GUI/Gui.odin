@@ -1,3 +1,3 @@
 package GUI
 
-import rl "vendor:raylib"
+import clay "../third_party/clay-odin"

@@ -40,7 +40,7 @@ ShowVersionInfo :: proc() {
     Util.log(
         .INFO,
         "MAGMA_2D_AUDIO_SHOW_VERSION_INFO",
-        "\nCompiled with SDL2_mixer version: %s:%s:%s\nCurrently linked with SDL2_mixer version: %s:%s:%s",
+        "\nCompiled with SDL2_mixer version: %d:%d:%d\nCurrently linked with SDL2_mixer version: %d:%d:%d",
         compiled_version_major,
         compiled_version_minor,
         compiled_version_patch,

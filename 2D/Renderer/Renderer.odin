@@ -3,10 +3,9 @@ package Renderer
 import "core:fmt"
 import "core:math"
 import "../../Util"
+import "../../Types"
 
 
-@private
-SplashImage := #load("../../Icons/MagmaEngine.png", []byte)
 
 
 @private
@@ -43,7 +42,7 @@ RenderContext :: struct {
 Init :: proc(
     app_name: cstring, window_name: cstring, width: i32, height: i32,
     backend: GraphicsBackend = .OPEN_GL,
-    debug_mode: bool = true
+    debug_mode: bool = false
 ) -> RenderContext {
     backend := backend
     #partial switch backend {
@@ -121,7 +120,7 @@ Init :: proc(
     // Init SDL_image
     image.Init({.JPG, .PNG, .TIF, .WEBP})
     // --- Splash Screen ---
-    splash_rw := sdl2.RWFromConstMem(&SplashImage[0], cast(i32)len(SplashImage))
+    splash_rw := sdl2.RWFromConstMem(&Types.SplashImage[0], cast(i32)len(Types.SplashImage))
     splash_surface := image.Load_RW(splash_rw, true)
     if splash_surface == nil {
         Util.log(.ERROR, "MAGMA_2D_RENDERER_INIT", "Failed to load splash image: %s", sdl2.GetErrorString())
