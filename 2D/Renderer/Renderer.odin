@@ -180,7 +180,6 @@ Update :: proc(ctx: ^RenderContext) {
     dstRect: sdl2.Rect = {x = 0, y = 0, w = w, h = h}
     _ = sdl2.RenderCopy(ctx.Renderer, ctx.RenderSurface, nil, &dstRect)
     Frames += 1
-    Util.log(.DEBUG, "MAGMA_2D_RENDERER_UPDATE", "Frame: %d", Frames)
 }
 
 
