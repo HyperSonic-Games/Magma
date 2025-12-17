@@ -36,17 +36,13 @@ ShowVersionInfo :: proc() {
     compiled_version_major := mixer.MAJOR_VERSION
     compiled_version_minor := mixer.MINOR_VERSION
     compiled_version_patch := mixer.PATCHLEVEL
-    currently_linked_version := mixer.Linked_Version()
     Util.log(
         .INFO,
         "MAGMA_2D_AUDIO_SHOW_VERSION_INFO",
-        "\nCompiled with SDL2_mixer version: %d:%d:%d\nCurrently linked with SDL2_mixer version: %d:%d:%d",
+        "\nCompiled with SDL2_mixer version: %d:%d:%d",
         compiled_version_major,
         compiled_version_minor,
         compiled_version_patch,
-        currently_linked_version.major,
-        currently_linked_version.minor,
-        currently_linked_version.patch
     )
 }
 
