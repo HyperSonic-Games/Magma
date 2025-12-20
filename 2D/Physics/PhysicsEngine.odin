@@ -1,5 +1,6 @@
 package Physics
 
+import "core:math"
 import "../../Types"
 import "../../Util"
 import b2d "vendor:box2d"
@@ -9,9 +10,9 @@ PHYSICS_TIMESTEP :: #config(magma_physics_timestep, 0.01666666666)
 // Number of substeps per physics step, usually 4
 PHYSICS_SUB_TIMESTEP :: #config(magma_physics_sub_timestep, 4)
 
-World :: distinct b2d.WorldId  // Physics world handle
-Obj :: distinct b2d.BodyId      // Physics body handle
-ObjPhysicsHandle :: distinct b2d.ShapeId  // Physics shape handle
+World :: b2d.WorldId  // Physics world handle
+Obj :: b2d.BodyId      // Physics body handle
+ObjPhysicsHandle :: b2d.ShapeId  // Physics shape handle
 
 
 
@@ -23,15 +24,13 @@ ObjPhysicsHandle :: distinct b2d.ShapeId  // Physics shape handle
  * @return World physics world handle
 */
 InitPhysicsEngine :: proc(grav_vector: Types.Vector2f, can_sleep := true, collision_is_continuous := true) -> World {
-    world: World
 
     world_def := b2d.DefaultWorldDef()
     world_def.enableSleep = can_sleep
     world_def.gravity = grav_vector
     world_def.enableContinuous = collision_is_continuous
 
-    world = cast(World)b2d.CreateWorld(world_def)
-    return world
+    return b2d.CreateWorld(world_def)
 }
 
 /*
@@ -39,7 +38,7 @@ InitPhysicsEngine :: proc(grav_vector: Types.Vector2f, can_sleep := true, collis
  * @param world the world to destroy
 */
 DestroyPhysicsEngine :: proc (world: World) {
-    b2d.DestroyWorld(cast(b2d.WorldId)world)
+    b2d.DestroyWorld(world)
 }
 
 /*
@@ -65,7 +64,7 @@ CreateStaticBody :: proc (world: World,
     body_def.rotation = b2d.MakeRot(angle)
     body_def.type = .staticBody
 
-    return cast(Obj)b2d.CreateBody(cast(b2d.WorldId)world, body_def)
+    return b2d.CreateBody(world, body_def)
 }
 
 /*
@@ -91,7 +90,7 @@ CreateDynamicBody :: proc (world: World,
     body_def.rotation = b2d.MakeRot(angle)
     body_def.type = .dynamicBody
 
-    return cast(Obj)b2d.CreateBody(cast(b2d.WorldId)world, body_def)
+    return b2d.CreateBody(world, body_def)
 }
 
 /*
@@ -115,7 +114,7 @@ AddPhysicsPolygonToBody :: proc (
     shape_def := b2d.DefaultShapeDef()
     shape_def.density = density
     shape_def.material = MaterialRegistry[mat_registry_name]
-    return cast(ObjPhysicsHandle)b2d.CreatePolygonShape(cast(b2d.BodyId)obj, shape_def, shape_polygon)
+    return b2d.CreatePolygonShape(obj, shape_def, shape_polygon)
 }
 
 /*
@@ -125,7 +124,7 @@ AddPhysicsPolygonToBody :: proc (
 */
 Step :: proc(world: World, delta_time: f32) {
     time_step: f32 = PHYSICS_TIMESTEP * delta_time
-    b2d.World_Step(cast(b2d.WorldId)world, time_step, PHYSICS_SUB_TIMESTEP)
+    b2d.World_Step(world, time_step, PHYSICS_SUB_TIMESTEP)
 }
 
 /*
@@ -134,7 +133,7 @@ Step :: proc(world: World, delta_time: f32) {
  * @return Vector2f current position
 */
 GetObjectPos :: proc(obj: Obj) -> Types.Vector2f {
-    obj_transform := b2d.Body_GetTransform(cast(b2d.BodyId)obj)
+    obj_transform := b2d.Body_GetTransform(obj)
     return obj_transform.p
 }
 
@@ -146,4 +145,27 @@ GetObjectPos :: proc(obj: Obj) -> Types.Vector2f {
 GetObjectRot :: proc(obj: Obj) -> Types.Radians {
     obj_transform := b2d.Body_GetTransform(cast(b2d.BodyId)obj)
     return b2d.Rot_GetAngle(obj_transform.q)
+}
+
+@private
+RadianToVector :: proc(rad: Types.Radians) -> Types.Vector2f {
+  return Types.Vector2f{math.cos(rad), math.sin(rad)}
+}
+
+CastRay :: proc(world: World, from_obj: Obj, length: f32) -> Obj {
+    origin := b2d.Body_GetPosition(cast(b2d.BodyId)from_obj)
+    angle := b2d.Rot_GetAngle(b2d.Body_GetRotation(cast(b2d.BodyId)from_obj))
+    translation := RadianToVector(angle) * length
+
+    cast_data := b2d.World_CastRayClosest(
+        world,
+        origin,
+        translation,
+        b2d.DefaultQueryFilter()
+    )
+
+    if !cast_data.hit {
+        return b2d.nullBodyId
+    }
+    return b2d.Shape_GetBody(cast_data.shapeId)
 }

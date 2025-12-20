@@ -33,8 +33,8 @@ CreateDistanceJoint :: proc(
 ) -> JointHandle {
     jointDef := new(b2d.DistanceJointDef)
     defer free(jointDef)
-    jointDef.bodyIdA = cast(b2d.BodyId)obj_a
-    jointDef.bodyIdB = cast(b2d.BodyId)obj_b
+    jointDef.bodyIdA = obj_a
+    jointDef.bodyIdB = obj_b
     jointDef.collideConnected = handle_collision
     jointDef.length = rest_length
     jointDef.maxLength = max_length
@@ -44,7 +44,7 @@ CreateDistanceJoint :: proc(
     jointDef.enableSpring = false
     jointDef.localAnchorA = anchor_a
     jointDef.localAnchorB = anchor_b
-    return b2d.CreateDistanceJoint(cast(b2d.WorldId)world, jointDef^)
+    return b2d.CreateDistanceJoint(world, jointDef^)
 }
 
 /*
@@ -69,8 +69,8 @@ CreateSpringJoint :: proc(
 ) -> JointHandle {
     jointDef := new(b2d.DistanceJointDef)
     defer free(jointDef)
-    jointDef.bodyIdA = cast(b2d.BodyId)obj_a
-    jointDef.bodyIdB = cast(b2d.BodyId)obj_b
+    jointDef.bodyIdA = obj_a
+    jointDef.bodyIdB = obj_b
     jointDef.collideConnected = handle_collision
     jointDef.enableLimit = true
     jointDef.length = rest_length
@@ -82,7 +82,7 @@ CreateSpringJoint :: proc(
     jointDef.dampingRatio = damping
     jointDef.localAnchorA = anchor_a
     jointDef.localAnchorB = anchor_b
-    return b2d.CreateDistanceJoint(cast(b2d.WorldId)world, jointDef^)
+    return b2d.CreateDistanceJoint(world, jointDef^)
 }
 
 /*
@@ -107,8 +107,8 @@ CreateLinearActuatorJoint :: proc(
 ) -> JointHandle {
     jointDef := new(b2d.DistanceJointDef)
     defer free(jointDef)
-    jointDef.bodyIdA = cast(b2d.BodyId)obj_a
-    jointDef.bodyIdB = cast(b2d.BodyId)obj_b
+    jointDef.bodyIdA = obj_a
+    jointDef.bodyIdB = obj_b
     jointDef.collideConnected = handle_collision
     jointDef.length = rest_length
     jointDef.enableMotor = true
@@ -120,7 +120,7 @@ CreateLinearActuatorJoint :: proc(
     jointDef.enableSpring = false
     jointDef.localAnchorA = anchor_a
     jointDef.localAnchorB = anchor_b
-    return b2d.CreateDistanceJoint(cast(b2d.WorldId)world, jointDef^)
+    return b2d.CreateDistanceJoint(world, jointDef^)
 }
 
 /*
@@ -144,15 +144,15 @@ CreateMotorJoint :: proc(
 ) -> JointHandle {
     jointDef := new(b2d.RevoluteJointDef)
     defer free(jointDef)
-    jointDef.bodyIdA = cast(b2d.BodyId)obj_a
-    jointDef.bodyIdB = cast(b2d.BodyId)obj_b
+    jointDef.bodyIdA = obj_a
+    jointDef.bodyIdB = obj_b
     jointDef.localAnchorA = anchor_a
     jointDef.localAnchorB = anchor_b
     jointDef.enableMotor = enable_motor
     jointDef.motorSpeed = motor_speed
     jointDef.maxMotorTorque = max_torque
     jointDef.collideConnected = handle_collision
-    return b2d.CreateRevoluteJoint(cast(b2d.WorldId)world, jointDef^)
+    return b2d.CreateRevoluteJoint(world, jointDef^)
 }
 
 /*
