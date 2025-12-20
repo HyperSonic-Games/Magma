@@ -13,6 +13,9 @@ import "vendor:sdl2"
 import "vendor:sdl2/image"
 import "vendor:sdl2/ttf"
 
+
+Texture :: sdl2.Texture
+
 /*
  * ClearScreen clears the screen of the renderer win a color
  * @param cxt the renderer context to clear
