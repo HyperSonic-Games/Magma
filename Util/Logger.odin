@@ -1,5 +1,6 @@
 package Util
 
+import "base:runtime"
 import "core:strings"
 import "core:fmt"
 import "core:terminal/ansi"
@@ -38,11 +39,13 @@ log :: proc(level: LogLevel, component_name: string, format: string, args: ..any
     else if (level == .ERROR) {
         if (ODIN_DEBUG) {
             fmt.eprintfln(ansi.CSI + ansi.FG_RED + ansi.SGR + "%s<ERROR> ~ %s" + ansi.CSI + ansi.FG_WHITE, prefix, full_msg)
+            runtime.debug_trap() // Hey debuger we messed up come see
         }
         else {
             full_msg_cstring := strings.clone_to_cstring(full_msg)
             sdl2.ShowSimpleMessageBox({.ERROR}, "MAGMA_ENGINE", full_msg_cstring, nil)
             delete(full_msg_cstring)
+            runtime.trap() // CRASH AND BURN
         }
     }
 

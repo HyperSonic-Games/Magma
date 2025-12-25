@@ -1,7 +1,5 @@
 package Util
 
-import "core:strconv"
-import "core:io"
 import "core:compress/shoco"
 import "core:encoding/csv"
 import "core:encoding/base32"
