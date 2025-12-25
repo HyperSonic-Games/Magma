@@ -20,7 +20,7 @@ Boom :: proc(world: World, position: Types.Vector2f, strength: f32, radius: Type
     expl_def.radius = radius
     expl_def.impulsePerLength = strength
     expl_def.falloff = falloff
-    b2d.World_Explode(cast(b2d.WorldId)world, expl_def)
+    b2d.World_Explode(world, expl_def)
 }
 
 
@@ -32,8 +32,8 @@ Boom :: proc(world: World, position: Types.Vector2f, strength: f32, radius: Type
  */
 Impulse :: proc(world: World, body: Obj, impulse: Types.Vector2f) {
     b2d.Body_ApplyLinearImpulseToCenter(
-        cast(b2d.BodyId)body, 
-        cast(b2d.Vec2){impulse[0], impulse[1]}, 
+        body, 
+        {impulse[0], impulse[1]}, 
         true
     )
 }
@@ -46,7 +46,7 @@ Impulse :: proc(world: World, body: Obj, impulse: Types.Vector2f) {
  */
 Torque :: proc(world: World, body: Obj, torque: Types.NewtonMeters) {
     b2d.Body_ApplyTorque(
-        cast(b2d.BodyId)body,
+        body,
         torque,
         true
     )
@@ -62,7 +62,7 @@ Torque :: proc(world: World, body: Obj, torque: Types.NewtonMeters) {
  */
 Move :: proc(body: Obj, pos: Types.Vector2f, rot: Types.Radians) {
     b2d.Body_SetTransform(
-        cast(b2d.BodyId)body, 
+        body, 
         {pos[0], pos[1]}, 
         b2d.MakeRot(rot)
     )
