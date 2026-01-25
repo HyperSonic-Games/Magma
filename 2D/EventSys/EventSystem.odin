@@ -1,8 +1,6 @@
 package EventSys
 
-import "core:c"
 import "../../Types"
-import "../../Util"
 import "vendor:sdl2"
 
 MOD_KEYS :: enum {
@@ -47,9 +45,9 @@ WindowState :: struct {
 }
 
 /*
- * ResetWindowFlags resets all transient window flags in preparation
- * for the next frame. This should be called at the start of every frame.
- * @param state Pointer to the WindowState struct to reset
+Resets all transient window flags in preparation
+for the next frame. This should be called at the start of every frame.
+@param state Pointer to the WindowState struct to reset
 */
 ResetWindowFlags :: proc(state: ^WindowState) {
     state.should_quit   = false
@@ -63,11 +61,11 @@ ResetWindowFlags :: proc(state: ^WindowState) {
 }
 
 /*
- * ConvertSDLKeycodeToKEYS converts an SDL2 keycode to the engine's KEYS enum.
- * Returns KEYS.NONE if no match is found.
- * NOTE: This is internal and only documented for internal use
- * @param sym SDL2 keycode
- * @return Corresponding KEYS enum value
+Converts an SDL2 keycode to the engine's KEYS enum.
+Returns KEYS.NONE if no match is found.
+NOTE: This is internal and only documented for internal use
+@param sym SDL2 keycode
+@return Corresponding KEYS enum value
 */
 @private
 ConvertSDLKeycodeToKEYS :: proc(sym: sdl2.Keycode) -> KEYS {
@@ -118,11 +116,11 @@ ConvertSDLKeycodeToKEYS :: proc(sym: sdl2.Keycode) -> KEYS {
 }
 
 /*
- * ConvertSDLModToMODKEYS converts SDL2 modifier flags into the engine's MOD_KEYS enum.
- * Only returns one modifier at a time. Returns MOD_KEYS.NONE if no relevant modifier is active.
- * NOTE: This is internal and only documented for internal use
- * @param mod SDL2 modifier bitfield
- * @return Corresponding MOD_KEYS value
+Converts SDL2 modifier flags into the engine's MOD_KEYS enum.
+Only returns one modifier at a time. Returns MOD_KEYS.NONE if no relevant modifier is active.
+NOTE: This is internal and only documented for internal use
+@param mod SDL2 modifier bitfield
+@return Corresponding MOD_KEYS value
 */
 @private
 ConvertSDLModToMODKEYS :: proc(mod: sdl2.Keymod) -> MOD_KEYS {
@@ -138,11 +136,11 @@ ConvertSDLModToMODKEYS :: proc(mod: sdl2.Keymod) -> MOD_KEYS {
 }
 
 /*
- * HandleEvents polls SDL2 for all events and updates the engine's input and window state.
- * This function should be called once per frame.
- * @param mouse Pointer to the Mouse struct to update
- * @param keyboard Pointer to the Keyboard struct to update
- * @param win Pointer to the WindowState struct to update
+Polls SDL2 for all events and updates the engine's input and window state.
+This function should be called once per frame.
+@param mouse Pointer to the Mouse struct to update
+@param keyboard Pointer to the Keyboard struct to update
+@param win Pointer to the WindowState struct to update
 */
 HandleEvents :: proc(mouse: ^Mouse, keyboard: ^Keyboard, win: ^WindowState) {
 

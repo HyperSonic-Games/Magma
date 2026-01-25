@@ -28,14 +28,14 @@ AudioContext :: struct {
 }
 
 /*
- * Init initializes the SDL2_mixer audio system and returns a new AudioContext
- * @return ^AudioContext A pointer to the initialized audio context
- */
+Initializes the SDL2_mixer audio system and returns a new AudioContext
+@return ^AudioContext A pointer to the initialized audio context
+*/
 Init :: proc() -> ^AudioContext {
     flags: mixer.InitFlags = {.OPUS, .OGG, .MP3, .FLAC}
     ret_flags := mixer.Init(flags)
     if transmute(mixer.InitFlags)ret_flags != flags {
-        Util.log(.ERROR, "MAGMA_2D_AUDIO_INIT", "Could not init all audio. Got: %v, Expected: %v", ret_flags, flags)
+        Util.log(.ERROR, "MAGMA", "2D_AUDIO_INIT", "Could not init all audio. Got: %v, Expected: %v", ret_flags, flags)
     }
 
     ctx := new(AudioContext)
@@ -64,9 +64,9 @@ Init :: proc() -> ^AudioContext {
 
 
 /*
- * Shutdown cleans up the audio system and frees all loaded chunks and music
- * @param ctx The AudioContext to shut down
- */
+Cleans up the audio system and frees all loaded chunks and music
+@param ctx The AudioContext to shut down
+*/
 Shutdown :: proc(ctx: ^AudioContext) {
     // Free music
     if ctx.Music != nil {
@@ -95,73 +95,73 @@ Shutdown :: proc(ctx: ^AudioContext) {
 
 
 /*
- * LoadFX loads a WAV file into the FX channel
- * @param ctx The AudioContext
- * @param wav_file Path to the WAV file
- */
+Loads a WAV file into the FX channel
+@param ctx The AudioContext
+@param wav_file Path to the WAV file
+*/
 LoadFX :: proc(ctx: ^AudioContext, wav_file: cstring) {
     ctx.FXChunk = mixer.LoadWAV(wav_file)
 }
 
 /*
- * LoadBackground loads a WAV file into the Background channel
- * @param ctx The AudioContext
- * @param wav_file Path to the WAV file
- */
+Loads a WAV file into the Background channel
+@param ctx The AudioContext
+@param wav_file Path to the WAV file
+*/
 LoadBackground :: proc(ctx: ^AudioContext, wav_file: cstring) {
     ctx.BackgroundChunk = mixer.LoadWAV(wav_file)
 }
 
 /*
- * LoadVoice loads a WAV file into the Voice channel
- * @param ctx The AudioContext
- * @param wav_file Path to the WAV file
- */
+Loads a WAV file into the Voice channel
+@param ctx The AudioContext
+@param wav_file Path to the WAV file
+*/
 LoadVoice :: proc(ctx: ^AudioContext, wav_file: cstring) {
     ctx.VoiceChunk = mixer.LoadWAV(wav_file)
 }
 
 /*
- * LoadAmbience loads a WAV file into the Ambience channel
- * @param ctx The AudioContext
- * @param wav_file Path to the WAV file
- */
+Loads a WAV file into the Ambience channel
+@param ctx The AudioContext
+@param wav_file Path to the WAV file
+*/
 LoadAmbience :: proc(ctx: ^AudioContext, wav_file: cstring) {
     ctx.AmbienceChunk = mixer.LoadWAV(wav_file)
 }
 
 /*
- * LoadUI loads a WAV file into the UI channel
- * @param ctx The AudioContext
- * @param wav_file Path to the WAV file
- */
+Loads a WAV file into the UI channel
+@param ctx The AudioContext
+@param wav_file Path to the WAV file
+*/
 LoadUI :: proc(ctx: ^AudioContext, wav_file: cstring) {
     ctx.UIChunk = mixer.LoadWAV(wav_file)
 }
 
 /*
- * LoadCustom1 loads a WAV file into the Custom1 channel
- * @param ctx The AudioContext
- * @param wav_file Path to the WAV file
- */
+Loads a WAV file into the Custom1 channel
+@param ctx The AudioContext
+@param wav_file Path to the WAV file
+*/
 LoadCustom1 :: proc(ctx: ^AudioContext, wav_file: cstring) {
     ctx.Custom1Chunk = mixer.LoadWAV(wav_file)
 }
 
 /*
- * LoadCustom2 loads a WAV file into the Custom2 channel
- * @param ctx The AudioContext
- * @param wav_file Path to the WAV file
- */
+Loads a WAV file into the Custom2 channel
+@param ctx The AudioContext
+@param wav_file Path to the WAV file
+*/
 LoadCustom2 :: proc(ctx: ^AudioContext, wav_file: cstring) {
     ctx.Custom2Chunk = mixer.LoadWAV(wav_file)
 }
 
 /*
- * LoadCustom3 loads a WAV file into the Custom3 channel
- * @param ctx The AudioContext
- * @param wav_file Path to the WAV file
- */
+Loads a WAV file into the Custom3 channel
+@param ctx The AudioContext
+@param wav_file Path to the WAV file
+*/
 LoadCustom3 :: proc(ctx: ^AudioContext, wav_file: cstring) {
     ctx.Custom3Chunk = mixer.LoadWAV(wav_file)
 }
@@ -169,9 +169,9 @@ LoadCustom3 :: proc(ctx: ^AudioContext, wav_file: cstring) {
 
 
 /*
- * PlayFX plays the FX channel if it has a loaded chunk
- * @param ctx The AudioContext
- */
+Plays the FX channel if it has a loaded chunk
+@param ctx The AudioContext
+*/
 PlayFX :: proc(ctx: ^AudioContext) {
     if ctx.FXChunk != nil {
         mixer.PlayChannel(ctx.FX, ctx.FXChunk, 0)
@@ -179,9 +179,9 @@ PlayFX :: proc(ctx: ^AudioContext) {
 }
 
 /*
- * PlayBackground plays the Background channel if it has a loaded chunk
- * @param ctx The AudioContext
- */
+Plays the Background channel if it has a loaded chunk
+@param ctx The AudioContext
+*/
 PlayBackground :: proc(ctx: ^AudioContext) {
     if ctx.BackgroundChunk != nil {
         mixer.PlayChannel(ctx.Background, ctx.BackgroundChunk, 0)
@@ -189,9 +189,9 @@ PlayBackground :: proc(ctx: ^AudioContext) {
 }
 
 /*
- * PlayVoice plays the Voice channel if it has a loaded chunk
- * @param ctx The AudioContext
- */
+Plays the Voice channel if it has a loaded chunk
+@param ctx The AudioContext
+*/
 PlayVoice :: proc(ctx: ^AudioContext) {
     if ctx.VoiceChunk != nil {
         mixer.PlayChannel(ctx.Voice, ctx.VoiceChunk, 0)
@@ -199,9 +199,9 @@ PlayVoice :: proc(ctx: ^AudioContext) {
 }
 
 /*
- * PlayAmbience plays the Ambience channel if it has a loaded chunk
- * @param ctx The AudioContext
- */
+Plays the Ambience channel if it has a loaded chunk
+@param ctx The AudioContext
+*/
 PlayAmbience :: proc(ctx: ^AudioContext) {
     if ctx.AmbienceChunk != nil {
         mixer.PlayChannel(ctx.Ambience, ctx.AmbienceChunk, 0)
@@ -209,9 +209,9 @@ PlayAmbience :: proc(ctx: ^AudioContext) {
 }
 
 /*
- * PlayUI plays the UI channel if it has a loaded chunk
- * @param ctx The AudioContext
- */
+Plays the UI channel if it has a loaded chunk
+@param ctx The AudioContext
+*/
 PlayUI :: proc(ctx: ^AudioContext) {
     if ctx.UIChunk != nil {
         mixer.PlayChannel(ctx.UI, ctx.UIChunk, 0)
@@ -219,9 +219,9 @@ PlayUI :: proc(ctx: ^AudioContext) {
 }
 
 /*
- * PlayCustom1 plays the Custom1 channel if it has a loaded chunk
- * @param ctx The AudioContext
- */
+Plays the Custom1 channel if it has a loaded chunk
+@param ctx The AudioContext
+*/
 PlayCustom1 :: proc(ctx: ^AudioContext) {
     if ctx.Custom1Chunk != nil {
         mixer.PlayChannel(ctx.Custom1, ctx.Custom1Chunk, 0)
@@ -229,9 +229,9 @@ PlayCustom1 :: proc(ctx: ^AudioContext) {
 }
 
 /*
- * PlayCustom2 plays the Custom2 channel if it has a loaded chunk
- * @param ctx The AudioContext
- */
+Plays the Custom2 channel if it has a loaded chunk
+@param ctx The AudioContext
+*/
 PlayCustom2 :: proc(ctx: ^AudioContext) {
     if ctx.Custom2Chunk != nil {
         mixer.PlayChannel(ctx.Custom2, ctx.Custom2Chunk, 0)
@@ -239,9 +239,9 @@ PlayCustom2 :: proc(ctx: ^AudioContext) {
 }
 
 /*
- * PlayCustom3 plays the Custom3 channel if it has a loaded chunk
- * @param ctx The AudioContext
- */
+Plays the Custom3 channel if it has a loaded chunk
+@param ctx The AudioContext
+*/
 PlayCustom3 :: proc(ctx: ^AudioContext) {
     if ctx.Custom3Chunk != nil {
         mixer.PlayChannel(ctx.Custom3, ctx.Custom3Chunk, 0)
@@ -250,9 +250,9 @@ PlayCustom3 :: proc(ctx: ^AudioContext) {
 
 
 /*
- * LoadMusicFromOpus loads an Opus file into the Music context
- * @param ctx The AudioContext
- * @param opus_file Path to the Opus file
+Loads an Opus file into the Music context
+@param ctx The AudioContext
+@param opus_file Path to the Opus file
  */
 LoadMusicFromOpus :: proc(ctx: ^AudioContext, opus_file: cstring) {
     // Free existing music if any
@@ -264,17 +264,17 @@ LoadMusicFromOpus :: proc(ctx: ^AudioContext, opus_file: cstring) {
     // Load the Opus file as Mix_Music
     music := mixer.LoadMUS(opus_file)
     if music == nil {
-        Util.log(.ERROR, "MAGMA_2D_AUDIO_LOAD_MUSIC_FROM_OPUS", "Failed to load music: %s", opus_file)
+        Util.log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_OPUS", "Failed to load music: %s", opus_file)
         return
     }
     ctx.Music = music
 }
 
 /*
- * LoadMusicFromOgg loads an OGG file into the Music context
- * @param ctx The AudioContext
- * @param ogg_file Path to the OGG file
- */
+Loads an OGG file into the Music context
+@param ctx The AudioContext
+@param ogg_file Path to the OGG file
+*/
 LoadMusicFromOgg :: proc(ctx: ^AudioContext, ogg_file: cstring) {
     // Free existing music if any
     if ctx.Music != nil {
@@ -285,7 +285,7 @@ LoadMusicFromOgg :: proc(ctx: ^AudioContext, ogg_file: cstring) {
     // Load the OGG file as Mix_Music
     music := mixer.LoadMUS(ogg_file)
     if music == nil {
-        Util.log(.ERROR, "MAGMA_2D_AUDIO_LOAD_MUSIC_FROM_OGG", "Failed to load music: %s", ogg_file)
+        Util.log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_OGG", "Failed to load music: %s", ogg_file)
         return
     }
 
@@ -293,10 +293,10 @@ LoadMusicFromOgg :: proc(ctx: ^AudioContext, ogg_file: cstring) {
 }
 
 /*
- * LoadMusicFromMP3 loads an MP3 file into the Music context
- * @param ctx The AudioContext
- * @param mp3_file Path to the MP3 file
- */
+Loads an MP3 file into the Music context
+@param ctx The AudioContext
+@param mp3_file Path to the MP3 file
+*/
 LoadMusicFromMP3 :: proc(ctx: ^AudioContext, mp3_file: cstring) {
     // Free existing music if any
     if ctx.Music != nil {
@@ -307,7 +307,7 @@ LoadMusicFromMP3 :: proc(ctx: ^AudioContext, mp3_file: cstring) {
     // Load the MP3 file as Mix_Music
     music := mixer.LoadMUS(mp3_file)
     if music == nil {
-        Util.log(.ERROR, "MAGMA_2D_AUDIO_LOAD_MUSIC_FROM_OOG", "Failed to load music: %s", mp3_file)
+        Util.log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_OOG", "Failed to load music: %s", mp3_file)
         return
     }
 
@@ -315,10 +315,10 @@ LoadMusicFromMP3 :: proc(ctx: ^AudioContext, mp3_file: cstring) {
 }
 
 /*
- * LoadMusicFromFLAC loads a FLAC file into the Music context
- * @param ctx The AudioContext
- * @param flac_file Path to the FLAC file
- */
+Loads a FLAC file into the Music context
+@param ctx The AudioContext
+@param flac_file Path to the FLAC file
+*/
 LoadMusicFromFLAC :: proc(ctx: ^AudioContext, flac_file: cstring) {
     // Free existing music if any
     if ctx.Music != nil {
@@ -329,7 +329,7 @@ LoadMusicFromFLAC :: proc(ctx: ^AudioContext, flac_file: cstring) {
     // Load the FLAC file as Mix_Music
     music := mixer.LoadMUS(flac_file)
     if music == nil {
-        Util.log(.ERROR, "MAGMA_2D_AUDIO_LOAD_MUSIC_FROM_FLAC", "Failed to load music: %s", flac_file)
+        Util.log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_FLAC", "Failed to load music: %s", flac_file)
         return
     }
 
@@ -337,21 +337,21 @@ LoadMusicFromFLAC :: proc(ctx: ^AudioContext, flac_file: cstring) {
 }
 
 /*
- * PlayMusic plays the currently loaded music for a given number of loops
- * @param ctx The AudioContext
- * @param loops Number of times to loop the music (-1 for infinite)
- */
+Plays the currently loaded music for a given number of loops
+@param ctx The AudioContext
+@param loops Number of times to loop the music (-1 for infinite)
+*/
 PlayMusic :: proc(ctx: AudioContext, loops: i32) {
     mixer.PlayMusic(ctx.Music, loops)
 }
 
 /*
- * ToggleMusic pauses or resumes the currently loaded music
- * @param ctx The AudioContext
- */
+Pauses or resumes the currently loaded music
+@param ctx The AudioContext
+*/
 ToggleMusic :: proc(ctx: ^AudioContext) {
     if ctx.Music == nil {
-        Util.log(.WARN, "MAGMA_2D_AUDIO_TOGGLE_MUSIC", "Can't toggle music when music is nil")
+        Util.log(.WARN, "MAGMA", "2D_AUDIO_TOGGLE_MUSIC", "Can't toggle music when music is nil")
         return // No music loaded
     }
 

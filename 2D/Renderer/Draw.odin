@@ -17,9 +17,9 @@ import "vendor:sdl2/ttf"
 Texture :: sdl2.Texture
 
 /*
- * ClearScreen clears the screen of the renderer win a color
- * @param cxt the renderer context to clear
- * @param color the rgba value to clear the screen with
+Clears the screen of the renderer win a color
+@param cxt the renderer context to clear
+@param color the rgba value to clear the screen with
 */
 ClearScreen :: proc(ctx: ^RenderContext, color: Types.Color) {
     sdl2.SetRenderTarget(ctx.Renderer, ctx.RenderSurface);
@@ -28,8 +28,8 @@ ClearScreen :: proc(ctx: ^RenderContext, color: Types.Color) {
 }
 
 /*
- * PresentScreen renders the current data in the renderer to the window
- * @param ctx the renderer context to render to the window
+Renders the current data in the renderer to the window
+@param ctx the renderer context to render to the window
 */
 PresentScreen :: proc(ctx: ^RenderContext) {
     sdl2.SetRenderTarget(ctx.Renderer, nil);
@@ -37,13 +37,13 @@ PresentScreen :: proc(ctx: ^RenderContext) {
 }
 
 /*
- * DrawRect draws a rectangle to the renderer with optional rotation
- * @param ctx the renderer to draw to
- * @param pos the top-left point of the rect
- * @param size the size of the rect
- * @param color the RGBA color of the rect
- * @param filled flag whether to fill the rect
- * @param rot rotation in degrees (clockwise), default is 0
+Draws a rectangle to the renderer with optional rotation
+@param ctx the renderer to draw to
+@param pos the top-left point of the rect
+@param size the size of the rect
+@param color the RGBA color of the rect
+@param filled flag whether to fill the rect
+@param rot rotation in degrees (clockwise), default is 0
 */
 DrawRect :: proc(ctx: ^RenderContext, pos: Types.Vector2f, size: Types.Vector2f, color: Types.Color, filled: bool = true, rot: f32 = 0.0) {
     rect: sdl2.FRect = sdl2.FRect{
@@ -89,11 +89,11 @@ DrawRect :: proc(ctx: ^RenderContext, pos: Types.Vector2f, size: Types.Vector2f,
 }
 
 /*
- * DrawLine draws a line to the renderer
- * @param ctx the renderer to draw to
- * @param point1 the start point of the line
- * @param point2 the end point of the line
- * @param color the RGBA color of the line
+Draws a line to the renderer
+@param ctx the renderer to draw to
+@param point1 the start point of the line
+@param point2 the end point of the line
+@param color the RGBA color of the line
 */
 DrawLine :: proc(ctx: ^RenderContext, point1: Types.Vector2f, point2: Types.Vector2f, color: Types.Color) {
     sdl2.SetRenderTarget(ctx.Renderer, ctx.RenderSurface)
@@ -106,14 +106,16 @@ DrawLine :: proc(ctx: ^RenderContext, point1: Types.Vector2f, point2: Types.Vect
 }
 
 /*
- * DrawTexture draws an SDL2 texture to the renderer with optional rotation
- * Meant to be used with an image loader
- * @param ctx the renderer to draw to
- * @param texture the SDL2 texture to render
- * @param pos the top-left position to draw the texture
- * @param rot the rotation angle (in Radians, clockwise)
+Draws an SDL2 texture to the renderer with optional rotation
+Can be used with an image loader or any SDL2 code that creates a texture
+(e.g., ImGUI or other SDL2 libraries)
+sutch as ImGUI and other SDL2 libs
+@param ctx the renderer to draw to
+@param texture the SDL2 texture to render
+@param pos the top-left position to draw the texture
+@param rot the rotation angle (in degrees)
 */
-DrawTexture :: proc(ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vector2f, rot: Types.Radians) {
+DrawTexture :: proc(ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vector2f, rot: f64) {
     w, h: i32
     _ = sdl2.QueryTexture(texture, nil, nil, &w, &h)
 
@@ -129,10 +131,7 @@ DrawTexture :: proc(ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vect
         y = dst.h / 2.0,
     }
 
-    // Convert radians to degrees because SDL expects degrees
-    degrees := cast(f64)(rot * (180.0 / math.PI))
-
     sdl2.SetRenderTarget(ctx.Renderer, ctx.RenderSurface)
-    sdl2.RenderCopyExF(ctx.Renderer, texture, nil, &dst, degrees, &center, .NONE)
+    sdl2.RenderCopyExF(ctx.Renderer, texture, nil, &dst, rot, &center, .NONE)
 }
 

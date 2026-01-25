@@ -52,7 +52,7 @@ ReadCompressedStringFile :: proc(filepath: string) -> []string {
  * @return Flat array of all CSV fields
 */
 ReadCSVFile :: proc(filepath: string) -> []string {
-    log(.DEBUG, "MAGMA_CSV_READER", "Reading CSV from file: %s", filepath)
+    log(.DEBUG, "MAGMA", "CSV_READER", "Reading CSV from file: %s", filepath)
 
     r: csv.Reader
     r.trim_leading_space = true
@@ -60,20 +60,20 @@ ReadCSVFile :: proc(filepath: string) -> []string {
 
     csv_data, ok := os.read_entire_file(filepath)
     if !ok {
-        log(.ERROR, "MAGMA_CSV_READER", "Unable to open file: %s", filepath)
+        log(.ERROR, "MAGMA", "CSV_READER", "Unable to open file: %s", filepath)
         return []string{}
     }
     defer delete(csv_data)
 
     csv.reader_init_with_string(&r, string(csv_data))
-    log(.DEBUG, "MAGMA_CSV_READER", "CSV reader initialized")
+    log(.VERBOSE, "MAGMA", "CSV_READER", "CSV reader initialized")
 
     records, err := csv.read_all(&r)
     if err != nil {
-        log(.ERROR, "MAGMA_CSV_READER", "Failed to parse CSV data in file: %s", filepath)
+        log(.ERROR, "MAGMA", "CSV_READER", "Failed to parse CSV data in file: %s", filepath)
         return []string{}
     }
-    log(.DEBUG, "MAGMA_CSV_READER", "Parsed %v records from CSV", len(records))
+    log(.DEBUG, "MAGMA", "CSV_READER", "Parsed %v records from CSV", len(records))
 
     dyn_result := make([dynamic]string)
     defer free(&dyn_result)
@@ -90,7 +90,7 @@ ReadCSVFile :: proc(filepath: string) -> []string {
         delete(records)
     }
 
-    log(.DEBUG, "MAGMA_CSV_READER", "Returning %v fields from CSV", len(dyn_result))
+    log(.VERBOSE, "MAGMA", "CSV_READER", "Returning %v fields from CSV", len(dyn_result))
     return dyn_result[:]
 }
 
@@ -102,7 +102,7 @@ ReadCSVFile :: proc(filepath: string) -> []string {
  * @return True if write succeeded
 */
 WriteCSVFile :: proc(filepath: string, values: []string) -> (ok: bool) {
-    log(.DEBUG, "MAGMA_CSV_WRITER", "Writing CSV to file: %s", filepath)
+    log(.DEBUG, "MAGMA", "CSV_WRITER", "Writing CSV to file: %s", filepath)
     builder := new(strings.Builder)
     builder = strings.builder_init(builder)
     defer free(builder)
@@ -116,7 +116,7 @@ WriteCSVFile :: proc(filepath: string, values: []string) -> (ok: bool) {
     file_handle, err := os.open(filepath, os.O_WRONLY)
     defer os.close(file_handle)
     if err != nil {
-        log(.ERROR, "MAGMA_CSV_WRITER", "Unable to open file: %s", filepath)
+        log(.ERROR, "MAGMA", "CSV_WRITER", "Unable to open file: %s", filepath)
         return false
     }
 
@@ -133,17 +133,17 @@ WriteCSVFile :: proc(filepath: string, values: []string) -> (ok: bool) {
 ReadBase32File :: proc(filepath: string) -> []byte {
     file_handle, err := os.open(filepath, os.O_RDONLY)
     if err != nil {
-        log(.ERROR, "MAGMA_BASE32_READER", "Unable to open file: %s", filepath)
+        log(.ERROR, "MAGMA", "BASE32_READER", "Unable to open file: %s", filepath)
         return nil
     }
     data, ok := os.read_entire_file_from_handle(file_handle)
     if !ok {
-        log(.ERROR, "MAGMA_BASE32_READER", "Unable to read file: %s", filepath)
+        log(.ERROR, "MAGMA", "BASE32_READER", "Unable to read file: %s", filepath)
         return nil
     }
     decoded_data, err1 := base32.decode(cast(string)data)
     if err1 != nil {
-        log(.ERROR, "MAGMA_BASE32_READER", "Unable to decode data: %v", data)
+        log(.ERROR, "MAGMA", "BASE32_READER", "Unable to decode data: %v", data)
         return nil
     }
     return decoded_data
@@ -162,11 +162,11 @@ WriteBase32File :: proc(filepath: string, data: []byte) -> bool {
 
     ok := os.write_entire_file(filepath, transmute([]byte)encoded)
     if !ok {
-        log(.ERROR, "MAGMA_BASE32_WRITER", "Failed to write Base32 data to file: %s", filepath)
+        log(.ERROR, "MAGMA", "BASE32_WRITER", "Failed to write Base32 data to file: %s", filepath)
         return false
     }
 
-    log(.DEBUG, "MAGMA_BASE32_WRITER", "Successfully wrote Base32 data to file: %s", filepath)
+    log(.DEBUG, "MAGMA", "BASE32_WRITER", "Successfully wrote Base32 data to file: %s", filepath)
     return true
 }
 
@@ -179,17 +179,17 @@ WriteBase32File :: proc(filepath: string, data: []byte) -> bool {
 ReadBase64File :: proc(filepath: string) -> []byte {
     file_handle, err := os.open(filepath, os.O_RDONLY)
     if err != nil {
-        log(.ERROR, "MAGMA_BASE64_READER", "Unable to open file: %s", filepath)
+        log(.ERROR, "MAGMA", "BASE64_READER", "Unable to open file: %s", filepath)
         return nil
     }
     data, ok := os.read_entire_file_from_handle(file_handle)
     if !ok {
-        log(.ERROR, "MAGMA_BASE64_READER", "Unable to read file: %s", filepath)
+        log(.ERROR, "MAGMA", "BASE64_READER", "Unable to read file: %s", filepath)
         return nil
     }
     decoded_data, err1 := base64.decode(cast(string)data)
     if err1 != nil {
-        log(.ERROR, "MAGMA_BASE64_READER", "Unable to decode Base64 data")
+        log(.ERROR, "MAGMA", "BASE64_READER", "Unable to decode Base64 data")
         return nil
     }
     return decoded_data
@@ -208,11 +208,11 @@ WriteBase64File :: proc(filepath: string, data: []byte) -> bool {
 
     ok := os.write_entire_file(filepath, transmute([]byte)encoded)
     if !ok {
-        log(.ERROR, "MAGMA_BASE64_WRITER", "Failed to write Base64 data to file: %s", filepath)
+        log(.ERROR, "MAGMA", "BASE64_WRITER", "Failed to write Base64 data to file: %s", filepath)
         return false
     }
 
-    log(.DEBUG, "MAGMA_BASE64_WRITER", "Successfully wrote Base64 data to file: %s", filepath)
+    log(.DEBUG, "MAGMA", "BASE64_WRITER", "Successfully wrote Base64 data to file: %s", filepath)
     return true
 }
 
@@ -232,9 +232,9 @@ LoadDynamicLibrary :: proc(filepath: string, symbol_table: ^$T) {
     }
     count, ok := dynlib.initialize_symbols(symbol_table, filepath)
     if !ok {
-        log(.ERROR, "MAGMA_DYNAMIC_LIBRARY_LOADER", "Failed to load dynamic library: %s", dynlib.last_error())
+        log(.ERROR, "MAGMA", "DYNAMIC_LIBRARY_LOADER", "Failed to load dynamic library: %s", dynlib.last_error())
     } else {
-        log(.INFO, "MAGMA_DYNAMIC_LIBRARY_LOADER", "Loaded %d symbols", count)
+        log(.DEBUG, "MAGMA", "DYNAMIC_LIBRARY_LOADER", "Loaded %d symbols", count)
     }
 }
 

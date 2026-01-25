@@ -40,13 +40,6 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
 <div class="file" style="padding-left: 3.0em;"><a href="../2D/EventSys/EventSystem.html">EventSystem.odin</a></div>
 </details>
-<details class='folder' style='padding-left: 1.5em;'><summary>Physics</summary>
-<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/Forces.html">Forces.odin</a></div>
-<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/Joints.html">Joints.odin</a></div>
-<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/Materials.html">Materials.odin</a></div>
-<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/Math.html">Math.odin</a></div>
-<div class="file" style="padding-left: 3.0em;"><a href="../2D/Physics/PhysicsEngine.html">PhysicsEngine.odin</a></div>
-</details>
 <details class='folder' style='padding-left: 1.5em;'><summary>Renderer</summary>
 <div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/Draw.html">Draw.odin</a></div>
 <div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/FileLoader.html">FileLoader.odin</a></div>
@@ -63,7 +56,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorFromSDL</h2>
   <pre class='code'>ColorFromSDL (c: sdl2.Color) -&gt; Color</pre>
-  <p>ColorFromSDL an internal function that converts SDL2&#x27;s Color data structure to Magma&#x27;s Color data structure.</p>
+  <p>Internal function that converts SDL2&#x27;s Color data structure to Magma&#x27;s Color data structure.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>c</span>: the SDL2 Color data structure</li>
   </ul></div>
@@ -72,7 +65,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorToSDL</h2>
   <pre class='code'>ColorToSDL (c: Color) -&gt; sdl2</pre>
-  <p>ColorToSDL an internal function that converts Magma&#x27;s Color data structure to SDL2&#x27;s Color data structure.</p>
+  <p>Internal function that converts Magma&#x27;s Color data structure to SDL2&#x27;s Color data structure.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>c</span>: the Magma Color data structure</li>
   </ul></div>
@@ -81,7 +74,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorAdd</h2>
   <pre class='code'>ColorAdd (a, b: Color) -&gt; Color</pre>
-  <p>ColorAdd performs per-channel addition of two Colors.</p>
+  <p>Performs per-channel addition of two Colors.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: first Color operand</li>
     <li><span class='param-name'>b</span>: second Color operand</li>
@@ -91,7 +84,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorSub</h2>
   <pre class='code'>ColorSub (a, b: Color) -&gt; Color</pre>
-  <p>ColorSub performs per-channel subtraction of two Colors.</p>
+  <p>Performs per-channel subtraction of two Colors.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: first Color operand</li>
     <li><span class='param-name'>b</span>: second Color operand</li>
@@ -101,7 +94,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorMul</h2>
   <pre class='code'>ColorMul (a, b: Color) -&gt; Color</pre>
-  <p>ColorMul performs per-channel multiplication of two Colors, clamped to valid RGBA ranges. The alpha channel is clamped to a maximum of 100 to avoid full opacity.</p>
+  <p>Performs per-channel multiplication of two Colors, clamped to valid RGBA ranges. The alpha channel is clamped to a maximum of 100 to avoid full opacity.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: first Color operand</li>
     <li><span class='param-name'>b</span>: second Color operand</li>
@@ -111,7 +104,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorDiv</h2>
   <pre class='code'>ColorDiv (a, b: Color) -&gt; Color</pre>
-  <p>ColorDiv performs per-channel division of two Colors, with float casting for precision. The result is clamped to valid RGBA ranges, with alpha clamped to 100 max.</p>
+  <p>Performs per-channel division of two Colors, with float casting for precision. The result is clamped to valid RGBA ranges, with alpha clamped to 100 max.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: numerator Color</li>
     <li><span class='param-name'>b</span>: denominator Color</li>
@@ -121,7 +114,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorNegate</h2>
   <pre class='code'>ColorNegate (a: Color) -&gt; Color</pre>
-  <p>ColorNegate returns the color negation (inversion) of the RGB channels. Note: this operation is not performed using SIMD intrinsics directly.</p>
+  <p>Returns the color negation (inversion) of the RGB channels. Note: this operation is not performed using SIMD intrinsics directly.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: Color to negate</li>
   </ul></div>
@@ -130,7 +123,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorToArray</h2>
   <pre class='code'>ColorToArray (color: Color)</pre>
-  <p>ColorToArray converts a color to an array</p>
+  <p>Converts a color to an array</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>color</span>: The color to convert to an array</li>
   </ul></div>

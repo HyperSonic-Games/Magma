@@ -40,13 +40,6 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
 <div class="file" style="padding-left: 3.0em;"><a href="../EventSys/EventSystem.html">EventSystem.odin</a></div>
 </details>
-<details class='folder' style='padding-left: 1.5em;'><summary>Physics</summary>
-<div class="file" style="padding-left: 3.0em;"><a href="../Physics/Forces.html">Forces.odin</a></div>
-<div class="file" style="padding-left: 3.0em;"><a href="../Physics/Joints.html">Joints.odin</a></div>
-<div class="file" style="padding-left: 3.0em;"><a href="../Physics/Materials.html">Materials.odin</a></div>
-<div class="file" style="padding-left: 3.0em;"><a href="../Physics/Math.html">Math.odin</a></div>
-<div class="file" style="padding-left: 3.0em;"><a href="../Physics/PhysicsEngine.html">PhysicsEngine.odin</a></div>
-</details>
 <details class='folder' style='padding-left: 1.5em;' open><summary>Renderer</summary>
 <div class="file" class='current' style="padding-left: 3.0em;"><a href="Draw.html">Draw.odin</a></div>
 </details>
@@ -58,7 +51,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ClearScreen</h2>
   <pre class='code'>ClearScreen (ctx: ^RenderContext, color: Types.Color)</pre>
-  <p>ClearScreen clears the screen of the renderer win a color</p>
+  <p>Clears the screen of the renderer win a color</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>cxt</span>: the renderer context to clear</li>
     <li><span class='param-name'>color</span>: the rgba value to clear the screen with</li>
@@ -67,7 +60,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>PresentScreen</h2>
   <pre class='code'>PresentScreen (ctx: ^RenderContext)</pre>
-  <p>PresentScreen renders the current data in the renderer to the window</p>
+  <p>Renders the current data in the renderer to the window</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>ctx</span>: the renderer context to render to the window</li>
   </ul></div>
@@ -75,7 +68,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>DrawRect</h2>
   <pre class='code'>DrawRect (ctx: ^RenderContext, pos: Types.Vector2f, size: Types.Vector2f, color: Types.Color, filled: bool = true, rot: f32 = 0.0)</pre>
-  <p>DrawRect draws a rectangle to the renderer with optional rotation</p>
+  <p>Draws a rectangle to the renderer with optional rotation</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>ctx</span>: the renderer to draw to</li>
     <li><span class='param-name'>pos</span>: the top-left point of the rect</li>
@@ -88,7 +81,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>DrawLine</h2>
   <pre class='code'>DrawLine (ctx: ^RenderContext, point1: Types.Vector2f, point2: Types.Vector2f, color: Types.Color)</pre>
-  <p>DrawLine draws a line to the renderer</p>
+  <p>Draws a line to the renderer</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>ctx</span>: the renderer to draw to</li>
     <li><span class='param-name'>point1</span>: the start point of the line</li>
@@ -98,13 +91,13 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 </section>
 <section>
   <h2>DrawTexture</h2>
-  <pre class='code'>DrawTexture (ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vector2f, rot: Types.Radians)</pre>
-  <p>DrawTexture draws an SDL2 texture to the renderer with optional rotation Meant to be used with an image loader</p>
+  <pre class='code'>DrawTexture (ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vector2f, rot: f64)</pre>
+  <p>Draws an SDL2 texture to the renderer with optional rotation Can be used with an image loader or any SDL2 code that creates a texture (e.g., ImGUI or other SDL2 libraries) sutch as ImGUI and other SDL2 libs</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>ctx</span>: the renderer to draw to</li>
     <li><span class='param-name'>texture</span>: the SDL2 texture to render</li>
     <li><span class='param-name'>pos</span>: the top-left position to draw the texture</li>
-    <li><span class='param-name'>rot</span>: the rotation angle (in Radians, clockwise)</li>
+    <li><span class='param-name'>rot</span>: the rotation angle (in degrees)</li>
   </ul></div>
 </section>
 </article>

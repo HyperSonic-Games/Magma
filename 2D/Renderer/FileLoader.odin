@@ -8,21 +8,19 @@ import "vendor:sdl2/ttf"
 import "../../Util"
 
 /*
- * UnloadTexture Frees an SDL2 allocated texture
- *
- * @param texture The texture to free
- */
+Frees an SDL2 allocated texture
+@param texture The texture to free
+*/
 UnloadTexture :: proc(texture: ^sdl2.Texture) {
     sdl2.DestroyTexture(texture)
 }
 
 /*
- * LoadEmbeddedBMP Loads a BMP image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The array of bytes to load
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a BMP image from an array of bytes
+@param cxt The rendering context used to create the texture
+@param data The array of bytes to load
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedBMP :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -35,12 +33,11 @@ LoadEmbeddedBMP :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
 }
 
 /*
- * LoadEmbeddedCUR Loads a CUR image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The array of bytes to load
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a CUR image from an array of bytes
+@param cxt The rendering context used to create the texture
+@param data The array of bytes to load
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedCUR :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -53,12 +50,11 @@ LoadEmbeddedCUR :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
 }
 
 /*
- * LoadEmbeddedGIF Loads a GIF image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The array of bytes to load
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a GIF image from an array of bytes
+@param cxt The rendering context used to create the texture
+@param data The array of bytes to load
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedGIF :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -71,12 +67,11 @@ LoadEmbeddedGIF :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
 }
 
 /*
- * LoadEmbeddedICO Loads a ICO image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The array of bytes to load
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a ICO image from an array of bytes
+@param cxt The rendering context used to create the texture
+@param data The array of bytes to load
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedICO :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -89,12 +84,11 @@ LoadEmbeddedICO :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
 }
 
 /*
- * LoadEmbeddedJPEG Loads a JPEG image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The array of bytes to load
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a JPEG image from an array of bytes
+@param cxt The rendering context used to create the texture
+@param data The array of bytes to load
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedJPEG :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -107,12 +101,11 @@ LoadEmbeddedJPEG :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
 }
 
 /*
- * LoadEmbeddedLBM Loads a LBM image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The array of bytes to load
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a LBM image from an array of bytes
+@param cxt The rendering context used to create the texture
+@param data The array of bytes to load
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedLBM :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -125,12 +118,11 @@ LoadEmbeddedLBM :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
 }
 
 /*
- * LoadEmbeddedPCX Loads a PCX image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The array of bytes to load
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a PCX image from an array of bytes
+@param cxt The rendering context used to create the texture
+@param data The array of bytes to load
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedPCX :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -143,12 +135,11 @@ LoadEmbeddedPCX :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
 }
 
 /*
- * LoadEmbeddedPNG Loads a PNG image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The array of bytes to load
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a PNG image from an array of bytes
+@param cxt The rendering context used to create the texture
+@param data The array of bytes to load
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedPNG :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -161,12 +152,11 @@ LoadEmbeddedPNG :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
 }
 
 /*
- * LoadEmbeddedPNM Loads a PNM image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The array of bytes to load
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a PNM image from an array of bytes
+@param cxt The rendering context used to create the texture
+@param data The array of bytes to load
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedPNM :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -179,12 +169,11 @@ LoadEmbeddedPNM :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
 }
 
 /*
- * LoadEmbeddedSVG Loads a SVG image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The string of SVG code
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a SVG image from an SVG code string
+@param cxt The rendering context used to create the texture
+@param data The string of SVG code
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedSVG :: proc(cxt: RenderContext, data: string) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -197,12 +186,11 @@ LoadEmbeddedSVG :: proc(cxt: RenderContext, data: string) -> ^sdl2.Texture {
 }
 
 /*
- * LoadEmbeddedTGA Loads a TGA image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The array of bytes to load
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a TGA image from an array of bytes
+@param cxt The rendering context used to create the texture
+@param data The array of bytes to load
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedTGA :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -215,12 +203,11 @@ LoadEmbeddedTGA :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
 }
 
 /*
- * LoadEmbeddedXCF Loads a XCF image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The array of bytes to load
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a XCF image from an array of bytes
+@param cxt The rendering context used to create the texture
+@param data The array of bytes to load
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedXCF :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -233,12 +220,11 @@ LoadEmbeddedXCF :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
 }
 
 /*
- * LoadEmbeddedXPM Loads a XPM image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The array of bytes to load
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a XPM image from an array of bytes
+@param cxt The rendering context used to create the texture
+@param data The array of bytes to load
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedXPM :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -251,12 +237,11 @@ LoadEmbeddedXPM :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
 }
 
 /*
- * LoadEmbeddedXV Loads a XV image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The array of bytes to load
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a XV image from an array of bytes
+@param cxt The rendering context used to create the texture
+@param data The array of bytes to load
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedXV :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -269,12 +254,11 @@ LoadEmbeddedXV :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
 }
 
 /*
- * LoadEmbeddedWebP Loads a WebP image from an array of bytes
- *
- * @param cxt The rendering context used to create the texture
- * @param data The array of bytes to load
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a WebP image from an array of bytes
+@param cxt The rendering context used to create the texture
+@param data The array of bytes to load
+@return An SDL texture to pass to DrawTexture
+*/
 LoadEmbeddedWebP :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
     rw := sdl2.RWFromConstMem(raw_data(data), cast(i32)size_of(data))
     if rw == nil { return nil }
@@ -287,12 +271,11 @@ LoadEmbeddedWebP :: proc(cxt: RenderContext, data: []byte) -> ^sdl2.Texture {
 }
 
 /*
- * LoadBMPFile Loads a BMP image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a BMP image from a file
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadBMPFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
@@ -307,12 +290,11 @@ LoadBMPFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
 }
 
 /*
- * LoadCURFile Loads a CUR image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a CUR image from a file
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadCURFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
@@ -327,12 +309,11 @@ LoadCURFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
 }
 
 /*
- * LoadGIFFile Loads a GIF image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a GIF image from a file
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadGIFFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
@@ -347,12 +328,11 @@ LoadGIFFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
 }
 
 /*
- * LoadICOFile Loads a ICO image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a ICO image from a file
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadICOFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
@@ -367,12 +347,11 @@ LoadICOFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
 }
 
 /*
- * LoadJPEGFile Loads a JPEG image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a JPEG image from a file
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadJPEGFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
@@ -387,12 +366,11 @@ LoadJPEGFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
 }
 
 /*
- * LoadLBMFile Loads a LBM image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a LBM image from a file
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadLBMFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
@@ -407,12 +385,11 @@ LoadLBMFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
 }
 
 /*
- * LoadPCXFile Loads a PCX image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a PCX image from a file
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadPCXFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
@@ -427,12 +404,11 @@ LoadPCXFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
 }
 
 /*
- * LoadPNGFile Loads a PNG image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a PNG image from a file
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadPNGFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
@@ -447,12 +423,11 @@ LoadPNGFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
 }
 
 /*
- * LoadPNMFile Loads a PNM image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a PNM image from a file
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadPNMFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
@@ -467,12 +442,11 @@ LoadPNMFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
 }
 
 /*
- * LoadSVGFile Loads a SVG image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a SVG image from a file
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadSVGFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
@@ -487,12 +461,11 @@ LoadSVGFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
 }
 
 /*
- * LoadTGAFile Loads a TGA image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a TGA image from a file
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadTGAFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
@@ -507,12 +480,11 @@ LoadTGAFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
 }
 
 /*
- * LoadXCFFile Loads a XCF image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a XCF image from a file
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadXCFFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
@@ -527,12 +499,11 @@ LoadXCFFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
 }
 
 /*
- * LoadXPMFile Loads a XPM image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a XPM image from a file
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadXPMFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
@@ -547,12 +518,11 @@ LoadXPMFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
 }
 
 /*
- * LoadXVFile Loads a XV image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a XV image from a file
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadXVFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
@@ -567,12 +537,12 @@ LoadXVFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
 }
 
 /*
- * LoadWebPFile Loads a WebP image from a file
- *
- * @param cxt The rendering context used to create the texture
- * @param file_path The path to the image file
- * @return An SDL texture to pass to DrawTexture
- */
+Loads a WebP image from a file
+
+@param cxt The rendering context used to create the texture
+@param file_path The path to the image file
+@return An SDL texture to pass to DrawTexture
+*/
 LoadWebPFile :: proc(cxt: RenderContext, file_path: cstring) -> ^sdl2.Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }

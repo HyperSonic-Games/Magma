@@ -28,42 +28,40 @@ RenderContext :: struct {
 }
 
 /*
- * Init Creates a new window and SDL2 renderer for drawing on
- *
- * @param app_name the internal name used by drivers like audio for identification
- * @param window_name the name displayed in the title bar in ANCI
- * @param width the width of the window in pixels
- * @param height the height of the window in pixels
- * @param GraphicsBackend defaults to OpenGL but can be set to Software on all platforms, Metal on Apple devices, and DirectX3D11 on Windows devices
- * @param debug_mode flag that tells SDL2 to run in debug mode NOTE: cluters up STDIO use only if MAGMA will not tell you the error
- * 
- * @return RenderContext a renderer context for the window you just created
+Creates a new window and SDL2 renderer for drawing on
+@param app_name the internal name used by drivers like audio for identification
+@param window_name the name displayed in the title bar in ANCI
+@param width the width of the window in pixels
+@param height the height of the window in pixels
+@param GraphicsBackend defaults to OpenGL but can be set to Software on all platforms, Metal on Apple devices, and DirectX3D11 on Windows devices
+@param sdl2_debug_verbose flag that tells SDL2 to run in debug mode NOTE: cluters up STDIO use only if MAGMA will not tell you the error 
+@return RenderContext a renderer context for the window you just created
 */
 Init :: proc(
     app_name: cstring, window_name: cstring, width: i32, height: i32,
     backend: GraphicsBackend = .OPEN_GL,
-    debug_mode: bool = false
+    sdl2_debug_verbose: bool = Util.VERBOSE_LOGGING
 ) -> RenderContext {
     backend := backend
     #partial switch backend {
         case .DIRECTX3D11:
             when (ODIN_OS != .Windows) {
-                Util.log(.WARN, "MAGMA_2D_RENDERER_INIT", "DirectX3D11 is Windows-only, defaulting to OpenGL.")
+                Util.log(.WARN,  "MAGMA", "2D_RENDERER_INIT", "DirectX3D11 is Windows-only, defaulting to OpenGL.")
                 backend = .OPEN_GL
             }
 
         case .METAL:
             when (ODIN_OS != .Darwin) {
-                Util.log(.WARN, "MAGMA_2D_RENDERER_INIT", "Metal is macOS-only, defaulting to OpenGL.")
+                Util.log(.WARN, "MAGMA", "2D_RENDERER_INIT", "Metal is macOS-only, defaulting to OpenGL.")
                 backend = .OPEN_GL
             }
     }
 
     sdl2.SetHint(sdl2.HINT_AUDIO_DEVICE_APP_NAME, app_name)
-    sdl2.SetHint(sdl2.HINT_RENDER_VSYNC, "0" if debug_mode else "1")
-    sdl2.SetHint(sdl2.HINT_EVENT_LOGGING, "1" if debug_mode else "0")
+    sdl2.SetHint(sdl2.HINT_RENDER_VSYNC, "0" if sdl2_debug_verbose else "1")
+    sdl2.SetHint(sdl2.HINT_EVENT_LOGGING, "1" if sdl2_debug_verbose else "0")
     sdl2.SetHint(sdl2.HINT_RENDER_BATCHING, "1")
-    if !debug_mode {
+    if !sdl2_debug_verbose {
         sdl2.LogSetAllPriority(.WARN)
     }
 
@@ -75,7 +73,7 @@ Init :: proc(
         case .DIRECTX3D11:
             sdl2.SetHint(sdl2.HINT_RENDER_DRIVER, "direct3d11")
             sdl2.SetHint(sdl2.HINT_FRAMEBUFFER_ACCELERATION, "direct3d11")
-            if (debug_mode) {
+            if (sdl2_debug_verbose) {
                 sdl2.SetHint(sdl2.HINT_RENDER_DIRECT3D11_DEBUG, "1")
             }
         case .METAL:
@@ -87,7 +85,7 @@ Init :: proc(
     }
 
     if sdl2.Init(sdl2.INIT_VIDEO | sdl2.INIT_AUDIO) != 0 {
-        Util.log(.ERROR, "MAGMA_2D_RENDERER_INIT", sdl2.GetErrorString())
+        Util.log(.ERROR, "MAGMA", "2D_RENDERER_INIT", sdl2.GetErrorString())
     }
 
 
@@ -99,7 +97,7 @@ Init :: proc(
         window_flags
     )
     if window == nil {
-        Util.log(.ERROR, "MAGMA_2D_RENDERER_INIT", "Failed to create window: %s", sdl2.GetErrorString())
+        Util.log(.ERROR, "MAGMA", "2D_RENDERER_INIT", "Failed to create window: %s", sdl2.GetErrorString())
         sdl2.Quit()
     }
 
@@ -113,7 +111,7 @@ Init :: proc(
 
     renderer := sdl2.CreateRenderer(window, -1, renderer_flags)
     if renderer == nil {
-        Util.log(.ERROR, "MAGMA_2D_RENDERER_INIT", "Failed to create renderer: %s", sdl2.GetErrorString())
+        Util.log(.ERROR, "MAGMA", "2D_RENDERER_INIT", "Failed to create renderer: %s", sdl2.GetErrorString())
         sdl2.Quit()
     }
 
@@ -123,7 +121,7 @@ Init :: proc(
     splash_rw := sdl2.RWFromConstMem(&Types.SplashImage[0], cast(i32)len(Types.SplashImage))
     splash_surface := image.Load_RW(splash_rw, true)
     if splash_surface == nil {
-        Util.log(.ERROR, "MAGMA_2D_RENDERER_INIT", "Failed to load splash image: %s", sdl2.GetErrorString())
+        Util.log(.ERROR, "MAGMA", "2D_RENDERER_INIT", "Failed to load splash image: %s", sdl2.GetErrorString())
     } else {
         splash_texture := sdl2.CreateTextureFromSurface(renderer, splash_surface)
         sdl2.FreeSurface(splash_surface)
@@ -151,7 +149,7 @@ Init :: proc(
             sdl2.Delay(3000)
             sdl2.DestroyTexture(splash_texture)
         } else {
-            Util.log(.ERROR, "MAGMA_2D_RENDERER_INIT", "Failed to create splash texture: %s", sdl2.GetErrorString())
+            Util.log(.ERROR, "MAGMA", "2D_RENDERER_INIT", "Failed to create splash texture: %s", sdl2.GetErrorString())
         }
     }
 
@@ -167,8 +165,8 @@ Init :: proc(
 }
 
 /*
- * Update Updates the renderer with whatever should be rendered to the screen
- * @param cxt The renderer context for the window you want to update
+Updates the renderer with whatever should be rendered to the screen
+@param cxt The renderer context for the window you want to update
 */
 Update :: proc(ctx: ^RenderContext) {
     sdl2.SetRenderTarget(ctx.Renderer, nil)  // Switch to default window framebuffer
@@ -184,9 +182,9 @@ Update :: proc(ctx: ^RenderContext) {
 
 
 /*
- * SetFullscreen controls if the window in the renderer context is fullscreen or not
- * @param cxt the renderer context of the window you want to toggle fullscreen on
- * @param fullscreen the flag that sets if the window is fullscreen or not
+Controls if the window in the renderer context is fullscreen or not
+@param cxt the renderer context of the window you want to toggle fullscreen on
+@param fullscreen the flag that sets if the window is fullscreen or not
 */
 SetFullscreen :: proc(ctx: RenderContext, fullscreen: bool) {
     switch fullscreen {
@@ -199,8 +197,8 @@ SetFullscreen :: proc(ctx: RenderContext, fullscreen: bool) {
 }
 
 /*
- * Shutdown cleans up the window and renderer then quits SDL2
- * @param cxt the context to clean up
+Cleans up the window and renderer then quits SDL2
+@param cxt the context to clean up
 */
 Shutdown :: proc(ctx: RenderContext) {
     if ctx.Renderer != nil {
@@ -217,8 +215,8 @@ Shutdown :: proc(ctx: RenderContext) {
 }
 
 /*
- * FPSLimiter limits the FPS to a specific value
- * @param target_fps the number for the fps you want to limit to
+Limits the FPS to a specific value
+@param target_fps the number for the fps you want to limit to
 */
 FPSLimiter :: proc(target_fps: u32) {
 
@@ -237,11 +235,10 @@ FPSLimiter :: proc(target_fps: u32) {
 }
 
 /*
- * GetDeltaTime returns the time in seconds between the current frame and the previous frame.
- * It only updates the previous frame time every second call, effectively measuring delta over two frames.
- *
- * @return delta time in seconds (f32)
- */
+Returns the time in seconds between the current frame and the previous frame.
+It only updates the previous frame time every second call, effectively measuring delta over two frames.
+@return delta time in seconds (f32)
+*/
 GetDeltaTime :: proc() -> f32 {
     @static initialized: bool = false
     @static last_time: u32
