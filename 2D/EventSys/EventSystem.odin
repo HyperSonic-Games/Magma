@@ -1,3 +1,4 @@
+#+feature using-stmt
 package EventSys
 
 import "../../Types"
