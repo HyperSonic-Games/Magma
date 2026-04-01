@@ -51,7 +51,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ClearScreen</h2>
   <pre class='code'>ClearScreen (ctx: ^RenderContext, color: Types.Color)</pre>
-  <p>Clears the screen of the renderer win a color</p>
+  <p>clears the screen of the renderer with a color</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>cxt</span>: the renderer context to clear</li>
     <li><span class='param-name'>color</span>: the rgba value to clear the screen with</li>
@@ -60,15 +60,15 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>PresentScreen</h2>
   <pre class='code'>PresentScreen (ctx: ^RenderContext)</pre>
-  <p>Renders the current data in the renderer to the window</p>
+  <p>renders the current data in the renderer to the window</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>ctx</span>: the renderer context to render to the window</li>
+    <li><span class='param-name'>ctx</span>: the renderer context to render to the window that it owns</li>
   </ul></div>
 </section>
 <section>
   <h2>DrawRect</h2>
   <pre class='code'>DrawRect (ctx: ^RenderContext, pos: Types.Vector2f, size: Types.Vector2f, color: Types.Color, filled: bool = true, rot: f32 = 0.0)</pre>
-  <p>Draws a rectangle to the renderer with optional rotation</p>
+  <p>draws a rectangle to the renderer with optional rotation</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>ctx</span>: the renderer to draw to</li>
     <li><span class='param-name'>pos</span>: the top-left point of the rect</li>
@@ -81,7 +81,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>DrawLine</h2>
   <pre class='code'>DrawLine (ctx: ^RenderContext, point1: Types.Vector2f, point2: Types.Vector2f, color: Types.Color)</pre>
-  <p>Draws a line to the renderer</p>
+  <p>draws a line to the renderer</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>ctx</span>: the renderer to draw to</li>
     <li><span class='param-name'>point1</span>: the start point of the line</li>
@@ -91,8 +91,8 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 </section>
 <section>
   <h2>DrawTexture</h2>
-  <pre class='code'>DrawTexture (ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vector2f, rot: f64)</pre>
-  <p>Draws an SDL2 texture to the renderer with optional rotation Can be used with an image loader or any SDL2 code that creates a texture (e.g., ImGUI or other SDL2 libraries) sutch as ImGUI and other SDL2 libs</p>
+  <pre class='code'>DrawTexture (ctx: ^RenderContext, texture: ^Texture, pos: Types.Vector2f, rot: f64)</pre>
+  <p>draws an SDL2 texture to the renderer with optional rotation Can be used with an image loader or any SDL2 code that creates a texture</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>ctx</span>: the renderer to draw to</li>
     <li><span class='param-name'>texture</span>: the SDL2 texture to render</li>

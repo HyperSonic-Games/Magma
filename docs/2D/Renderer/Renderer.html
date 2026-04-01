@@ -57,7 +57,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
     backend: GraphicsBackend = .OPEN_GL,
     sdl2_debug_verbose: bool = Util.VERBOSE_LOGGING
 ) -&gt; RenderContext</pre>
-  <p>Creates a new window and SDL2 renderer for drawing on</p>
+  <p>creates a new window and SDL2 renderer for drawing on</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>app_name</span>: the internal name used by drivers like audio for identification</li>
     <li><span class='param-name'>window_name</span>: the name displayed in the title bar in ANCI</li>
@@ -71,7 +71,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>Update</h2>
   <pre class='code'>Update (ctx: ^RenderContext)</pre>
-  <p>Updates the renderer with whatever should be rendered to the screen</p>
+  <p>updates the renderer with whatever should be rendered to the screen</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>cxt</span>: The renderer context for the window you want to update</li>
   </ul></div>
@@ -79,7 +79,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>SetFullscreen</h2>
   <pre class='code'>SetFullscreen (ctx: RenderContext, fullscreen: bool)</pre>
-  <p>Controls if the window in the renderer context is fullscreen or not</p>
+  <p>controls if the window in the renderer context is fullscreen or not</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>cxt</span>: the renderer context of the window you want to toggle fullscreen on</li>
     <li><span class='param-name'>fullscreen</span>: the flag that sets if the window is fullscreen or not</li>
@@ -88,7 +88,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>Shutdown</h2>
   <pre class='code'>Shutdown (ctx: RenderContext)</pre>
-  <p>Cleans up the window and renderer then quits SDL2</p>
+  <p>cleans up the window and renderer then quits SDL2</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>cxt</span>: the context to clean up</li>
   </ul></div>
@@ -96,7 +96,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>FPSLimiter</h2>
   <pre class='code'>FPSLimiter (target_fps: u32)</pre>
-  <p>Limits the FPS to a specific value</p>
+  <p>limits the FPS to a specific value</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>target_fps</span>: the number for the fps you want to limit to</li>
   </ul></div>
@@ -104,8 +104,8 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>GetDeltaTime</h2>
   <pre class='code'>GetDeltaTime () -&gt; f32</pre>
-  <p>Returns the time in seconds between the current frame and the previous frame. It only updates the previous frame time every second call, effectively measuring delta over two frames.</p>
-  <div class='return'>Returns: delta time in seconds (f32)</div>
+  <p>returns the time in seconds between the current frame and the previous frame. It only updates the previous frame time every second call, effectively measuring delta over two frames.</p>
+  <div class='return'>Returns: delta time in seconds</div>
 </section>
 </article>
 </main>

@@ -17,7 +17,7 @@ import "vendor:sdl2/ttf"
 Texture :: sdl2.Texture
 
 /*
-Clears the screen of the renderer win a color
+clears the screen of the renderer with a color
 @param cxt the renderer context to clear
 @param color the rgba value to clear the screen with
 */
@@ -28,8 +28,8 @@ ClearScreen :: proc(ctx: ^RenderContext, color: Types.Color) {
 }
 
 /*
-Renders the current data in the renderer to the window
-@param ctx the renderer context to render to the window
+renders the current data in the renderer to the window
+@param ctx the renderer context to render to the window that it owns
 */
 PresentScreen :: proc(ctx: ^RenderContext) {
     sdl2.SetRenderTarget(ctx.Renderer, nil);
@@ -37,7 +37,7 @@ PresentScreen :: proc(ctx: ^RenderContext) {
 }
 
 /*
-Draws a rectangle to the renderer with optional rotation
+draws a rectangle to the renderer with optional rotation
 @param ctx the renderer to draw to
 @param pos the top-left point of the rect
 @param size the size of the rect
@@ -89,7 +89,7 @@ DrawRect :: proc(ctx: ^RenderContext, pos: Types.Vector2f, size: Types.Vector2f,
 }
 
 /*
-Draws a line to the renderer
+draws a line to the renderer
 @param ctx the renderer to draw to
 @param point1 the start point of the line
 @param point2 the end point of the line
@@ -106,16 +106,14 @@ DrawLine :: proc(ctx: ^RenderContext, point1: Types.Vector2f, point2: Types.Vect
 }
 
 /*
-Draws an SDL2 texture to the renderer with optional rotation
+draws an SDL2 texture to the renderer with optional rotation
 Can be used with an image loader or any SDL2 code that creates a texture
-(e.g., ImGUI or other SDL2 libraries)
-sutch as ImGUI and other SDL2 libs
 @param ctx the renderer to draw to
 @param texture the SDL2 texture to render
 @param pos the top-left position to draw the texture
 @param rot the rotation angle (in degrees)
 */
-DrawTexture :: proc(ctx: ^RenderContext, texture: ^sdl2.Texture, pos: Types.Vector2f, rot: f64) {
+DrawTexture :: proc(ctx: ^RenderContext, texture: ^Texture, pos: Types.Vector2f, rot: f64) {
     w, h: i32
     _ = sdl2.QueryTexture(texture, nil, nil, &w, &h)
 

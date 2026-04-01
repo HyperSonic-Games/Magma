@@ -8,7 +8,7 @@ Color :: #simd[4]u8
 
 
 /*
-Internal function that converts SDL2's Color data structure to Magma's Color data structure.
+internal function that converts SDL2's Color data structure to Magma's Color data structure.
 @param c the SDL2 Color data structure
 @return Magma's Color data structure
 */
@@ -18,7 +18,7 @@ ColorFromSDL :: proc(c: sdl2.Color) -> Color {
 }
 
 /*
-Internal function that converts Magma's Color data structure to SDL2's Color data structure.
+internal function that converts Magma's Color data structure to SDL2's Color data structure.
 @param c the Magma Color data structure
 @return SDL2's Color data structure
 */
@@ -34,57 +34,56 @@ ColorToSDL :: proc(c: Color) -> sdl2.Color {
 
 
 /*
-Performs per-channel addition of two Colors.
+performs per-channel addition of two Colors.
 @param a first Color operand
 @param b second Color operand
-@return Resulting Color after addition
+@return resulting Color after addition
 */
 ColorAdd :: proc(a, b: Color) -> Color {
     return simd.clamp(simd.add(a, b), {0, 0, 0, 0,}, {255, 255, 255, 100})
 }
 
 /*
-Performs per-channel subtraction of two Colors.
+performs per-channel subtraction of two Colors.
 @param a first Color operand
 @param b second Color operand
-@return Resulting Color after subtraction
+@return resulting Color after subtraction
 */
 ColorSub :: proc(a, b: Color) -> Color {
-    return simd.clamp(simd.sub(a, b), {0, 0, 0, 0}, {255, 255, 255, 100})
+    return simd.clamp(simd.sub(a, b), {0, 0, 0, 0}, {255, 255, 255, 255})
 }
 
 /*
-Performs per-channel multiplication of two Colors, clamped to valid RGBA ranges.
-The alpha channel is clamped to a maximum of 100 to avoid full opacity.
+performs per-channel multiplication of two Colors, clamped to valid RGBA ranges.
 @param a first Color operand
 @param b second Color operand
-@return Resulting Color after multiplication and clamping
+@return resulting Color after multiplication and clamping
 */
 ColorMul :: proc(a, b: Color) -> Color {
-    return simd.clamp(simd.mul(a, b), {0, 0, 0 ,0}, {255, 255, 255, 100})
+    return simd.clamp(simd.mul(a, b), {0, 0, 0 ,0}, {255, 255, 255, 255})
 }
 
 /*
-Performs per-channel division of two Colors, with float casting for precision.
+performs per-channel division of two Colors, with float casting for precision.
 The result is clamped to valid RGBA ranges, with alpha clamped to 100 max.
 @param a numerator Color
 @param b denominator Color
-@return Resulting Color after division and clamping
+@return resulting Color after division and clamping
 */
 ColorDiv :: proc(a, b: Color) -> Color {
     // Cast to float SIMD vectors for division, then back to u8 SIMD vector
     return simd.clamp(
         cast(#simd[4]u8) simd.div(cast(#simd[4]f32)a, cast(#simd[4]f32)b), 
         {0, 0, 0, 0}, 
-        {255, 255, 255, 100}
+        {255, 255, 255, 255}
     )
 }
 
 /*
-Returns the color negation (inversion) of the RGB channels.
+returns the color negation (inversion) of the RGB channels.
 Note: this operation is not performed using SIMD intrinsics directly.
 @param a Color to negate
-@return Negated Color with clamped alpha
+@return negated Color with clamped alpha
 */
 ColorNegate :: proc(a: Color) -> Color {
     NegColorMap: [3]u8 = {255, 255, 255} // Used for inversion of RGB channels
@@ -94,13 +93,13 @@ ColorNegate :: proc(a: Color) -> Color {
         Color[i] = NegColorMap[i] - Color[i]
     }
     // Clamp to ensure valid RGBA range
-    return simd.clamp(simd.from_array(Color), {0, 0, 0, 0}, {255, 255, 255, 100})
+    return simd.clamp(simd.from_array(Color), {0, 0, 0, 0}, {255, 255, 255, 255})
 }
 
 /*
-Converts a color to an array
+converts a color to an array
 @param color The color to convert to an array
-@return an u8 array of four values in the format (R, G, B, A)
+@return a u8 array of four values in the format (R, G, B, A)
 */
 ColorToArray :: proc(color: Color) -> [4]u8 {
     array: [4]u8

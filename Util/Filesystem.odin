@@ -9,11 +9,10 @@ import "core:strings"
 import "core:os"
 
 /*
- * WriteCompressedStringFile writes an array of strings to a file.
- * Each line is compressed using Shoco compression before being written.
- *
- * @param filepath Destination file path
- * @param text Array of strings to compress and write
+writes an array of strings to a file.
+each line is compressed using Shoco compression before being written.
+@param filepath destination file path
+@param text array of strings to compress and write
 */
 WriteCompressedStringFile :: proc(filepath: string, text: []string) {
     handle, _ := os.open(filepath, {.Write, .Create})
@@ -27,11 +26,11 @@ WriteCompressedStringFile :: proc(filepath: string, text: []string) {
 }
 
 /*
- * ReadCompressedStringFile reads a Shoco-compressed file,
- * decompresses its content, and returns the result split by lines.
- *
- * @param filepath Path to the compressed file
- * @return Decompressed lines as an array of strings
+reads a Shoco-compressed file,
+decompresses its content, and returns the result split by lines.
+@param filepath path to the compressed file
+@param allocator allocator used to allocate the returned string array
+@return decompressed lines as an array of strings
 */
 ReadCompressedStringFile :: proc(filepath: string, allocator := context.allocator) -> []string {
     handle, _ := os.open(filepath, os.O_RDONLY)
@@ -46,10 +45,10 @@ ReadCompressedStringFile :: proc(filepath: string, allocator := context.allocato
 }
 
 /*
- * ReadCSVFile reads and parses a CSV file into a flat array of all fields.
- *
- * @param filepath Path to the CSV file
- * @return Flat array of all CSV fields
+reads and parses a CSV file into a flat array of all fields.
+@param filepath path to the CSV file
+@param allocator allocator used to allocate the returned string array
+@return flat array of all CSV fields
 */
 ReadCSVFile :: proc(filepath: string, allocator := context.allocator) -> []string {
     log(.DEBUG, "MAGMA", "CSV_READER", "Reading CSV from file: %s", filepath)
@@ -97,11 +96,10 @@ ReadCSVFile :: proc(filepath: string, allocator := context.allocator) -> []strin
 }
 
 /*
- * WriteCSVFile writes a flat array of values as a single CSV line to a file.
- *
- * @param filepath File to write to
- * @param values Flat array of values to write
- * @return True if write succeeded
+writes a flat array of values as a single CSV line to a file.
+@param filepath file to write to
+@param values flat array of values to write
+@return true if write succeeded false otherwise
 */
 WriteCSVFile :: proc(filepath: string, values: []string) -> (ok: bool) {
     log(.DEBUG, "MAGMA", "CSV_WRITER", "Writing CSV to file: %s", filepath)
@@ -127,10 +125,10 @@ WriteCSVFile :: proc(filepath: string, values: []string) -> (ok: bool) {
 }
 
 /*
-* ReadBase32File reads a Base32-encoded file and decodes it into raw bytes.
-*
-* @param filepath Path to encoded file
-* @return Decoded byte slice or nil on error
+reads a Base32-encoded file and decodes it into raw bytes.
+@param filepath path to encoded file
+@param allocator allocator used to allocate the returned byte arra
+@return decoded byte slice or nil on error
 */
 ReadBase32File :: proc(filepath: string, allocator := context.allocator) -> []byte {
     file_handle, err := os.open(filepath, os.O_RDONLY)
@@ -153,11 +151,10 @@ ReadBase32File :: proc(filepath: string, allocator := context.allocator) -> []by
 }
 
 /*
-* WriteBase32File encodes the given data to Base32 and writes it to a file.
-*
-* @param filepath Destination file
-* @param data Byte slice to encode
-* @return True if write succeeded
+encodes the given data to Base32 and writes it to a file.
+@param filepath destination file
+@param data byte slice to encode
+@return true if write succeeded false otherwise
 */
 WriteBase32File :: proc(filepath: string, data: []byte) -> bool {
     encoded := base32.encode(data)
@@ -174,10 +171,10 @@ WriteBase32File :: proc(filepath: string, data: []byte) -> bool {
 }
 
 /*
-* ReadBase64File reads a Base64-encoded file and decodes it into raw bytes.
-*
-* @param filepath Input file path
-* @return Decoded byte slice or nil on error
+reads a Base64-encoded file and decodes it into raw bytes.
+@param filepath input file path
+@param allocator allocator used to allocate the returned byte array
+@return decoded byte slice or nil on error
 */
 ReadBase64File :: proc(filepath: string, allocator := context.allocator) -> []byte {
     file_handle, err := os.open(filepath, os.O_RDONLY)
@@ -200,11 +197,10 @@ ReadBase64File :: proc(filepath: string, allocator := context.allocator) -> []by
 }
 
 /*
-* WriteBase64File encodes the given data to Base64 and writes it to a file.
-*
-* param: filepath Output file path
-* @param data Byte slice to encode
-* @return True if write succeeded
+encodes the given data to Base64 and writes it to a file.
+@param filepath output file path
+@param data byte slice to encode
+@return true if write succeeded false if not
 */
 WriteBase64File :: proc(filepath: string, data: []byte) -> bool {
     encoded := base64.encode(data)
@@ -225,10 +221,9 @@ WriteBase64File :: proc(filepath: string, data: []byte) -> bool {
 DynamicLibHandle :: dynlib.Library
 
 /*
- * LoadDynamicLibrary loads a dynamic library and resolves its symbols into a struct.
- *
- * @param filepath Path to the dynamic library
- * @param symbol_table Pointer to struct to receive function pointers
+loads a dynamic library and resolves its symbols into a struct.
+@param filepath path to the dynamic library
+@param symbol_table pointer to struct to receive function pointers
 */
 LoadDynamicLibrary :: proc(filepath: string, symbol_table: ^$T) {
     when !intrinsics.type_is_struct(T) {
@@ -243,9 +238,8 @@ LoadDynamicLibrary :: proc(filepath: string, symbol_table: ^$T) {
 }
 
 /*
- * UnloadDynamicLibrary unloads a previously loaded dynamic library.
- *
- * @param symbol_table Struct containing the dynamic library handle
+unloads a previously loaded dynamic library.
+@param symbol_table the struct containing the dynamic library handle
 */
 UnloadDynamicLibrary :: proc(symbol_table: $T) {
     when !intrinsics.type_is_struct(T) {
@@ -255,7 +249,10 @@ UnloadDynamicLibrary :: proc(symbol_table: $T) {
 }
 
 /*
- * ReadGenericFile reads a file into buffer of bytes
+reads a file into a buffer of bytes
+@param path the path to the file to read
+@param allocator the allocator used to allocate the returned data buffer
+@return the byte array of file data or nil and a flag
  */
 ReadGenericFile :: proc(path: string, allocator := context.allocator) -> (data: []byte, ok: bool) {
     file: ^os.File

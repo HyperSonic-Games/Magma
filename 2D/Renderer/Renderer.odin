@@ -28,7 +28,7 @@ RenderContext :: struct {
 }
 
 /*
-Creates a new window and SDL2 renderer for drawing on
+creates a new window and SDL2 renderer for drawing on
 @param app_name the internal name used by drivers like audio for identification
 @param window_name the name displayed in the title bar in ANCI
 @param width the width of the window in pixels
@@ -165,7 +165,7 @@ Init :: proc(
 }
 
 /*
-Updates the renderer with whatever should be rendered to the screen
+updates the renderer with whatever should be rendered to the screen
 @param cxt The renderer context for the window you want to update
 */
 Update :: proc(ctx: ^RenderContext) {
@@ -182,7 +182,7 @@ Update :: proc(ctx: ^RenderContext) {
 
 
 /*
-Controls if the window in the renderer context is fullscreen or not
+controls if the window in the renderer context is fullscreen or not
 @param cxt the renderer context of the window you want to toggle fullscreen on
 @param fullscreen the flag that sets if the window is fullscreen or not
 */
@@ -197,7 +197,7 @@ SetFullscreen :: proc(ctx: RenderContext, fullscreen: bool) {
 }
 
 /*
-Cleans up the window and renderer then quits SDL2
+cleans up the window and renderer then quits SDL2
 @param cxt the context to clean up
 */
 Shutdown :: proc(ctx: RenderContext) {
@@ -215,7 +215,7 @@ Shutdown :: proc(ctx: RenderContext) {
 }
 
 /*
-Limits the FPS to a specific value
+limits the FPS to a specific value
 @param target_fps the number for the fps you want to limit to
 */
 FPSLimiter :: proc(target_fps: u32) {
@@ -235,9 +235,9 @@ FPSLimiter :: proc(target_fps: u32) {
 }
 
 /*
-Returns the time in seconds between the current frame and the previous frame.
+returns the time in seconds between the current frame and the previous frame.
 It only updates the previous frame time every second call, effectively measuring delta over two frames.
-@return delta time in seconds (f32)
+@return delta time in seconds
 */
 GetDeltaTime :: proc() -> f32 {
     @static initialized: bool = false

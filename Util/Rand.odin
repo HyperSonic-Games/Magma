@@ -8,11 +8,10 @@ import "../Types"
 
 
 /*
- * RandomRange Randomly Generates a number in a provided range
- *
- * @param max The max value of the range
- * @param min The min value of the range
- * @return a random int in the range of the two values
+randomly generates a number in a provided range
+@param max the max value of the range
+@param min the min value of the range
+@return a random int in the range of the two values
 */
 RandomRange :: proc(min: int, max: int) -> int {
     return cast(int)(cast(i32)min + (rand.int31() % cast(i32)(max - min + 1)))
@@ -40,9 +39,9 @@ UUIDToRGBA :: proc(id: uuid.Identifier) -> Types.Color {
     return color
 }
 /*
- * GenRandomColor Uses UUID version 4 to generate a random color
- * @return The randomly generated color
- */
+uses UUID version 4 to generate a random color
+@return The randomly generated color
+*/
 GenRandomColor :: proc() -> Types.Color {
     return UUIDToRGBA(uuid.generate_v4())
 }

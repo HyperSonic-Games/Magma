@@ -59,98 +59,108 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>WriteCompressedStringFile</h2>
   <pre class='code'>WriteCompressedStringFile (filepath: string, text: []string)</pre>
-  <p>WriteCompressedStringFile writes an array of strings to a file. Each line is compressed using Shoco compression before being written.</p>
+  <p>writes an array of strings to a file. each line is compressed using Shoco compression before being written.</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>filepath</span>: Destination file path</li>
-    <li><span class='param-name'>text</span>: Array of strings to compress and write</li>
+    <li><span class='param-name'>filepath</span>: destination file path</li>
+    <li><span class='param-name'>text</span>: array of strings to compress and write</li>
   </ul></div>
 </section>
 <section>
   <h2>ReadCompressedStringFile</h2>
-  <pre class='code'>ReadCompressedStringFile (filepath: string)</pre>
-  <p>ReadCompressedStringFile reads a Shoco-compressed file, decompresses its content, and returns the result split by lines.</p>
+  <pre class='code'>ReadCompressedStringFile (filepath: string, allocator := context.allocator)</pre>
+  <p>reads a Shoco-compressed file, decompresses its content, and returns the result split by lines.</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>filepath</span>: Path to the compressed file</li>
+    <li><span class='param-name'>filepath</span>: path to the compressed file</li>
+    <li><span class='param-name'>allocator</span>: allocator used to allocate the returned string array</li>
   </ul></div>
-  <div class='return'>Returns: Decompressed lines as an array of strings</div>
+  <div class='return'>Returns: decompressed lines as an array of strings</div>
 </section>
 <section>
   <h2>ReadCSVFile</h2>
-  <pre class='code'>ReadCSVFile (filepath: string)</pre>
-  <p>ReadCSVFile reads and parses a CSV file into a flat array of all fields.</p>
+  <pre class='code'>ReadCSVFile (filepath: string, allocator := context.allocator)</pre>
+  <p>reads and parses a CSV file into a flat array of all fields.</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>filepath</span>: Path to the CSV file</li>
+    <li><span class='param-name'>filepath</span>: path to the CSV file</li>
+    <li><span class='param-name'>allocator</span>: allocator used to allocate the returned string array</li>
   </ul></div>
-  <div class='return'>Returns: Flat array of all CSV fields</div>
+  <div class='return'>Returns: flat array of all CSV fields</div>
 </section>
 <section>
   <h2>WriteCSVFile</h2>
   <pre class='code'>WriteCSVFile (filepath: string, values: []string)</pre>
-  <p>WriteCSVFile writes a flat array of values as a single CSV line to a file.</p>
+  <p>writes a flat array of values as a single CSV line to a file.</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>filepath</span>: File to write to</li>
-    <li><span class='param-name'>values</span>: Flat array of values to write</li>
+    <li><span class='param-name'>filepath</span>: file to write to</li>
+    <li><span class='param-name'>values</span>: flat array of values to write</li>
   </ul></div>
-  <div class='return'>Returns: True if write succeeded</div>
+  <div class='return'>Returns: true if write succeeded false otherwise</div>
 </section>
 <section>
   <h2>ReadBase32File</h2>
-  <pre class='code'>ReadBase32File (filepath: string)</pre>
-  <p>ReadBase32File reads a Base32-encoded file and decodes it into raw bytes.</p>
+  <pre class='code'>ReadBase32File (filepath: string, allocator := context.allocator)</pre>
+  <p>reads a Base32-encoded file and decodes it into raw bytes.</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>filepath</span>: Path to encoded file</li>
+    <li><span class='param-name'>filepath</span>: path to encoded file</li>
+    <li><span class='param-name'>allocator</span>: allocator used to allocate the returned byte arra</li>
   </ul></div>
-  <div class='return'>Returns: Decoded byte slice or nil on error</div>
+  <div class='return'>Returns: decoded byte slice or nil on error</div>
 </section>
 <section>
   <h2>WriteBase32File</h2>
   <pre class='code'>WriteBase32File (filepath: string, data: []byte) -&gt; bool</pre>
-  <p>WriteBase32File encodes the given data to Base32 and writes it to a file.</p>
+  <p>encodes the given data to Base32 and writes it to a file.</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>filepath</span>: Destination file</li>
-    <li><span class='param-name'>data</span>: Byte slice to encode</li>
+    <li><span class='param-name'>filepath</span>: destination file</li>
+    <li><span class='param-name'>data</span>: byte slice to encode</li>
   </ul></div>
-  <div class='return'>Returns: True if write succeeded</div>
+  <div class='return'>Returns: true if write succeeded false otherwise</div>
 </section>
 <section>
   <h2>ReadBase64File</h2>
-  <pre class='code'>ReadBase64File (filepath: string)</pre>
-  <p>ReadBase64File reads a Base64-encoded file and decodes it into raw bytes.</p>
+  <pre class='code'>ReadBase64File (filepath: string, allocator := context.allocator)</pre>
+  <p>reads a Base64-encoded file and decodes it into raw bytes.</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>filepath</span>: Input file path</li>
+    <li><span class='param-name'>filepath</span>: input file path</li>
+    <li><span class='param-name'>allocator</span>: allocator used to allocate the returned byte array</li>
   </ul></div>
-  <div class='return'>Returns: Decoded byte slice or nil on error</div>
+  <div class='return'>Returns: decoded byte slice or nil on error</div>
 </section>
 <section>
   <h2>WriteBase64File</h2>
   <pre class='code'>WriteBase64File (filepath: string, data: []byte) -&gt; bool</pre>
-  <p>WriteBase64File encodes the given data to Base64 and writes it to a file. param: filepath Output file path</p>
+  <p>encodes the given data to Base64 and writes it to a file.</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>data</span>: Byte slice to encode</li>
+    <li><span class='param-name'>filepath</span>: output file path</li>
+    <li><span class='param-name'>data</span>: byte slice to encode</li>
   </ul></div>
-  <div class='return'>Returns: True if write succeeded</div>
+  <div class='return'>Returns: true if write succeeded false if not</div>
 </section>
 <section>
   <h2>LoadDynamicLibrary</h2>
   <pre class='code'>LoadDynamicLibrary (filepath: string, symbol_table: ^$T)</pre>
-  <p>LoadDynamicLibrary loads a dynamic library and resolves its symbols into a struct.</p>
+  <p>loads a dynamic library and resolves its symbols into a struct.</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>filepath</span>: Path to the dynamic library</li>
-    <li><span class='param-name'>symbol_table</span>: Pointer to struct to receive function pointers</li>
+    <li><span class='param-name'>filepath</span>: path to the dynamic library</li>
+    <li><span class='param-name'>symbol_table</span>: pointer to struct to receive function pointers</li>
   </ul></div>
 </section>
 <section>
   <h2>UnloadDynamicLibrary</h2>
   <pre class='code'>UnloadDynamicLibrary (symbol_table: $T)</pre>
-  <p>UnloadDynamicLibrary unloads a previously loaded dynamic library.</p>
+  <p>unloads a previously loaded dynamic library.</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>symbol_table</span>: Struct containing the dynamic library handle</li>
+    <li><span class='param-name'>symbol_table</span>: the struct containing the dynamic library handle</li>
   </ul></div>
 </section>
 <section>
   <h2>ReadGenericFile</h2>
-  <pre class='code'>ReadGenericFile (path: string)</pre>
-  <p>ReadGenericFile reads a file into buffer of bytes</p>
+  <pre class='code'>ReadGenericFile (path: string, allocator := context.allocator)</pre>
+  <p>reads a file into a buffer of bytes</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>path</span>: the path to the file to read</li>
+    <li><span class='param-name'>allocator</span>: the allocator used to allocate the returned data buffer</li>
+  </ul></div>
+  <div class='return'>Returns: the byte array of file data or nil and a flag</div>
 </section>
 </article>
 </main>

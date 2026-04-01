@@ -56,7 +56,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorFromSDL</h2>
   <pre class='code'>ColorFromSDL (c: sdl2.Color) -&gt; Color</pre>
-  <p>Internal function that converts SDL2&#x27;s Color data structure to Magma&#x27;s Color data structure.</p>
+  <p>internal function that converts SDL2&#x27;s Color data structure to Magma&#x27;s Color data structure.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>c</span>: the SDL2 Color data structure</li>
   </ul></div>
@@ -65,7 +65,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorToSDL</h2>
   <pre class='code'>ColorToSDL (c: Color) -&gt; sdl2</pre>
-  <p>Internal function that converts Magma&#x27;s Color data structure to SDL2&#x27;s Color data structure.</p>
+  <p>internal function that converts Magma&#x27;s Color data structure to SDL2&#x27;s Color data structure.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>c</span>: the Magma Color data structure</li>
   </ul></div>
@@ -74,60 +74,60 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorAdd</h2>
   <pre class='code'>ColorAdd (a, b: Color) -&gt; Color</pre>
-  <p>Performs per-channel addition of two Colors.</p>
+  <p>performs per-channel addition of two Colors.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: first Color operand</li>
     <li><span class='param-name'>b</span>: second Color operand</li>
   </ul></div>
-  <div class='return'>Returns: Resulting Color after addition</div>
+  <div class='return'>Returns: resulting Color after addition</div>
 </section>
 <section>
   <h2>ColorSub</h2>
   <pre class='code'>ColorSub (a, b: Color) -&gt; Color</pre>
-  <p>Performs per-channel subtraction of two Colors.</p>
+  <p>performs per-channel subtraction of two Colors.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: first Color operand</li>
     <li><span class='param-name'>b</span>: second Color operand</li>
   </ul></div>
-  <div class='return'>Returns: Resulting Color after subtraction</div>
+  <div class='return'>Returns: resulting Color after subtraction</div>
 </section>
 <section>
   <h2>ColorMul</h2>
   <pre class='code'>ColorMul (a, b: Color) -&gt; Color</pre>
-  <p>Performs per-channel multiplication of two Colors, clamped to valid RGBA ranges. The alpha channel is clamped to a maximum of 100 to avoid full opacity.</p>
+  <p>performs per-channel multiplication of two Colors, clamped to valid RGBA ranges.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: first Color operand</li>
     <li><span class='param-name'>b</span>: second Color operand</li>
   </ul></div>
-  <div class='return'>Returns: Resulting Color after multiplication and clamping</div>
+  <div class='return'>Returns: resulting Color after multiplication and clamping</div>
 </section>
 <section>
   <h2>ColorDiv</h2>
   <pre class='code'>ColorDiv (a, b: Color) -&gt; Color</pre>
-  <p>Performs per-channel division of two Colors, with float casting for precision. The result is clamped to valid RGBA ranges, with alpha clamped to 100 max.</p>
+  <p>performs per-channel division of two Colors, with float casting for precision. The result is clamped to valid RGBA ranges, with alpha clamped to 100 max.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: numerator Color</li>
     <li><span class='param-name'>b</span>: denominator Color</li>
   </ul></div>
-  <div class='return'>Returns: Resulting Color after division and clamping</div>
+  <div class='return'>Returns: resulting Color after division and clamping</div>
 </section>
 <section>
   <h2>ColorNegate</h2>
   <pre class='code'>ColorNegate (a: Color) -&gt; Color</pre>
-  <p>Returns the color negation (inversion) of the RGB channels. Note: this operation is not performed using SIMD intrinsics directly.</p>
+  <p>returns the color negation (inversion) of the RGB channels. Note: this operation is not performed using SIMD intrinsics directly.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: Color to negate</li>
   </ul></div>
-  <div class='return'>Returns: Negated Color with clamped alpha</div>
+  <div class='return'>Returns: negated Color with clamped alpha</div>
 </section>
 <section>
   <h2>ColorToArray</h2>
   <pre class='code'>ColorToArray (color: Color)</pre>
-  <p>Converts a color to an array</p>
+  <p>converts a color to an array</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>color</span>: The color to convert to an array</li>
   </ul></div>
-  <div class='return'>Returns: an u8 array of four values in the format (R, G, B, A)</div>
+  <div class='return'>Returns: a u8 array of four values in the format (R, G, B, A)</div>
 </section>
 </article>
 </main>

@@ -18,12 +18,12 @@ LogLevel :: enum {
 }
 
 /*
- * log logs a message to stdout/stderr
- *
- * calls to log with the .DEBUG level will only output if your game is compiled as a debug build
- * @param level the level to log at. options are (DEBUG, INFO, WARN, ERROR)
- * @param component_name the name associated to what called this function
- * @param format a regular odin format string followed by the vars to print out
+logs a message to stdout/stderr
+calls to log with the .DEBUG level will only output if your game is compiled as a debug build
+@param level the level to log at. options are (DEBUG, VERBOSE, INFO, WARN, ERROR)
+@param namespace the namspace to log from (this is used to seprerate the engine's loging output with anything else)
+@param component_name the name associated to what called this function
+@param format a regular odin format string followed by the vars to print out
 */
 log :: proc(level: LogLevel, namespace: string, component_name: string, format: string, args: ..any) {
     prefix := fmt.aprintf("[%s/%s]: ", namespace, component_name)
