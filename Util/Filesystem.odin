@@ -259,12 +259,12 @@ ReadGenericFile :: proc(path: string, allocator := context.allocator) -> (data: 
     err: os.Error
     file, err = os.open(path)
     if err != os.ERROR_NONE {
-        return nil, false
+        Log(.ERROR, "MAGMA", "UTIL_FILESYSTEM_READ_GENERIC_FILE", "Could not open file: %s", path)
     }
     file_data: []byte
     file_data, err = os.read_entire_file_from_file(file, allocator)
     if err != os.ERROR_NONE {
-        return nil, false
+        Log(.ERROR, "MAGMA", "UTIL_FILESYSTEM_READ_GENERIC_FILE", "Could not read file: %s", path)
     }
     return file_data, true
 }
