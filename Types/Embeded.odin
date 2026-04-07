@@ -7,3 +7,6 @@ This is Engine internal embeded data like the splash screen DO NOT edit this fil
 
 @(rodata)
 SplashImage := #load("../Icons/MagmaEngine.png", []byte)
+
+@(rodata)
+EngineVersion := [?]int{1, 0, 0}

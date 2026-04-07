@@ -16,7 +16,7 @@ AudioContext :: struct {
     Custom3:   i32,
     Music:     ^mixer.Music,
 
-    // Stored chunks for each logical channel
+    // Stored chunks for each Logical channel
     FXChunk:        ^mixer.Chunk,
     BackgroundChunk:^mixer.Chunk,
     VoiceChunk:     ^mixer.Chunk,
@@ -35,7 +35,7 @@ Init :: proc() -> ^AudioContext {
     flags: mixer.InitFlags = {.OPUS, .OGG, .MP3, .FLAC}
     ret_flags := mixer.Init(flags)
     if transmute(mixer.InitFlags)ret_flags != flags {
-        Util.log(.WARN, "MAGMA", "2D_AUDIO_INIT", "Could not init all audio. Got: %v, Expected: %v", ret_flags, flags)
+        Util.Log(.WARN, "MAGMA", "2D_AUDIO_INIT", "Could not init all audio. Got: %v, Expected: %v", ret_flags, flags)
     }
 
     ctx := new(AudioContext)
@@ -264,7 +264,7 @@ LoadMusicFromOpus :: proc(ctx: ^AudioContext, opus_file: cstring) {
     // load the Opus file as Mix_Music
     music := mixer.LoadMUS(opus_file)
     if music == nil {
-        Util.log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_OPUS", "Failed to load music: %s", opus_file)
+        Util.Log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_OPUS", "Failed to load music: %s", opus_file)
         return
     }
     ctx.Music = music
@@ -285,7 +285,7 @@ LoadMusicFromOgg :: proc(ctx: ^AudioContext, ogg_file: cstring) {
     // load the OGG file as Mix_Music
     music := mixer.LoadMUS(ogg_file)
     if music == nil {
-        Util.log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_OGG", "Failed to load music: %s", ogg_file)
+        Util.Log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_OGG", "Failed to load music: %s", ogg_file)
         return
     }
 
@@ -307,7 +307,7 @@ LoadMusicFromMP3 :: proc(ctx: ^AudioContext, mp3_file: cstring) {
     // load the MP3 file as Mix_Music
     music := mixer.LoadMUS(mp3_file)
     if music == nil {
-        Util.log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_OOG", "Failed to load music: %s", mp3_file)
+        Util.Log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_OOG", "Failed to load music: %s", mp3_file)
         return
     }
 
@@ -329,7 +329,7 @@ LoadMusicFromFLAC :: proc(ctx: ^AudioContext, flac_file: cstring) {
     // Load the FLAC file as Mix_Music
     music := mixer.LoadMUS(flac_file)
     if music == nil {
-        Util.log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_FLAC", "Failed to load music: %s", flac_file)
+        Util.Log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_FLAC", "Failed to load music: %s", flac_file)
         return
     }
 
@@ -351,7 +351,7 @@ pauses or resumes the currently loaded music
 */
 ToggleMusic :: proc(ctx: ^AudioContext) {
     if ctx.Music == nil {
-        Util.log(.WARN, "MAGMA", "2D_AUDIO_TOGGLE_MUSIC", "Can't toggle music when music is nil")
+        Util.Log(.WARN, "MAGMA", "2D_AUDIO_TOGGLE_MUSIC", "Can't toggle music when music is nil")
         return // No music loaded
     }
 

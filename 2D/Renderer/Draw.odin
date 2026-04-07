@@ -1,17 +1,9 @@
 package Renderer
 
-import "core:strings"
-import "core:c"
 import "core:simd"
-import "core:fmt"
-import "core:math"
-import "../../Util"
 import "../../Types"
-import "../Physics"
 
 import "vendor:sdl2"
-import "vendor:sdl2/image"
-import "vendor:sdl2/ttf"
 
 
 Texture :: sdl2.Texture

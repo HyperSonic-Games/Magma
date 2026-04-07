@@ -1,5 +1,6 @@
 package Renderer
 
+import "base:runtime"
 import "core:fmt"
 import "core:math"
 import "../../Util"
@@ -40,19 +41,19 @@ creates a new window and SDL2 renderer for drawing on
 Init :: proc(
     app_name: cstring, window_name: cstring, width: i32, height: i32,
     backend: GraphicsBackend = .OPEN_GL,
-    sdl2_debug_verbose: bool = Util.VERBOSE_LOGGING
+    sdl2_debug_verbose: bool = Util.VERBOSE_lLOGINH
 ) -> RenderContext {
     backend := backend
     #partial switch backend {
         case .DIRECTX3D11:
             when (ODIN_OS != .Windows) {
-                Util.log(.WARN,  "MAGMA", "2D_RENDERER_INIT", "DirectX3D11 is Windows-only, defaulting to OpenGL.")
+                Util.Log(.WARN,  "MAGMA", "2D_RENDERER_INIT", "DirectX3D11 is Windows-only, defaulting to OpenGL.")
                 backend = .OPEN_GL
             }
 
         case .METAL:
             when (ODIN_OS != .Darwin) {
-                Util.log(.WARN, "MAGMA", "2D_RENDERER_INIT", "Metal is macOS-only, defaulting to OpenGL.")
+                Util.Log(.WARN, "MAGMA", "2D_RENDERER_INIT", "Metal is macOS-only, defaulting to OpenGL.")
                 backend = .OPEN_GL
             }
     }
@@ -85,7 +86,7 @@ Init :: proc(
     }
 
     if sdl2.Init(sdl2.INIT_VIDEO | sdl2.INIT_AUDIO) != 0 {
-        Util.log(.ERROR, "MAGMA", "2D_RENDERER_INIT", sdl2.GetErrorString())
+        Util.Log(.ERROR, "MAGMA", "2D_RENDERER_INIT", sdl2.GetErrorString())
     }
 
 
@@ -97,8 +98,7 @@ Init :: proc(
         window_flags
     )
     if window == nil {
-        Util.log(.ERROR, "MAGMA", "2D_RENDERER_INIT", "Failed to create window: %s", sdl2.GetErrorString())
-        sdl2.Quit()
+        Util.Log(.ERROR, "MAGMA", "2D_RENDERER_INIT", "Failed to create window: %s", sdl2.GetErrorString())
     }
 
     renderer_flags: sdl2.RendererFlags
@@ -111,8 +111,7 @@ Init :: proc(
 
     renderer := sdl2.CreateRenderer(window, -1, renderer_flags)
     if renderer == nil {
-        Util.log(.ERROR, "MAGMA", "2D_RENDERER_INIT", "Failed to create renderer: %s", sdl2.GetErrorString())
-        sdl2.Quit()
+        Util.Log(.ERROR, "MAGMA", "2D_RENDERER_INIT", "Failed to create renderer: %s", sdl2.GetErrorString())
     }
 
     // Init SDL_image
@@ -121,7 +120,7 @@ Init :: proc(
     splash_rw := sdl2.RWFromConstMem(&Types.SplashImage[0], cast(i32)len(Types.SplashImage))
     splash_surface := image.Load_RW(splash_rw, true)
     if splash_surface == nil {
-        Util.log(.ERROR, "MAGMA", "2D_RENDERER_INIT", "Failed to load splash image: %s", sdl2.GetErrorString())
+        Util.Log(.ERROR, "MAGMA", "2D_RENDERER_INIT", "Failed to load splash image: %s", sdl2.GetErrorString())
     } else {
         splash_texture := sdl2.CreateTextureFromSurface(renderer, splash_surface)
         sdl2.FreeSurface(splash_surface)
@@ -149,7 +148,7 @@ Init :: proc(
             sdl2.Delay(3000)
             sdl2.DestroyTexture(splash_texture)
         } else {
-            Util.log(.ERROR, "MAGMA", "2D_RENDERER_INIT", "Failed to create splash texture: %s", sdl2.GetErrorString())
+            Util.Log(.ERROR, "MAGMA", "2D_RENDERER_INIT", "Failed to create splash texture: %s", sdl2.GetErrorString())
         }
     }
 

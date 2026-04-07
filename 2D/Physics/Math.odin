@@ -1,22 +1,32 @@
 package Physics
 
-import "core:math"
-import "core:math/rand"
-import "core:math/cmplx"
-import "core:math/linalg"
 
+import "../../Types"
 
-Clamp :: proc(x, min, max: $T) -> T {
-    if x < min do return min
-    if x > max do return max
-    return x
-}
+StepBody :: proc(body: ^Body, dt: Seconds) {
 
-LerpF32 :: proc(a, b, t: $T) -> T {
-    return a + (b - a) * t
-}
+    // Linear acceleration: a = F * inv_mass
+    accel := Types.Vector2f{
+        body.force.x * body.inv_mass,
+        body.force.y * body.inv_mass,
+    }
 
-Abs :: proc(x: $T) -> T {
-    if x < 0 do return -x
-    return x
+    // Integrate velocity
+    body.vel.x += accel.x * cast(f32)dt
+    body.vel.y += accel.y * cast(f32)dt
+
+    // Integrate position
+    body.pos.x += body.vel.x * cast(f32)dt
+    body.pos.y += body.vel.y * cast(f32)dt
+
+    // Angular acceleration: α = torque * inv_inertia
+    ang_accel := body.torque * body.inv_inertia
+
+    // Integrate angular velocity and rotation
+    body.angular_vel += ang_accel * cast(f32)dt
+    body.rot += cast(Radians)body.angular_vel * cast(Radians)dt
+
+    // Clear forces for next frame
+    body.force = Types.Vector2f{0, 0}
+    body.torque = 0
 }

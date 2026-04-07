@@ -51,7 +51,7 @@ reads and parses a CSV file into a flat array of all fields.
 @return flat array of all CSV fields
 */
 ReadCSVFile :: proc(filepath: string, allocator := context.allocator) -> []string {
-    log(.DEBUG, "MAGMA", "CSV_READER", "Reading CSV from file: %s", filepath)
+    Log(.DEBUG, "MAGMA", "CSV_READER", "Reading CSV from file: %s", filepath)
 
     r: csv.Reader
     r.trim_leading_space = true
@@ -61,20 +61,20 @@ ReadCSVFile :: proc(filepath: string, allocator := context.allocator) -> []strin
     csv_data, err := os.read_entire_file_from_file(file, allocator)
     os.close(file)
     if err != os.ERROR_NONE {
-        log(.ERROR, "MAGMA", "CSV_READER", "Unable to open file: %s", filepath)
+        Log(.ERROR, "MAGMA", "CSV_READER", "Unable to open file: %s", filepath)
         return []string{}
     }
     defer delete(csv_data)
 
     csv.reader_init_with_string(&r, string(csv_data), allocator)
-    log(.VERBOSE, "MAGMA", "CSV_READER", "CSV reader initialized")
+    Log(.VERBOSE, "MAGMA", "CSV_READER", "CSV reader initialized")
 
     records, err1 := csv.read_all(&r, allocator)
     if err != os.ERROR_NONE {
-        log(.ERROR, "MAGMA", "CSV_READER", "Failed to parse CSV data in file: %s", filepath)
+        Log(.ERROR, "MAGMA", "CSV_READER", "Failed to parse CSV data in file: %s", filepath)
         return []string{}
     }
-    log(.DEBUG, "MAGMA", "CSV_READER", "Parsed %v records from CSV", len(records))
+    Log(.DEBUG, "MAGMA", "CSV_READER", "Parsed %v records from CSV", len(records))
 
     dyn_result := make([dynamic]string, allocator)
     defer free(&dyn_result)
@@ -91,7 +91,7 @@ ReadCSVFile :: proc(filepath: string, allocator := context.allocator) -> []strin
         delete(records)
     }
 
-    log(.VERBOSE, "MAGMA", "CSV_READER", "Returning %v fields from CSV", len(dyn_result))
+    Log(.VERBOSE, "MAGMA", "CSV_READER", "Returning %v fields from CSV", len(dyn_result))
     return dyn_result[:]
 }
 
@@ -102,7 +102,7 @@ writes a flat array of values as a single CSV line to a file.
 @return true if write succeeded false otherwise
 */
 WriteCSVFile :: proc(filepath: string, values: []string) -> (ok: bool) {
-    log(.DEBUG, "MAGMA", "CSV_WRITER", "Writing CSV to file: %s", filepath)
+    Log(.DEBUG, "MAGMA", "CSV_WRITER", "Writing CSV to file: %s", filepath)
     builder := new(strings.Builder)
     builder = strings.builder_init(builder)
     defer free(builder)
@@ -116,7 +116,7 @@ WriteCSVFile :: proc(filepath: string, values: []string) -> (ok: bool) {
     file_handle, err := os.open(filepath, os.O_WRONLY)
     defer os.close(file_handle)
     if err != nil {
-        log(.ERROR, "MAGMA", "CSV_WRITER", "Unable to open file: %s", filepath)
+        Log(.ERROR, "MAGMA", "CSV_WRITER", "Unable to open file: %s", filepath)
         return false
     }
 
@@ -134,17 +134,17 @@ ReadBase32File :: proc(filepath: string, allocator := context.allocator) -> []by
     file_handle, err := os.open(filepath, os.O_RDONLY)
     defer os.close(file_handle)
     if err != nil {
-        log(.ERROR, "MAGMA", "BASE32_READER", "Unable to open file: %s", filepath)
+        Log(.ERROR, "MAGMA", "BASE32_READER", "Unable to open file: %s", filepath)
         return nil
     }
     data, err1 := os.read_entire_file_from_file(file_handle, allocator)
     if err1 != os.ERROR_NONE {
-        log(.ERROR, "MAGMA", "BASE32_READER", "Unable to read file: %s", filepath)
+        Log(.ERROR, "MAGMA", "BASE32_READER", "Unable to read file: %s", filepath)
         return nil
     }
     decoded_data, err2 := base32.decode(cast(string)data, allocator = allocator)
     if err2 != nil {
-        log(.ERROR, "MAGMA", "BASE32_READER", "Unable to decode data: %v", data)
+        Log(.ERROR, "MAGMA", "BASE32_READER", "Unable to decode data: %v", data)
         return nil
     }
     return decoded_data
@@ -162,11 +162,11 @@ WriteBase32File :: proc(filepath: string, data: []byte) -> bool {
 
     err := os.write_entire_file(filepath, transmute([]byte)encoded)
     if err != os.ERROR_NONE {
-        log(.ERROR, "MAGMA", "BASE32_WRITER", "Failed to write Base32 data to file: %s", filepath)
+        Log(.ERROR, "MAGMA", "BASE32_WRITER", "Failed to write Base32 data to file: %s", filepath)
         return false
     }
 
-    log(.DEBUG, "MAGMA", "BASE32_WRITER", "Successfully wrote Base32 data to file: %s", filepath)
+    Log(.DEBUG, "MAGMA", "BASE32_WRITER", "Successfully wrote Base32 data to file: %s", filepath)
     return true
 }
 
@@ -180,17 +180,17 @@ ReadBase64File :: proc(filepath: string, allocator := context.allocator) -> []by
     file_handle, err := os.open(filepath, os.O_RDONLY)
     defer os.close(file_handle)
     if err != os.ERROR_NONE {
-        log(.ERROR, "MAGMA", "BASE64_READER", "Unable to open file: %s", filepath)
+        Log(.ERROR, "MAGMA", "BASE64_READER", "Unable to open file: %s", filepath)
         return nil
     }
     data, err1 := os.read_entire_file_from_file(file_handle, allocator)
     if  err1 != os.ERROR_NONE {
-        log(.ERROR, "MAGMA", "BASE64_READER", "Unable to read file: %s", filepath)
+        Log(.ERROR, "MAGMA", "BASE64_READER", "Unable to read file: %s", filepath)
         return nil
     }
     decoded_data, err2 := base64.decode(cast(string)data, allocator = allocator)
     if err2 != nil {
-        log(.ERROR, "MAGMA", "BASE64_READER", "Unable to decode Base64 data")
+        Log(.ERROR, "MAGMA", "BASE64_READER", "Unable to decode Base64 data")
         return nil
     }
     return decoded_data
@@ -208,11 +208,11 @@ WriteBase64File :: proc(filepath: string, data: []byte) -> bool {
 
     err := os.write_entire_file(filepath, transmute([]byte)encoded)
     if err != os.ERROR_NONE {
-        log(.ERROR, "MAGMA", "BASE64_WRITER", "Failed to write Base64 data to file: %s", filepath)
+        Log(.ERROR, "MAGMA", "BASE64_WRITER", "Failed to write Base64 data to file: %s", filepath)
         return false
     }
 
-    log(.DEBUG, "MAGMA", "BASE64_WRITER", "Successfully wrote Base64 data to file: %s", filepath)
+    Log(.DEBUG, "MAGMA", "BASE64_WRITER", "Successfully wrote Base64 data to file: %s", filepath)
     return true
 }
 
@@ -231,9 +231,9 @@ LoadDynamicLibrary :: proc(filepath: string, symbol_table: ^$T) {
     }
     count, ok := dynlib.initialize_symbols(symbol_table, filepath)
     if !ok {
-        log(.ERROR, "MAGMA", "DYNAMIC_LIBRARY_LOADER", "Failed to load dynamic library: %s", dynlib.last_error())
+        Log(.ERROR, "MAGMA", "DYNAMIC_LIBRARY_LOADER", "Failed to load dynamic library: %s", dynlib.last_error())
     } else {
-        log(.DEBUG, "MAGMA", "DYNAMIC_LIBRARY_LOADER", "Loaded %d symbols", count)
+        Log(.DEBUG, "MAGMA", "DYNAMIC_LIBRARY_LOADER", "Loaded %d symbols", count)
     }
 }
 
