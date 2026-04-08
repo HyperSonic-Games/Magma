@@ -1,4 +1,4 @@
-package Physics
+package Kinematics
 
 import "core:math"
 import "core:math/linalg"
