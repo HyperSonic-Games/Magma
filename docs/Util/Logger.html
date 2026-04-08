@@ -40,6 +40,9 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
 <div class="file" style="padding-left: 3.0em;"><a href="../2D/EventSys/EventSystem.html">EventSystem.odin</a></div>
 </details>
+<details class='folder' style='padding-left: 1.5em;'><summary>Kinematics</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/Kinematics/Kinematics.html">Kinematics.odin</a></div>
+</details>
 <details class='folder' style='padding-left: 1.5em;'><summary>Renderer</summary>
 <div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/Draw.html">Draw.odin</a></div>
 <div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/FileLoader.html">FileLoader.odin</a></div>
@@ -58,11 +61,11 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <article>
 <div class="back-index"><a href="../index.html">⬅ Back to Index</a></div>
 <section>
-  <h2>log</h2>
-  <pre class='code'>log (level: LogLevel, namespace: string, component_name: string, format: string, args: ..any)</pre>
-  <p>logs a message to stdout/stderr calls to log with the .DEBUG level will only output if your game is compiled as a debug build</p>
+  <h2>Log</h2>
+  <pre class='code'>Log (level: LogLevel, namespace: string, component_name: string, format: string, args: ..any)</pre>
+  <p>logs a message to stdout/stderr calls to log with the .DEBUG level will only output if your game is compiled as a debug build calling with level ERROR will cause a runtime trap if you do not want this use ERROR_NO_ABORT</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>level</span>: the level to log at. options are (DEBUG, VERBOSE, INFO, WARN, ERROR)</li>
+    <li><span class='param-name'>level</span>: the level to log at. options are (DEBUG, VERBOSE, INFO, WARN, ERROR, ERROR_NO_ABORT)</li>
     <li><span class='param-name'>namespace</span>: the namspace to log from (this is used to seprerate the engine&#x27;s loging output with anything else)</li>
     <li><span class='param-name'>component_name</span>: the name associated to what called this function</li>
     <li><span class='param-name'>format</span>: a regular odin format string followed by the vars to print out</li>

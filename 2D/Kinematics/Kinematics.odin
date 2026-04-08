@@ -8,10 +8,9 @@ import "core:time"
 
 import "../../Types"
 
-Vec2 :: Types.Vector2f
 
 Object :: struct {
-    pos: Vec2,
+    pos: Types.Vector2f,
     width: f32,
     height: f32,
     rot: f32,
@@ -32,15 +31,16 @@ World :: struct {
 
 CollisionInfo :: struct {
     other: ObjectID,
-    mtv: Vec2,
-}
-
-perp :: proc(v: Vec2) -> Vec2 {
-    return Vec2{-v.y, v.x}
+    mtv: Types.Vector2f,
 }
 
 @(private)
-GetCorners :: proc(o: Object) -> [4]Vec2 {
+perp :: proc(v: Types.Vector2f) -> Types.Vector2f {
+    return Types.Vector2f{-v.y, v.x}
+}
+
+@(private)
+GetCorners :: proc(o: Object) -> [4]Types.Vector2f {
     hw := o.width * 0.5
     hh := o.height * 0.5
 
@@ -48,21 +48,21 @@ GetCorners :: proc(o: Object) -> [4]Vec2 {
     c := math.cos(rad)
     s := math.sin(rad)
 
-    local := [4]Vec2{
+    local := [4]Types.Vector2f{
         {-hw, -hh},
         { hw, -hh},
         { hw,  hh},
         {-hw,  hh},
     }
 
-    center := Vec2{o.pos.x + hw, o.pos.y + hh}
+    center := Types.Vector2f{o.pos.x + hw, o.pos.y + hh}
 
-    corners: [4]Vec2
+    corners: [4]Types.Vector2f
     for i in 0..<4 {
         x := local[i].x
         y := local[i].y
 
-        corners[i] = Vec2{
+        corners[i] = Types.Vector2f{
             center.x + x*c - y*s,
             center.y + x*s + y*c,
         }
@@ -72,7 +72,7 @@ GetCorners :: proc(o: Object) -> [4]Vec2 {
 }
 
 @(private)
-Project :: proc(points: [4]Vec2, axis: Vec2) -> (f32, f32) {
+Project :: proc(points: [4]Types.Vector2f, axis: Types.Vector2f) -> (f32, f32) {
     min := linalg.dot(points[0], axis)
     max := min
 
@@ -86,11 +86,11 @@ Project :: proc(points: [4]Vec2, axis: Vec2) -> (f32, f32) {
 }
 
 @(private)
-OBBOverlap :: proc(a, b: Object) -> (bool, Vec2) {
+OBBOverlap :: proc(a, b: Object) -> (bool, Types.Vector2f) {
     ac := GetCorners(a)
     bc := GetCorners(b)
 
-    axes: [4]Vec2
+    axes: [4]Types.Vector2f
 
     axes[0] = linalg.normalize(perp(ac[1] - ac[0]))
     axes[1] = linalg.normalize(perp(ac[3] - ac[0]))
@@ -98,7 +98,7 @@ OBBOverlap :: proc(a, b: Object) -> (bool, Vec2) {
     axes[3] = linalg.normalize(perp(bc[3] - bc[0]))
 
     smallest_overlap := f32(1e30)
-    smallest_axis := Vec2{}
+    smallest_axis := Types.Vector2f{}
 
     for axis in axes {
         minA, maxA := Project(ac, axis)
@@ -107,7 +107,7 @@ OBBOverlap :: proc(a, b: Object) -> (bool, Vec2) {
         overlap := math.min(maxA, maxB) - math.max(minA, minB)
 
         if overlap <= 0.001 {
-            return false, Vec2{}
+            return false, Types.Vector2f{}
         }
 
         if overlap < smallest_overlap {
@@ -116,8 +116,8 @@ OBBOverlap :: proc(a, b: Object) -> (bool, Vec2) {
         }
     }
 
-    a_center := Vec2{a.pos.x + a.width*0.5, a.pos.y + a.height*0.5}
-    b_center := Vec2{b.pos.x + b.width*0.5, b.pos.y + b.height*0.5}
+    a_center := Types.Vector2f{a.pos.x + a.width*0.5, a.pos.y + a.height*0.5}
+    b_center := Types.Vector2f{b.pos.x + b.width*0.5, b.pos.y + b.height*0.5}
 
     dir := b_center - a_center
 
@@ -158,6 +158,7 @@ SolveCollisions :: proc(world: ^World) {
     }
 }
 
+@(private)
 SolverThreadProc :: proc(data: rawptr) {
     world := (^World)(data)
 
@@ -172,17 +173,33 @@ SolverThreadProc :: proc(data: rawptr) {
     }
 }
 
+/*
+starts the kinematics solver in a new thread
+@param world a pointer to the world to create a solver for
+*/
 StartSolver :: proc(world: ^World) {
     world.running = true
     world.solver_thread = thread.create_and_start_with_data(world, SolverThreadProc)
 }
 
+/*
+stops the kinematics solver associated with the world
+@param world a pointer to the world that owns the solver we want to stop
+*/
 StopSolver :: proc(world: ^World) {
     world.running = false
     thread.join(world.solver_thread)
 }
 
-MoveObject :: proc(world: ^World, id: ObjectID, amount: Vec2) {
+/*
+attempt to move an object in a world by a certain amount
+note that this acts more like a maximum posible as the kinematics will check for collisions
+and could cause the object to not move at all
+@param world a pointer to the world that owns the object we want to move
+@param id the id of the object we want to move
+@param amount the amount in pixels we want to move
+*/
+MoveObject :: proc(world: ^World, id: ObjectID, amount: Types.Vector2f) {
     sync.mutex_lock(&world.mutex)
     defer sync.mutex_unlock(&world.mutex)
 
@@ -197,7 +214,12 @@ MoveObject :: proc(world: ^World, id: ObjectID, amount: Vec2) {
 
     obj.pos += amount
 }
-
+/*
+checks if an object is coliding with another object and gives you the id of the other object
+@param world a pointer to the world that owns the object to check and the returned id
+@param id the id of the object we want to check
+@return the id of the object that we collided with and true if we collided with anything or false if not
+*/
 IsCollidingWith :: proc(world: ^World, id: ObjectID) -> (ObjectID, bool) {
     sync.mutex_lock(&world.mutex)
     defer sync.mutex_unlock(&world.mutex)
@@ -220,7 +242,13 @@ IsCollidingWith :: proc(world: ^World, id: ObjectID) -> (ObjectID, bool) {
 
     return 0, false
 }
-
+/*
+similar to IsCollidingWith but returns multiple objects that the object is colliding with
+and in complex scenes is prefered over it
+@param world a pointer to the world that owns the objects we want to check
+@param id the id of the object we want to check collisions against
+@return a list of collisions and their info
+*/
 GetCollisions :: proc(world: ^World, id: ObjectID) -> []CollisionInfo {
     sync.mutex_lock(&world.mutex)
     defer sync.mutex_unlock(&world.mutex)
@@ -231,6 +259,7 @@ GetCollisions :: proc(world: ^World, id: ObjectID) -> []CollisionInfo {
     }
 
     results: [dynamic]CollisionInfo
+    defer delete(results)
 
     for other_id, b in world.objects {
         if b == nil || other_id == id {

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Documentation for Kinematics.odin</title>
+<style>
+body { margin: 0; font-family: Arial, sans-serif; background: #121212; color: #eee; }
+a { text-decoration: none; color: #80cbc4; }
+a:hover { text-decoration: underline; }
+header { padding: 1rem; background: #1e1e1e; font-size: 1.5rem; color: #80cbc4; }
+main { display: flex; min-height: 100vh; }
+nav { width: 250px; background: #1e1e1e; padding: 1rem; overflow-y: auto; }
+nav details { margin-bottom: 0.5rem; }
+nav summary { cursor: pointer; user-select: none; }
+nav .file { display: block; }
+nav .folder::before { content: "📂 "; }
+nav .file::before { content: "📄 "; }
+nav .file.current a { font-weight: bold; color: #ffb74d; }
+article { flex: 1; padding: 2rem; }
+.back-index { margin-bottom: 1rem; }
+section { background: #1e1e1e; border-radius: 8px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 0 8px #000; }
+h2 { color: #4db6ac; }
+pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: auto; color: #cfd8dc; }
+.code { font-family: monospace; }
+.params ul { padding-left: 1.2em; }
+.params li { margin-bottom: 0.3em; }
+.param-name { font-weight: 600; color: #80cbc4; }
+.return { font-weight: 600; color: #a5d6a7; margin-top: 1em; }
+</style>
+</head>
+<body>
+<header>Kinematics.odin</header>
+<main>
+<nav>
+<details class='folder' style='padding-left: 0.0em;' open><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>Audio</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../Audio/Audio.html">Audio.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../EventSys/EventSystem.html">EventSystem.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;' open><summary>Kinematics</summary>
+<div class="file" class='current' style="padding-left: 3.0em;"><a href="Kinematics.html">Kinematics.odin</a></div>
+</details>
+</details>
+
+</nav>
+<article>
+<div class="back-index"><a href="../../index.html">⬅ Back to Index</a></div>
+<section>
+  <h2>StartSolver</h2>
+  <pre class='code'>StartSolver (world: ^World)</pre>
+  <p>starts the kinematics solver in a new thread</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: a pointer to the world to create a solver for</li>
+  </ul></div>
+</section>
+<section>
+  <h2>StopSolver</h2>
+  <pre class='code'>StopSolver (world: ^World)</pre>
+  <p>stops the kinematics solver associated with the world</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: a pointer to the world that owns the solver we want to stop</li>
+  </ul></div>
+</section>
+<section>
+  <h2>MoveObject</h2>
+  <pre class='code'>MoveObject (world: ^World, id: ObjectID, amount: Types.Vector2f)</pre>
+  <p>attempt to move an object in a world by a certain amount note that this acts more like a maximum posible as the kinematics will check for collisions and could cause the object to not move at all</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: a pointer to the world that owns the object we want to move</li>
+    <li><span class='param-name'>id</span>: the id of the object we want to move</li>
+    <li><span class='param-name'>amount</span>: the amount in pixels we want to move</li>
+  </ul></div>
+</section>
+<section>
+  <h2>IsCollidingWith</h2>
+  <pre class='code'>IsCollidingWith (world: ^World, id: ObjectID)</pre>
+  <p>checks if an object is coliding with another object and gives you the id of the other object</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: a pointer to the world that owns the object to check and the returned id</li>
+    <li><span class='param-name'>id</span>: the id of the object we want to check</li>
+  </ul></div>
+  <div class='return'>Returns: the id of the object that we collided with and true if we collided with anything or false if not</div>
+</section>
+<section>
+  <h2>GetCollisions</h2>
+  <pre class='code'>GetCollisions (world: ^World, id: ObjectID)</pre>
+  <p>similar to IsCollidingWith but returns multiple objects that the object is colliding with and in complex scenes is prefered over it</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>world</span>: a pointer to the world that owns the objects we want to check</li>
+    <li><span class='param-name'>id</span>: the id of the object we want to check collisions against</li>
+  </ul></div>
+  <div class='return'>Returns: a list of collisions and their info</div>
+</section>
+</article>
+</main>
+</body>
+</html>
