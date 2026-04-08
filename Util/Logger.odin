@@ -48,7 +48,12 @@ Log :: proc(level: LogLevel, namespace: string, component_name: string, format: 
     }
     else if (level == .ERROR || level == .ERROR_NO_ABORT) { // Leaks memory but it's an error state so the program is crashing anyways
         if (ODIN_DEBUG) {
-            fmt.eprintfln(ansi.CSI + ansi.FG_RED + ansi.SGR + "%s<ERROR> ~ %s" + ansi.CSI + ansi.FG_WHITE, prefix, full_msg)
+            if level == .ERROR {
+                fmt.eprintfln(ansi.CSI + ansi.FG_RED + ansi.SGR + "%s<ERROR> ~ %s" + ansi.CSI + ansi.FG_WHITE, prefix, full_msg)
+            }
+            else {
+                fmt.eprintfln(ansi.CSI + ansi.FG_RED + ansi.SGR + "%s<ERROR_NO_ABORT> ~ %s" + ansi.CSI + ansi.FG_WHITE, prefix, full_msg)
+            }
             if level != .ERROR_NO_ABORT {
                 runtime.debug_trap() // Hey debuger we messed up come see
             }

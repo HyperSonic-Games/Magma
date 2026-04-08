@@ -41,7 +41,7 @@ creates a new window and SDL2 renderer for drawing on
 Init :: proc(
     app_name: cstring, window_name: cstring, width: i32, height: i32,
     backend: GraphicsBackend = .OPEN_GL,
-    sdl2_debug_verbose: bool = Util.VERBOSE_lLOGINH
+    sdl2_debug_verbose: bool = Util.VERBOSE_LOGGING
 ) -> RenderContext {
     backend := backend
     #partial switch backend {
@@ -113,6 +113,7 @@ Init :: proc(
     if renderer == nil {
         Util.Log(.ERROR, "MAGMA", "2D_RENDERER_INIT", "Failed to create renderer: %s", sdl2.GetErrorString())
     }
+    sdl2.RenderSetLogicalSize(renderer, width, height)
 
     // Init SDL_image
     image.Init({.JPG, .PNG, .TIF, .WEBP})
@@ -154,6 +155,7 @@ Init :: proc(
 
 
     render_texture := sdl2.CreateTexture(renderer, .RGBA8888, .TARGET, width, height)
+    
 
     return RenderContext {
         Window = window,
