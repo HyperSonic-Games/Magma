@@ -1,19 +1,19 @@
 package main
 
 import "core:math"
-import "../2D/Renderer"
-import "../2D/EventSys"
-import "../Types"
-import "../Util"
-import "../2D/Physics"
+import "../../2D/Renderer"
+import "../../2D/EventSys"
+import "../../Types"
+import "../../Util"
+import "../../2D/Kinematics"
 
 import "core:fmt"
 import "vendor:sdl2"
 
 backend: Renderer.GraphicsBackend = .SOFTWARE
 
-PLAYER_ID :: Physics.ObjectID(1)
-FLOOR_ID  :: Physics.ObjectID(2)
+PLAYER_ID :: Kinematics.ObjectID(1)
+FLOOR_ID  :: Kinematics.ObjectID(2)
 
 main :: proc() {
     ctx := Renderer.Init("hello", "hello", 800, 500, backend)
@@ -25,18 +25,18 @@ main :: proc() {
     running := true
 
     // -----------------------------
-    // Physics world setup
+    // Kinematics world setup
     // -----------------------------
-    world := new(Physics.World)
+    world := new(Kinematics.World)
 
-    player := new(Physics.Object)
+    player := new(Kinematics.Object)
     player.pos = {100, 100}
     player.width = 50
     player.height = 50
     player.rot = 0
     player.is_static = false
 
-    floor := new(Physics.Object)
+    floor := new(Kinematics.Object)
     floor.pos = {0, 400}
     floor.width = 800
     floor.height = 100
@@ -46,7 +46,7 @@ main :: proc() {
     world.objects[PLAYER_ID] = player
     world.objects[FLOOR_ID] = floor
 
-    Physics.StartSolver(world)
+    Kinematics.StartSolver(world)
 
     speed: f32 = 200.0
 
@@ -59,9 +59,9 @@ main :: proc() {
         }
 
         // -----------------------------
-        // Player input -> physics move
+        // Player input -> Kinematics move
         // -----------------------------
-        move := Physics.Vec2{0, 0}
+        move := Types.Vector2f{0, 0}
 
         if keyboard.states[EventSys.KEYS.W] { move.y -= 1 }
         if keyboard.states[EventSys.KEYS.S] { move.y += 1 }
@@ -77,7 +77,7 @@ main :: proc() {
 
         move *= speed * dt
 
-        Physics.MoveObject(world, PLAYER_ID, move)
+        Kinematics.MoveObject(world, PLAYER_ID, move)
 
         // -----------------------------
         // Render
@@ -106,7 +106,7 @@ main :: proc() {
             running = false
         }
 
-        other_id, hit := Physics.IsCollidingWith(world, PLAYER_ID)
+        other_id, hit := Kinematics.IsCollidingWith(world, PLAYER_ID)
 
         if hit {
             fmt.println("Hit object:", other_id)
@@ -115,7 +115,7 @@ main :: proc() {
         free_all(context.temp_allocator)
     }
 
-    Physics.StopSolver(world)
+    Kinematics.StopSolver(world)
 
     free(mouse)
     free(keyboard)
