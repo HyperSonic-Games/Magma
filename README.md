@@ -36,6 +36,6 @@ git submodule add --recursive https://github.com/<your-username>/Magma Magma
 git submodule update --init --recursive
 ```
 
-This places Magma in your project folder for direct engine modificatio.
+This places Magma in your project folder for direct engine modification.
 
 Note **Windows Builds** When using Magma from a git submodule: Copy the required SDL2 DLLs (SDL2.dll, SDL2_image.dll, SDL2_mixer.dll) and all other dependencies in the SDL2 folders from your Odin compiler's vendor folder to the folder containing your compiled program.
