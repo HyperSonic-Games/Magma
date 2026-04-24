@@ -37,3 +37,6 @@ git submodule update --init --recursive
 ```
 
 This places Magma in your project folder for direct engine modification.
+
+# Come say hi
+[Our Discord](https://discord.gg/AFD9KwPCXk)
