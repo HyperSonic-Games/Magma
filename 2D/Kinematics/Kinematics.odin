@@ -161,15 +161,28 @@ SolveCollisions :: proc(world: ^World) {
 @(private)
 SolverThreadProc :: proc(data: rawptr) {
     world := (^World)(data)
+    
+    fixed_dt: f64 = 1.0 / 60.0
+    accumulator: f64 = 0.0
+
+    last := time.now()
 
     for world.running {
+        now := time.now()
+        frame_dt := time.diff(now, last)
+        last = now
+        accumulator += time.duration_seconds(frame_dt)
         sync.mutex_lock(&world.mutex)
 
-        SolveCollisions(world)
+        for accumulator >= fixed_dt {
+            SolveCollisions(world)
+            accumulator -= fixed_dt
+            
+    }
 
-        sync.mutex_unlock(&world.mutex)
+    sync.mutex_unlock(&world.mutex)
 
-        time.sleep(1 * time.Millisecond)
+    thread.yield()
     }
 }
 
@@ -189,6 +202,7 @@ stops the kinematics solver associated with the world
 StopSolver :: proc(world: ^World) {
     world.running = false
     thread.join(world.solver_thread)
+    world.solver_thread = nil
 }
 
 /*

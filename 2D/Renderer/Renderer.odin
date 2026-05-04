@@ -219,22 +219,31 @@ Shutdown :: proc(ctx: RenderContext) {
 limits the FPS to a specific value
 @param target_fps the number for the fps you want to limit to
 */
-FPSLimiter :: proc(target_fps: u32) {
+FPSLimiter :: proc(target_fps: u64) {
+    @static last_counter: u64 = 0
 
-    frame_delay := 1000 / target_fps
+    target_frame_time := sdl2.GetPerformanceFrequency() / target_fps
+    current_counter := sdl2.GetPerformanceCounter()
 
-    @static last_time: u32
-    last_time = sdl2.GetTicks()
-    current_time := sdl2.GetTicks()
-    elapsed := current_time - last_time
+    if last_counter != 0 {
+        elapsed := current_counter - last_counter
 
-    if elapsed < frame_delay {
-        sdl2.Delay(frame_delay - elapsed)
+        if elapsed < target_frame_time {
+            remaining := target_frame_time - elapsed
+
+            ms := u32((remaining * 1000) / sdl2.GetPerformanceFrequency())
+
+            if ms > 0 {
+                sdl2.Delay(ms)
+            }
+
+            // refresh after delay
+            current_counter = sdl2.GetPerformanceCounter()
+        }
     }
 
-    last_time = sdl2.GetTicks()
+    last_counter = current_counter
 }
-
 /*
 returns the time in seconds between the current frame and the previous frame.
 It only updates the previous frame time every second call, effectively measuring delta over two frames.
@@ -242,21 +251,25 @@ It only updates the previous frame time every second call, effectively measuring
 */
 GetDeltaTime :: proc() -> f32 {
     @static initialized: bool = false
-    @static last_time: u32
-    @static update_last: bool = false
+    @static last_counter: u64
+
+    current_counter := sdl2.GetPerformanceCounter()
 
     if !initialized {
-        last_time = sdl2.GetTicks()
+        last_counter = current_counter
         initialized = true
+        return 0.0
     }
 
-    current_time := sdl2.GetTicks()
-    delta := f32(current_time - last_time) / 1000.0
+    frequency := sdl2.GetPerformanceFrequency()
+    delta := f32(current_counter - last_counter) / f32(frequency)
 
-    if update_last {
-        last_time = current_time
+    last_counter = current_counter
+
+    // Clamp to 100ms max
+    if delta > 0.1 {
+        delta = 0.1
     }
-    update_last = !update_last
 
     return delta
 }

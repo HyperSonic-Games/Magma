@@ -8,7 +8,7 @@ import "../../Util"
 import "../../2D/Kinematics"
 
 import "core:fmt"
-import "vendor:sdl2"
+import "core:mem"
 
 backend: Renderer.GraphicsBackend = .SOFTWARE
 
@@ -16,6 +16,25 @@ PLAYER_ID :: Kinematics.ObjectID(1)
 FLOOR_ID  :: Kinematics.ObjectID(2)
 
 main :: proc() {
+    track: mem.Tracking_Allocator
+    mem.tracking_allocator_init(&track, context.allocator)
+    context.allocator = mem.tracking_allocator(&track)
+    
+    defer {
+        if len(track.allocation_map) > 0 {
+            fmt.eprintf("=== %v allocations not freed: ===\n", len(track.allocation_map))
+                for _, entry in track.allocation_map {
+		fmt.eprintf("- %v bytes @ %v\n", entry.size, entry.location)
+		}
+	}
+	if len(track.bad_free_array) > 0 {
+		fmt.eprintf("=== %v incorrect frees: ===\n", len(track.bad_free_array))
+		for entry in track.bad_free_array {
+			fmt.eprintf("- %p @ %v\n", entry.memory, entry.location)
+		}
+	}
+	mem.tracking_allocator_destroy(&track)
+    }
     ctx := Renderer.Init("hello", "hello", 800, 500, backend)
 
     mouse := new(EventSys.Mouse)
@@ -54,9 +73,6 @@ main :: proc() {
         EventSys.HandleEvents(mouse, keyboard, win_state)
 
         dt := Renderer.GetDeltaTime()
-        if dt < 0.001 {
-            dt = 0.001
-        }
 
         // -----------------------------
         // Player input -> Kinematics move
@@ -112,10 +128,16 @@ main :: proc() {
             fmt.println("Hit object:", other_id)
         }
 
+        Renderer.FPSLimiter(60)
+
         free_all(context.temp_allocator)
     }
 
     Kinematics.StopSolver(world)
+
+    free(player)
+    free(floor)
+    free(world)
 
     free(mouse)
     free(keyboard)
