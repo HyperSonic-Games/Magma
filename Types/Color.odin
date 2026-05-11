@@ -40,7 +40,7 @@ performs per-channel addition of two Colors.
 @return resulting Color after addition
 */
 ColorAdd :: proc(a, b: Color) -> Color {
-    return simd.clamp(simd.add(a, b), {0, 0, 0, 0,}, {255, 255, 255, 100})
+    return simd.clamp(simd.add(a, b), {0, 0, 0, 0,}, {255, 255, 255, 255})
 }
 
 /*
@@ -65,7 +65,7 @@ ColorMul :: proc(a, b: Color) -> Color {
 
 /*
 performs per-channel division of two Colors, with float casting for precision.
-The result is clamped to valid RGBA ranges, with alpha clamped to 100 max.
+The result is clamped to valid RGBA ranges.
 @param a numerator Color
 @param b denominator Color
 @return resulting Color after division and clamping
@@ -83,7 +83,7 @@ ColorDiv :: proc(a, b: Color) -> Color {
 returns the color negation (inversion) of the RGB channels.
 Note: this operation is not performed using SIMD intrinsics directly.
 @param a Color to negate
-@return negated Color with clamped alpha
+@return negated Color
 */
 ColorNegate :: proc(a: Color) -> Color {
     NegColorMap: [3]u8 = {255, 255, 255} // Used for inversion of RGB channels

@@ -7,7 +7,6 @@ import "../../Util"
 import "core:fmt"
 import "core:mem"
 
-
 backend: Renderer.GraphicsBackend = .SOFTWARE
 main :: proc() {
 
