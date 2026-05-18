@@ -104,12 +104,32 @@ LoadFX :: proc(ctx: ^AudioContext, wav_file: cstring) {
 }
 
 /*
+loads an embedded WAV file into the FX channel
+@param ctx the AudioContext
+@param wav_data the WAV file data to load
+*/
+LoadEmbeddedFX :: proc(ctx: ^AudioContext, wav_data: []u8) {
+    rw := sdl2.RWFromConstMem(raw_data(wav_data), cast(i32)len(wav_data))
+    ctx.FXChunk = mixer.LoadWAV_RW(rw, true)
+}
+
+/*
 loads a WAV file into the Background channel
 @param ctx the AudioContext
 @param wav_file path to the WAV file
 */
 LoadBackground :: proc(ctx: ^AudioContext, wav_file: cstring) {
     ctx.BackgroundChunk = mixer.LoadWAV(wav_file)
+}
+
+/*
+loads an embedded WAV file into the Background channel
+@param ctx the AudioContext
+@param wav_data the WAV file data to load
+*/
+LoadEmbeddedBackground :: proc(ctx: ^AudioContext, wav_data: []u8) {
+    rw := sdl2.RWFromConstMem(raw_data(wav_data), cast(i32)len(wav_data))
+    ctx.BackgroundChunk = mixer.LoadWAV_RW(rw, true)
 }
 
 /*
@@ -122,12 +142,32 @@ LoadVoice :: proc(ctx: ^AudioContext, wav_file: cstring) {
 }
 
 /*
+loads an embedded WAV file into the Voice channel
+@param ctx the AudioContext
+@param wav_data the WAV file data to load
+*/
+LoadEmbeddedVoice :: proc(ctx: ^AudioContext, wav_data: []u8) {
+    rw := sdl2.RWFromConstMem(raw_data(wav_data), cast(i32)len(wav_data))
+    ctx.VoiceChunk = mixer.LoadWAV_RW(rw, true)
+}
+
+/*
 loads a WAV file into the Ambience channel
 @param ctx the AudioContext
 @param wav_file path to the WAV file
 */
 LoadAmbience :: proc(ctx: ^AudioContext, wav_file: cstring) {
     ctx.AmbienceChunk = mixer.LoadWAV(wav_file)
+}
+
+/*
+loads an embedded WAV file into the Ambience channel
+@param ctx the AudioContext
+@param wav_data the WAV file data to load
+*/
+LoadEmbeddedAmbience :: proc(ctx: ^AudioContext, wav_data: []u8) {
+    rw := sdl2.RWFromConstMem(raw_data(wav_data), cast(i32)len(wav_data))
+    ctx.AmbienceChunk = mixer.LoadWAV_RW(rw, true)
 }
 
 /*
@@ -140,12 +180,32 @@ LoadUI :: proc(ctx: ^AudioContext, wav_file: cstring) {
 }
 
 /*
+loads an embedded WAV file into the UI channel
+@param ctx the AudioContext
+@param wav_data the WAV file data to load
+*/
+LoadEmbeddedUI :: proc(ctx: ^AudioContext, wav_data: []u8) {
+    rw := sdl2.RWFromConstMem(raw_data(wav_data), cast(i32)len(wav_data))
+    ctx.UIChunk = mixer.LoadWAV_RW(rw, true)
+}
+
+/*
 loads a WAV file into the Custom1 channel
 @param ctx the AudioContext
 @param wav_file path to the WAV file
 */
 LoadCustom1 :: proc(ctx: ^AudioContext, wav_file: cstring) {
     ctx.Custom1Chunk = mixer.LoadWAV(wav_file)
+}
+
+/*
+loads an embedded WAV file into the Custom1 channel
+@param ctx the AudioContext
+@param wav_data the WAV file data to load
+*/
+LoadEmbeddedCustom1 :: proc(ctx: ^AudioContext, wav_data: []u8) {
+    rw := sdl2.RWFromConstMem(raw_data(wav_data), cast(i32)len(wav_data))
+    ctx.Custom1Chunk = mixer.LoadWAV_RW(rw, true)
 }
 
 /*
@@ -158,6 +218,16 @@ LoadCustom2 :: proc(ctx: ^AudioContext, wav_file: cstring) {
 }
 
 /*
+loads an embedded WAV file into the Custom2 channel
+@param ctx the AudioContext
+@param wav_data the WAV file data to load
+*/
+LoadEmbeddedCustom2 :: proc(ctx: ^AudioContext, wav_data: []u8) {
+    rw := sdl2.RWFromConstMem(raw_data(wav_data), cast(i32)len(wav_data))
+    ctx.Custom2Chunk = mixer.LoadWAV_RW(rw, true)
+}
+
+/*
 loads a WAV file into the Custom3 channel
 @param ctx the AudioContext
 @param wav_file path to the WAV file
@@ -166,7 +236,15 @@ LoadCustom3 :: proc(ctx: ^AudioContext, wav_file: cstring) {
     ctx.Custom3Chunk = mixer.LoadWAV(wav_file)
 }
 
-
+/*
+loads an embedded WAV file into the Custom3 channel
+@param ctx the AudioContext
+@param wav_data the WAV file data to load
+*/
+LoadEmbeddedCustom3 :: proc(ctx: ^AudioContext, wav_data: []u8) {
+    rw := sdl2.RWFromConstMem(raw_data(wav_data), cast(i32)len(wav_data))
+    ctx.Custom3Chunk = mixer.LoadWAV_RW(rw, true)
+}
 
 /*
 plays the FX channel if it has a loaded chunk
@@ -265,9 +343,24 @@ LoadMusicFromOpus :: proc(ctx: ^AudioContext, opus_file: cstring) {
     music := mixer.LoadMUS(opus_file)
     if music == nil {
         Util.Log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_OPUS", "Failed to load music: %s", opus_file)
-        return
     }
     ctx.Music = music
+}
+
+LoadMusicFromEmbeddedOpus :: proc(ctx: ^AudioContext, opus_data: []u8) {
+    // free existing music if any
+    if ctx.Music != nil {
+        mixer.FreeMusic(ctx.Music)
+        ctx.Music = nil
+    }
+
+    rw := sdl2.RWFromConstMem(raw_data(opus_data), cast(i32)len(opus_data))
+
+    music := mixer.LoadMUS_RW(rw, true)
+
+    if music == nil {
+        Util.Log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_EMBEDDED_OPUS", "Failed to load OPUS data")
+    }
 }
 
 /*
@@ -292,6 +385,22 @@ LoadMusicFromOgg :: proc(ctx: ^AudioContext, ogg_file: cstring) {
     ctx.Music = music
 }
 
+LoadMusicFromEmbeddedOgg :: proc(ctx: ^AudioContext, ogg_data: []u8) {
+    // free existing music if any
+    if ctx.Music != nil {
+        mixer.FreeMusic(ctx.Music)
+        ctx.Music = nil
+    }
+
+    rw := sdl2.RWFromConstMem(raw_data(ogg_data), cast(i32)len(ogg_data))
+
+    music := mixer.LoadMUS_RW(rw, true)
+
+    if music == nil {
+        Util.Log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_EMBEDDED_OGG", "Failed to load OGG data")
+    }
+}
+
 /*
 loads an MP3 file into the Music context
 @param ctx the AudioContext
@@ -307,11 +416,27 @@ LoadMusicFromMP3 :: proc(ctx: ^AudioContext, mp3_file: cstring) {
     // load the MP3 file as Mix_Music
     music := mixer.LoadMUS(mp3_file)
     if music == nil {
-        Util.Log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_OOG", "Failed to load music: %s", mp3_file)
+        Util.Log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_MP3", "Failed to load music: %s", mp3_file)
         return
     }
 
     ctx.Music = music
+}
+
+LoadMusicFromEmbeddedMP3 :: proc(ctx: ^AudioContext, mp3_data: []u8) {
+    // free existing music if any
+    if ctx.Music != nil {
+        mixer.FreeMusic(ctx.Music)
+        ctx.Music = nil
+    }
+
+    rw := sdl2.RWFromConstMem(raw_data(mp3_data), cast(i32)len(mp3_data))
+
+    music := mixer.LoadMUS_RW(rw, true)
+
+    if music == nil {
+        Util.Log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_EMBEDDED_MP3", "Failed to load MP3 data")
+    }
 }
 
 /*
@@ -336,6 +461,22 @@ LoadMusicFromFLAC :: proc(ctx: ^AudioContext, flac_file: cstring) {
     ctx.Music = music
 }
 
+LoadMusicFromEmbeddedFLAC :: proc(ctx: ^AudioContext, flac_data: []u8) {
+    // free existing music if any
+    if ctx.Music != nil {
+        mixer.FreeMusic(ctx.Music)
+        ctx.Music = nil
+    }
+
+    rw := sdl2.RWFromConstMem(raw_data(flac_data), cast(i32)len(flac_data))
+
+    music := mixer.LoadMUS_RW(rw, true)
+
+    if music == nil {
+        Util.Log(.ERROR, "MAGMA", "2D_AUDIO_LOAD_MUSIC_FROM_EMBEDDED_FLAC", "Failed to load FLAC data")
+    }
+}
+
 /*
 plays the currently loaded music for a given number of loops
 @param ctx the AudioContext
@@ -355,7 +496,7 @@ ToggleMusic :: proc(ctx: ^AudioContext) {
         return // No music loaded
     }
 
-    if mixer.PausedMusic() != 0 {  // returns non-zero if paused
+    if mixer.PausedMusic() != 0 { // returns non-zero if paused
         mixer.ResumeMusic()
     } else {
         mixer.PauseMusic()
@@ -368,8 +509,8 @@ stopMusic stops the music that is currently playing
 */
 StopMusic :: proc(ctx: ^AudioContext) {
     if ctx.Music != nil {
-        mixer.HaltMusic()      // Stop playback immediately
-        mixer.FreeMusic(ctx.Music)  // Free the memory
-        ctx.Music = nil        // Clear the reference
+        mixer.HaltMusic() // Stop playback immediately
+        mixer.FreeMusic(ctx.Music) // Free the memory
+        ctx.Music = nil // Clear the reference
     }
 }
