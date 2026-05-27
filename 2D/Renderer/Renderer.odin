@@ -1,20 +1,18 @@
 package Renderer
 
-import "vendor:sdl2/ttf"
 import "base:runtime"
-import "core:fmt"
 import "core:math"
 import "../../Util"
 import "../../Types"
-
+import "vendor:sdl2"
+import "vendor:sdl2/image"
 
 
 
 @private
 Frames: u128
 
-import "vendor:sdl2"
-import "vendor:sdl2/image"
+
 
 GraphicsBackend :: enum {
     OPEN_GL,
