@@ -14,6 +14,7 @@ backend: Renderer.GraphicsBackend = .SOFTWARE
 
 PLAYER_ID :: Kinematics.ObjectID(1)
 FLOOR_ID  :: Kinematics.ObjectID(2)
+WALL_ID :: Kinematics.ObjectID(3)
 
 main :: proc() {
     track: mem.Tracking_Allocator
@@ -62,8 +63,16 @@ main :: proc() {
     floor.rot = 0
     floor.is_static = true
 
+    wall := new(Kinematics.Object)
+    wall.pos = {700, 200}
+    wall.width = 0.001
+    wall.height = 300
+    wall.rot = 0
+    wall.is_static = true
+
     world.objects[PLAYER_ID] = player
     world.objects[FLOOR_ID] = floor
+    world.objects[WALL_ID] = wall
 
     Kinematics.StartSolver(world)
 
@@ -115,6 +124,13 @@ main :: proc() {
             {120, 120, 120, 255},
         )
 
+        Renderer.DrawRect(
+            &ctx,
+            wall.pos,
+            {wall.width, wall.height},
+            {120, 120, 120, 255}
+        )
+
         Renderer.Update(&ctx)
         Renderer.PresentScreen(&ctx)
 
@@ -137,7 +153,8 @@ main :: proc() {
 
     free(player)
     free(floor)
-    free(world)
+    free(wall)
+    Kinematics.DestroyWorld(world)
 
     free(mouse)
     free(keyboard)

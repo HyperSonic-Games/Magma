@@ -48,6 +48,9 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/FileLoader.html">FileLoader.odin</a></div>
 <div class="file" style="padding-left: 3.0em;"><a href="../2D/Renderer/Renderer.html">Renderer.odin</a></div>
 </details>
+<details class='folder' style='padding-left: 1.5em;'><summary>UI</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../2D/UI/UI.html">UI.odin</a></div>
+</details>
 </details>
 <details class='folder' style='padding-left: 0.0em;' open><summary>Types</summary>
 <div class="file" class='current' style="padding-left: 1.5em;"><a href="Color.html">Color.odin</a></div>
@@ -107,7 +110,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>ColorDiv</h2>
   <pre class='code'>ColorDiv (a, b: Color) -&gt; Color</pre>
-  <p>performs per-channel division of two Colors, with float casting for precision. The result is clamped to valid RGBA ranges, with alpha clamped to 100 max.</p>
+  <p>performs per-channel division of two Colors, with float casting for precision. The result is clamped to valid RGBA ranges.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: numerator Color</li>
     <li><span class='param-name'>b</span>: denominator Color</li>
@@ -121,7 +124,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>a</span>: Color to negate</li>
   </ul></div>
-  <div class='return'>Returns: negated Color with clamped alpha</div>
+  <div class='return'>Returns: negated Color</div>
 </section>
 <section>
   <h2>ColorToArray</h2>

@@ -1,5 +1,6 @@
 package Renderer
 
+import "vendor:sdl2/ttf"
 import "base:runtime"
 import "core:fmt"
 import "core:math"

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Documentation for UI.odin</title>
+<style>
+body { margin: 0; font-family: Arial, sans-serif; background: #121212; color: #eee; }
+a { text-decoration: none; color: #80cbc4; }
+a:hover { text-decoration: underline; }
+header { padding: 1rem; background: #1e1e1e; font-size: 1.5rem; color: #80cbc4; }
+main { display: flex; min-height: 100vh; }
+nav { width: 250px; background: #1e1e1e; padding: 1rem; overflow-y: auto; }
+nav details { margin-bottom: 0.5rem; }
+nav summary { cursor: pointer; user-select: none; }
+nav .file { display: block; }
+nav .folder::before { content: "📂 "; }
+nav .file::before { content: "📄 "; }
+nav .file.current a { font-weight: bold; color: #ffb74d; }
+article { flex: 1; padding: 2rem; }
+.back-index { margin-bottom: 1rem; }
+section { background: #1e1e1e; border-radius: 8px; padding: 1rem; margin-bottom: 2rem; box-shadow: 0 0 8px #000; }
+h2 { color: #4db6ac; }
+pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: auto; color: #cfd8dc; }
+.code { font-family: monospace; }
+.params ul { padding-left: 1.2em; }
+.params li { margin-bottom: 0.3em; }
+.param-name { font-weight: 600; color: #80cbc4; }
+.return { font-weight: 600; color: #a5d6a7; margin-top: 1em; }
+</style>
+</head>
+<body>
+<header>UI.odin</header>
+<main>
+<nav>
+<details class='folder' style='padding-left: 0.0em;' open><summary>2D</summary>
+<details class='folder' style='padding-left: 1.5em;'><summary>Audio</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../Audio/Audio.html">Audio.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;'><summary>EventSys</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../EventSys/EventSystem.html">EventSystem.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;'><summary>Kinematics</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../Kinematics/Kinematics.html">Kinematics.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;'><summary>Renderer</summary>
+<div class="file" style="padding-left: 3.0em;"><a href="../Renderer/Draw.html">Draw.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../Renderer/FileLoader.html">FileLoader.odin</a></div>
+<div class="file" style="padding-left: 3.0em;"><a href="../Renderer/Renderer.html">Renderer.odin</a></div>
+</details>
+<details class='folder' style='padding-left: 1.5em;' open><summary>UI</summary>
+<div class="file" class='current' style="padding-left: 3.0em;"><a href="UI.html">UI.odin</a></div>
+</details>
+</details>
+
+</nav>
+<article>
+<div class="back-index"><a href="../../index.html">⬅ Back to Index</a></div>
+<section>
+  <h2>CreateUIContext</h2>
+  <pre class='code'>CreateUIContext (renderer: ^Renderer.RenderContext, mouse_data: ^EventSys.Mouse)</pre>
+  <p>creates a new UIContext to use for ui state</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>renderer</span>: a pointer to the renderer&#x27;s RenderContext you want to render to</li>
+    <li><span class='param-name'>mouse_data</span>: a pointer to the mouse data returned by the event system every frame</li>
+  </ul></div>
+  <div class='return'>Returns: a pointer to the new UIContext</div>
+</section>
+<section>
+  <h2>DestroyUIContext</h2>
+  <pre class='code'>DestroyUIContext (ctx: ^UIContext)</pre>
+  <p>deletes a UIContext</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: a pointer to the UIContext you want to delete</li>
+  </ul></div>
+</section>
+<section>
+  <h2>Button</h2>
+  <pre class='code'>Button (
+	ctx: ^UIContext,
+	pos, size: Types.Vector2f,
+	color, pressed_color: Types.Color,
+	r_click: bool = false,
+) -&gt; bool</pre>
+  <p>renders a button to the renderer in ctx</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>cxt</span>: a pointer to the UIContext to use for state and rendering</li>
+    <li><span class='param-name'>pos</span>: the position on the screen to render the button</li>
+    <li><span class='param-name'>size</span>: the size of the button</li>
+    <li><span class='param-name'>color</span>: the color of the button</li>
+    <li><span class='param-name'>pressed_color</span>: the color of the button when pressed</li>
+    <li><span class='param-name'>r_click</span>: wether to respond to a right click (true) or a left click (false)</li>
+  </ul></div>
+  <div class='return'>Returns: a bool indicating if the button was pressed or not</div>
+</section>
+<section>
+  <h2>CheckBox</h2>
+  <pre class='code'>CheckBox (
+	ctx: ^UIContext,
+	pos, size: Types.Vector2f,
+	value: ^bool,
+	check_texture, uncheck_texture: ^Renderer.Texture,
+) -&gt; bool</pre>
+  <p>renders a check box to the renderer in ctx</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: a pointer to the UIContext to use for state and rendering</li>
+    <li><span class='param-name'>pos</span>: the position on the screen to render the check box</li>
+    <li><span class='param-name'>size</span>: the size of the hitbox for the checkbox</li>
+    <li><span class='param-name'>value</span>: a pointer to a bool used to store the current state of the checkbox over time</li>
+    <li><span class='param-name'>check_texture</span>: the texture to display when the check box is checked</li>
+    <li><span class='param-name'>uncheck_texture</span>: the texture to display when the check box is unchecked</li>
+  </ul></div>
+  <div class='return'>Returns: a bool representing the state of the check box this current frame</div>
+</section>
+<section>
+  <h2>UnsignedIntegerSlider</h2>
+  <pre class='code'>UnsignedIntegerSlider (
+	ctx: ^UIContext,
+	pos, size: Types.Vector2f,
+	value: ^u64,
+	min_max: [2]u64,
+	step_size: u64,
+	bar_color: Types.Color,
+	slide_color: Types.Color,
+) -&gt; u64</pre>
+  <p>renders a slider that uses an unsigned integer for the value</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: a pointer to the UIContext to use for state and rendering</li>
+    <li><span class='param-name'>pos</span>: the position on the screen to render the slider</li>
+    <li><span class='param-name'>size</span>: the size of the slider (this is the bar size as the slide size is calculated from this)</li>
+    <li><span class='param-name'>value</span>: a pointer to a u64 used to store the current state of the checkbox over time</li>
+    <li><span class='param-name'>min_max</span>: an array of two values the first value is the minumum value for the slider and the second value is the maximum value of the slider</li>
+    <li><span class='param-name'>step_size</span>: this is the value that the value steps by when the slider is moved</li>
+    <li><span class='param-name'>bar_color</span>: the color of the bar that the slider is atatched to</li>
+    <li><span class='param-name'>slide_color</span>: the color of the slider</li>
+  </ul></div>
+  <div class='return'>Returns: a u64 representing the state of the slider this current frame</div>
+</section>
+<section>
+  <h2>SignedIntegerSlider</h2>
+  <pre class='code'>SignedIntegerSlider (
+	ctx: ^UIContext,
+	pos, size: Types.Vector2f,
+	value: ^i64,
+	min_max: [2]i64,
+	step_size: i64,
+	bar_color: Types.Color,
+	slide_color: Types.Color,
+) -&gt; i64</pre>
+  <p>renders a slider that uses an signed integer for the value</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: a pointer to the UIContext to use for state and rendering</li>
+    <li><span class='param-name'>pos</span>: the position on the screen to render the slider</li>
+    <li><span class='param-name'>size</span>: the size of the slider (this is the bar size as the slide size is calculated from this)</li>
+    <li><span class='param-name'>value</span>: a pointer to a i64 used to store the current state of the checkbox over time</li>
+    <li><span class='param-name'>min_max</span>: an array of two values the first value is the minumum value for the slider and the second value is the maximum value of the slider</li>
+    <li><span class='param-name'>step_size</span>: this is the value that the value steps by when the slider is moved</li>
+    <li><span class='param-name'>bar_color</span>: the color of the bar that the slider is atatched to</li>
+    <li><span class='param-name'>slide_color</span>: the color of the slider</li>
+  </ul></div>
+  <div class='return'>Returns: a i64 representing the state of the slider this current frame</div>
+</section>
+<section>
+  <h2>FloatSlider</h2>
+  <pre class='code'>FloatSlider (
+	ctx: ^UIContext,
+	pos, size: Types.Vector2f,
+	value: ^f32,
+	min_max: [2]f32,
+	step_size: f32,
+	bar_color: Types.Color,
+	slide_color: Types.Color,
+) -&gt; f32</pre>
+  <p>renders a slider that uses a float for the value</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: a pointer to the UIContext to use for state and rendering</li>
+    <li><span class='param-name'>pos</span>: the position on the screen to render the slider</li>
+    <li><span class='param-name'>size</span>: the size of the slider (this is the bar size as the slide size is calculated from this)</li>
+    <li><span class='param-name'>value</span>: a pointer to an f32 used to store the current state of the checkbox over time</li>
+    <li><span class='param-name'>min_max</span>: an array of two values the first value is the minumum value for the slider and the second value is the maximum value of the slider</li>
+    <li><span class='param-name'>step_size</span>: this is the value that the sliders value steps by when the slider is moved</li>
+    <li><span class='param-name'>bar_color</span>: the color of the bar that the slider is atatched to</li>
+    <li><span class='param-name'>slide_color</span>: the color of the slider</li>
+  </ul></div>
+  <div class='return'>Returns: an f32 representing the state of the slider this current frame</div>
+</section>
+<section>
+  <h2>Text</h2>
+  <pre class='code'>Text (
+	ctx: ^UIContext,
+    pos: Types.Vector2f,
+    text: ^Renderer.Texture,
+    rot: f64 = 0.0
+)</pre>
+  <p>renders text to the renderer in ctx this is just a wrapper over Renderer.DrawTexture to improve code readability</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: a pointer to the UIContext to use for state and rendering</li>
+    <li><span class='param-name'>pos</span>: the position on the screen to render the text</li>
+    <li><span class='param-name'>text</span>: the text to render</li>
+    <li><span class='param-name'>rot</span>: optional rotation of the text</li>
+  </ul></div>
+</section>
+<section>
+  <h2>Image</h2>
+  <pre class='code'>Image (
+	ctx: ^UIContext,
+	pos: Types.Vector2f,
+	image: ^Renderer.Texture,
+    rot: f64 = 0.0
+)</pre>
+  <p>renders an image to the renderer in ctx this is just a wrapper over Renderer.DrawTexture to improve code readability</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: a pointer to the UIContext to use for state and rendering</li>
+    <li><span class='param-name'>pos</span>: the position on the screen to render the image</li>
+    <li><span class='param-name'>image</span>: the image texture to render</li>
+    <li><span class='param-name'>rot</span>: optional rotation of the image</li>
+  </ul></div>
+</section>
+<section>
+  <h2>Panel</h2>
+  <pre class='code'>Panel (
+	ctx: ^UIContext,
+	pos, size: Types.Vector2f,
+	color: Types.Color,
+    rot: f32 = 0.0,
+)</pre>
+  <p>renders a panel to the renderer in ctx this is just a wrapper over Renderer.DrawRect to improve code readability</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: a pointer to the UIContext to use for state and rendering</li>
+    <li><span class='param-name'>pos</span>: the position on the screen to render the panel</li>
+    <li><span class='param-name'>color</span>: the color of the panel</li>
+    <li><span class='param-name'>rot</span>: optional rotation of the panel</li>
+  </ul></div>
+</section>
+<section>
+  <h2>YesNoDialog</h2>
+  <pre class='code'>YesNoDialog (
+	title: string,
+	text: string,
+	type: MessageBoxType,
+	background_color    := [3]u8{255, 255, 255},
+	text_color          := [3]u8{0, 0, 0},
+	button_border_color := [3]u8{0, 0, 0},
+	button_color        := [3]u8{255, 255, 255},
+	button_select_color := [3]u8{191, 191, 191},
+) -&gt; bool</pre>
+  <p>a dialog box with text and a yes or no option</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>title</span>: the title for the dialog window</li>
+    <li><span class='param-name'>text</span>: the text for the dialog window</li>
+    <li><span class='param-name'>type</span>: the type of message box. Options: (ERROR, WARN, INFO)</li>
+    <li><span class='param-name'>background_color</span>: the background color of the dialog</li>
+    <li><span class='param-name'>text_color</span>: the text color of the dialog</li>
+    <li><span class='param-name'>button_border_color</span>: the color of the border of the buttons</li>
+    <li><span class='param-name'>button_color</span>: the color of the buttons</li>
+    <li><span class='param-name'>button_select_color</span>: the color of the button when it is selected</li>
+  </ul></div>
+  <div class='return'>Returns: a bool signifying yes: true or no: false</div>
+</section>
+<section>
+  <h2>OkCancelDialog</h2>
+  <pre class='code'>OkCancelDialog (
+	title: string,
+	text: string,
+	type: MessageBoxType,
+	background_color    := [3]u8{255, 255, 255},
+	text_color          := [3]u8{0, 0, 0},
+	button_border_color := [3]u8{0, 0, 0},
+	button_color        := [3]u8{255, 255, 255},
+	button_select_color := [3]u8{191, 191, 191},
+) -&gt; bool</pre>
+  <p>a dialog box with text and a ok or cancel option</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>title</span>: the title for the dialog window</li>
+    <li><span class='param-name'>text</span>: the text for the dialog window</li>
+    <li><span class='param-name'>type</span>: the type of message box. Options: (ERROR, WARN, INFO)</li>
+    <li><span class='param-name'>background_color</span>: the background color of the dialog</li>
+    <li><span class='param-name'>text_color</span>: the text color of the dialog</li>
+    <li><span class='param-name'>button_border_color</span>: the color of the border of the buttons</li>
+    <li><span class='param-name'>button_color</span>: the color of the buttons</li>
+    <li><span class='param-name'>button_select_color</span>: the color of the button when it is selected</li>
+  </ul></div>
+  <div class='return'>Returns: a bool signifying ok: true or cancel: false</div>
+</section>
+<section>
+  <h2>ConfirmDenyDialog</h2>
+  <pre class='code'>ConfirmDenyDialog (
+	title: string,
+	text: string,
+	type: MessageBoxType,
+	background_color    := [3]u8{255, 255, 255},
+	text_color          := [3]u8{0, 0, 0},
+	button_border_color := [3]u8{0, 0, 0},
+	button_color        := [3]u8{255, 255, 255},
+	button_select_color := [3]u8{191, 191, 191},
+) -&gt; bool</pre>
+  <p>a dialog box with text and a confirm or deny option</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>title</span>: the title for the dialog window</li>
+    <li><span class='param-name'>text</span>: the text for the dialog window</li>
+    <li><span class='param-name'>type</span>: the type of message box. Options: (ERROR, WARN, INFO)</li>
+    <li><span class='param-name'>background_color</span>: the background color of the dialog</li>
+    <li><span class='param-name'>text_color</span>: the text color of the dialog</li>
+    <li><span class='param-name'>button_border_color</span>: the color of the border of the buttons</li>
+    <li><span class='param-name'>button_color</span>: the color of the buttons</li>
+    <li><span class='param-name'>button_select_color</span>: the color of the button when it is selected</li>
+  </ul></div>
+  <div class='return'>Returns: a bool signifying confirm: true or deny: false</div>
+</section>
+<section>
+  <h2>ShowTwoButtonDialog</h2>
+  <pre class='code'>ShowTwoButtonDialog (
+	title: string,
+	text: string,
+	type: MessageBoxType,
+	accept_label: string,
+	deny_label: string,
+	background_color: [3]u8,
+	text_color: [3]u8,
+	button_border_color: [3]u8,
+	button_color: [3]u8,
+	button_select_color: [3]u8,
+) -&gt; bool</pre>
+  <p>a dialog box with text and custom two options</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>title</span>: the title for the dialog window</li>
+    <li><span class='param-name'>text</span>: the text for the dialog window</li>
+    <li><span class='param-name'>type</span>: the type of message box. Options: (ERROR, WARN, INFO,)</li>
+    <li><span class='param-name'>accept_label</span>: a string for the name of option 1</li>
+    <li><span class='param-name'>deny_label</span>: a string for the name of option 2</li>
+    <li><span class='param-name'>background_color</span>: the background color of the dialog</li>
+    <li><span class='param-name'>text_color</span>: the text color of the dialog</li>
+    <li><span class='param-name'>button_border_color</span>: the color of the border of the buttons</li>
+    <li><span class='param-name'>button_color</span>: the color of the buttons</li>
+    <li><span class='param-name'>button_select_color</span>: the color of the button when it is selected</li>
+  </ul></div>
+  <div class='return'>Returns: a bool signifying option_1: true or option_2: false</div>
+</section>
+</article>
+</main>
+</body>
+</html>

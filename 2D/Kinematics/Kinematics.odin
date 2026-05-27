@@ -162,28 +162,13 @@ SolveCollisions :: proc(world: ^World) {
 SolverThreadProc :: proc(data: rawptr) {
     world := (^World)(data)
     
-    fixed_dt: f64 = 1.0 / 60.0
-    accumulator: f64 = 0.0
-
-    last := time.now()
-
     for world.running {
-        now := time.now()
-        frame_dt := time.diff(now, last)
-        last = now
-        accumulator += time.duration_seconds(frame_dt)
         sync.mutex_lock(&world.mutex)
-
-        for accumulator >= fixed_dt {
-            SolveCollisions(world)
-            accumulator -= fixed_dt
-            
+        SolveCollisions(world)
+        sync.mutex_unlock(&world.mutex)
+        thread.yield()
     }
 
-    sync.mutex_unlock(&world.mutex)
-
-    thread.yield()
-    }
 }
 
 /*
@@ -192,7 +177,7 @@ starts the kinematics solver in a new thread
 */
 StartSolver :: proc(world: ^World) {
     world.running = true
-    world.solver_thread = thread.create_and_start_with_data(world, SolverThreadProc)
+    world.solver_thread = thread.create_and_start_with_data(world, SolverThreadProc, nil, thread.Thread_Priority.High)
 }
 
 /*
@@ -290,4 +275,10 @@ GetCollisions :: proc(world: ^World, id: ObjectID) -> []CollisionInfo {
     }
 
     return results[:]
+}
+
+DestroyWorld :: proc(world: ^World) {
+    delete(world.objects)
+    thread.destroy(world.solver_thread)
+    free(world)
 }

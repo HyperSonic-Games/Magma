@@ -22,9 +22,11 @@ KEYS :: enum {
 }
 
 Mouse :: struct {
-    position: Types.Vector2,
-    RClick: bool,
-    LClick: bool,
+	position: Types.Vector2,
+	RClick: bool,
+	LClick: bool,
+	prev_RClick: bool,
+	prev_LClick: bool,
 }
 
 Keyboard :: struct {
@@ -139,12 +141,13 @@ ConvertSDLModToMODKEYS :: proc(mod: sdl2.Keymod) -> MOD_KEYS {
 /*
 polls SDL2 for all events and updates the engine's input and window state.
 This function should be called once per frame.
-@param mouse Pointer to the Mouse struct to update
-@param keyboard Pointer to the Keyboard struct to update
-@param win Pointer to the WindowState struct to update
+@param mouse pointer to the Mouse struct to update
+@param keyboard pointer to the Keyboard struct to update
+@param win pointer to the WindowState struct to update
 */
 HandleEvents :: proc(mouse: ^Mouse, keyboard: ^Keyboard, win: ^WindowState) {
-
+    mouse.prev_LClick = mouse.LClick
+    mouse.prev_RClick = mouse.RClick
     event: sdl2.Event
     for sdl2.PollEvent(&event) != false {
         #partial switch event.type {

@@ -95,13 +95,32 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 <section>
   <h2>DrawTexture</h2>
   <pre class='code'>DrawTexture (ctx: ^RenderContext, texture: ^Texture, pos: Types.Vector2f, rot: f64)</pre>
-  <p>draws an SDL2 texture to the renderer with optional rotation Can be used with an image loader or any SDL2 code that creates a texture</p>
+  <p>draws an SDL2 texture to the renderer with optional rotation Can be used with an image loader, text renderer or any SDL2 code that creates a texture</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>ctx</span>: the renderer to draw to</li>
     <li><span class='param-name'>texture</span>: the SDL2 texture to render</li>
     <li><span class='param-name'>pos</span>: the top-left position to draw the texture</li>
     <li><span class='param-name'>rot</span>: the rotation angle (in degrees)</li>
   </ul></div>
+</section>
+<section>
+  <h2>RenderTextToTexture</h2>
+  <pre class='code'>RenderTextToTexture (
+	ctx: ^RenderContext,
+	text: string,
+	font: ^ttf.Font,
+	color: Types.Color,
+	wrap: u32,
+)</pre>
+  <p>rasterizes UTF-8 text to create a texture of rendered text ready to draw to the renderer NOTE: this is a VERY expensive operation and if the text does not change often you should reuse the result</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: rendering context used to create the GPU texture</li>
+    <li><span class='param-name'>text</span>: string to render</li>
+    <li><span class='param-name'>font</span>: font used for rasterization loaded from the FontSystem</li>
+    <li><span class='param-name'>color</span>: RGBA color of the rendered text</li>
+    <li><span class='param-name'>wrap</span>: maximum pixel width before line wrapping occurs</li>
+  </ul></div>
+  <div class='return'>Returns: the text rendered to a new texture and the size of the texture</div>
 </section>
 </article>
 </main>
