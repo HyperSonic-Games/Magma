@@ -279,7 +279,7 @@ loads a BMP image from a file
 LoadBMPFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadBMP_RW(rw)
     sdl2.FreeRW(rw)
@@ -298,7 +298,7 @@ loads a CUR image from a file
 LoadCURFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadCUR_RW(rw)
     sdl2.FreeRW(rw)
@@ -317,7 +317,7 @@ loads a GIF image from a file
 LoadGIFFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadGIF_RW(rw)
     sdl2.FreeRW(rw)
@@ -336,7 +336,7 @@ loads a ICO image from a file
 LoadICOFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadICO_RW(rw)
     sdl2.FreeRW(rw)
@@ -355,7 +355,7 @@ loads a JPEG image from a file
 LoadJPEGFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadJPG_RW(rw)
     sdl2.FreeRW(rw)
@@ -374,7 +374,7 @@ loads a LBM image from a file
 LoadLBMFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadLBM_RW(rw)
     sdl2.FreeRW(rw)
@@ -393,7 +393,7 @@ loads a PCX image from a file
 LoadPCXFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadPCX_RW(rw)
     sdl2.FreeRW(rw)
@@ -412,7 +412,7 @@ loads a PNG image from a file
 LoadPNGFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadPNG_RW(rw)
     sdl2.FreeRW(rw)
@@ -431,7 +431,7 @@ loads a PNM image from a file
 LoadPNMFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadPNM_RW(rw)
     sdl2.FreeRW(rw)
@@ -450,7 +450,7 @@ loads a SVG image from a file
 LoadSVGFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadSVG_RW(rw)
     sdl2.FreeRW(rw)
@@ -469,7 +469,7 @@ loads a TGA image from a file
 LoadTGAFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadTGA_RW(rw)
     sdl2.FreeRW(rw)
@@ -488,7 +488,7 @@ loads a XCF image from a file
 LoadXCFFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadXCF_RW(rw)
     sdl2.FreeRW(rw)
@@ -507,7 +507,7 @@ loads a XPM image from a file
 LoadXPMFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadXPM_RW(rw)
     sdl2.FreeRW(rw)
@@ -526,7 +526,7 @@ loads a XV image from a file
 LoadXVFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadXV_RW(rw)
     sdl2.FreeRW(rw)
@@ -545,7 +545,7 @@ loads a WebP image from a file
 LoadWebPFile :: proc(cxt: RenderContext, file_path: cstring) -> ^Texture {
     data, ok := Util.ReadGenericFile(string(file_path))
     if !ok { return nil }
-    rw := sdl2.RWFromConstMem(&data, size_of(data))
+    rw := sdl2.RWFromConstMem(raw_data(data), size_of(data))
     if rw == nil { return nil }
     surf := image.LoadWEBP_RW(rw)
     sdl2.FreeRW(rw)

@@ -128,6 +128,43 @@ DrawTexture :: proc(ctx: ^RenderContext, texture: ^Texture, pos: Types.Vector2f,
     sdl2.RenderCopyExF(ctx.Renderer, texture, nil, &dst, rot, &center, .NONE)
 }
 
+DrawTextureScaled :: proc(
+    ctx: ^RenderContext,
+    texture: ^sdl2.Texture,
+    pos: Types.Vector2f,
+    scale: Types.Vector2f,
+    rot: f64 = 0.0,
+) -> bool {
+
+    if texture == nil || scale[0] <= 0 || scale[1] <= 0 {
+        return false
+    }
+
+    w, h: i32
+    if sdl2.QueryTexture(texture, nil, nil, &w, &h) != 0 {
+        return false
+    }
+
+    dst := sdl2.FRect{
+        pos.x,
+        pos.y,
+        f32(w) * scale[0],
+        f32(h) * scale[1],
+    }
+
+    sdl2.RenderCopyExF(
+        ctx.Renderer,
+        texture,
+        nil,
+        &dst,
+        rot,
+        nil,
+        .NONE,
+    )
+
+    return true
+}
+
 /*
 rasterizes UTF-8 text to create a texture of rendered text ready to draw to the renderer
 NOTE: this is a VERY expensive operation and if the text does not change often you should reuse the result

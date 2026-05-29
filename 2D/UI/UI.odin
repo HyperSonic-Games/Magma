@@ -14,7 +14,7 @@ MessageBoxType :: enum u32 {
 
 UIContext :: struct {
 	renderer: ^Renderer.RenderContext,
-    mouse_input: ^EventSys.Mouse,
+	mouse_input: ^EventSys.Mouse,
 }
 
 /*
@@ -24,11 +24,10 @@ creates a new UIContext to use for ui state
 @return a pointer to the new UIContext
 */
 CreateUIContext :: proc(renderer: ^Renderer.RenderContext, mouse_data: ^EventSys.Mouse) -> ^UIContext {
-    ctx := new(UIContext)
-
-    ctx.renderer = renderer
-    ctx.mouse_input = mouse_data
-    return ctx
+	ctx := new(UIContext)
+	ctx.renderer = renderer
+	ctx.mouse_input = mouse_data
+	return ctx
 }
 
 /*
@@ -36,7 +35,7 @@ deletes a UIContext
 @param ctx a pointer to the UIContext you want to delete
 */
 DestroyUIContext :: proc(ctx: ^UIContext) {
-    free(ctx)
+	free(ctx)
 }
 
 @(private)
@@ -49,7 +48,7 @@ PointInRect :: proc(p, pos, size: Types.Vector2f) -> bool {
 
 /*
 renders a button to the renderer in ctx
-@param cxt a pointer to the UIContext to use for state and rendering
+@param ctx a pointer to the UIContext to use for state and rendering
 @param pos the position on the screen to render the button
 @param size the size of the button
 @param color the color of the button
@@ -77,14 +76,14 @@ Button :: proc(
 		 (r_click && ctx.mouse_input.RClick))
 
 	clicked :=
-	hover &&
-    ((!r_click &&
-		ctx.mouse_input.LClick &&
-		!ctx.mouse_input.prev_LClick) ||
+		hover &&
+		((!r_click &&
+			ctx.mouse_input.LClick &&
+			!ctx.mouse_input.prev_LClick) ||
+		(r_click &&
+			ctx.mouse_input.RClick &&
+			!ctx.mouse_input.prev_RClick))
 
-	(r_click &&
-		ctx.mouse_input.RClick &&
-		!ctx.mouse_input.prev_RClick))
 	draw := color
 	if pressed {
 		draw = pressed_color
@@ -94,6 +93,45 @@ Button :: proc(
 
 	return clicked
 }
+
+/*
+renders a button with text centered inside
+@param ctx ui context
+@param text texture used as label
+@param pos button position
+@param size button size
+@param color base color
+@param pressed_color pressed color
+@param r_click right click mode
+@return true if clicked
+*/
+TextButton :: proc(
+	ctx: ^UIContext,
+	text: ^Renderer.Texture,
+	pos, size: Types.Vector2f,
+	color, pressed_color: Types.Color,
+	r_click: bool = false
+) -> bool {
+
+	clicked := Button(ctx, pos, size, color, pressed_color, r_click)
+
+	// Center text inside button
+	if text != nil {
+		tex_size := Renderer.GetTextureSize(text)
+
+		if tex_size.x > 0 && tex_size.y > 0 {
+			scale := Types.Vector2f{
+				size.x / f32(tex_size.x),
+				size.y / f32(tex_size.y),
+			}
+
+			Text(ctx, pos, text, scale, 0.0)
+		}
+	}
+
+	return clicked
+}
+
 /*
 renders a check box to the renderer in ctx
 @param ctx a pointer to the UIContext to use for state and rendering
@@ -132,21 +170,24 @@ CheckBox :: proc(
 		tex = check_texture
 	}
 
-	Renderer.DrawTexture(ctx.renderer, tex, pos, 0.0)
+	if tex != nil {
+		Renderer.DrawTextureScaled(ctx.renderer, tex, pos, {1, 1}, 0.0)
+	}
 
 	return value^
 }
+
 /*
 renders a slider that uses an unsigned integer for the value
-@param ctx a pointer to the UIContext to use for state and rendering
-@param pos the position on the screen to render the slider
-@param size the size of the slider (this is the bar size as the slide size is calculated from this)
-@param value a pointer to a u64 used to store the current state of the checkbox over time
-@param min_max an array of two values the first value is the minumum value for the slider and the second value is the maximum value of the slider
-@param step_size this is the value that the value steps by when the slider is moved
-@param bar_color the color of the bar that the slider is atatched to
-@param slide_color the color of the slider
-@return a u64 representing the state of the slider this current frame
+@param ctx ui context
+@param pos slider position
+@param size slider size
+@param value state pointer
+@param min_max range
+@param step_size snapping step
+@param bar_color bar color
+@param slide_color handle color
+@return current value
 */
 UnsignedIntegerSlider :: proc(
 	ctx: ^UIContext,
@@ -176,7 +217,7 @@ UnsignedIntegerSlider :: proc(
 
 		if step_size > 0 {
 			new_value = (new_value / step_size) * step_size
-            new_value = clamp(new_value, min_max[0], min_max[1])
+			new_value = clamp(new_value, min_max[0], min_max[1])
 		}
 
 		value^ = new_value
@@ -193,10 +234,7 @@ UnsignedIntegerSlider :: proc(
 	if t < 0 do t = 0
 	if t > 1 do t = 1
 
-	handle_size := Types.Vector2f{
-		8,
-        size.y,
-	}
+	handle_size := Types.Vector2f{8, size.y}
 
 	handle_pos := Types.Vector2f{
 		pos.x + t * size.x - handle_size.x * 0.5,
@@ -210,15 +248,15 @@ UnsignedIntegerSlider :: proc(
 
 /*
 renders a slider that uses an signed integer for the value
-@param ctx a pointer to the UIContext to use for state and rendering
-@param pos the position on the screen to render the slider
-@param size the size of the slider (this is the bar size as the slide size is calculated from this)
-@param value a pointer to a i64 used to store the current state of the checkbox over time
-@param min_max an array of two values the first value is the minumum value for the slider and the second value is the maximum value of the slider
-@param step_size this is the value that the value steps by when the slider is moved
-@param bar_color the color of the bar that the slider is atatched to
-@param slide_color the color of the slider
-@return a i64 representing the state of the slider this current frame
+@param ctx ui context
+@param pos slider position
+@param size slider size
+@param value state pointer
+@param min_max range
+@param step_size snapping step
+@param bar_color bar color
+@param slide_color handle color
+@return current value
 */
 SignedIntegerSlider :: proc(
 	ctx: ^UIContext,
@@ -248,7 +286,7 @@ SignedIntegerSlider :: proc(
 
 		if step_size != 0 {
 			new_value = (new_value / step_size) * step_size
-            new_value = clamp(new_value, min_max[0], min_max[1])
+			new_value = clamp(new_value, min_max[0], min_max[1])
 		}
 
 		value^ = new_value
@@ -265,10 +303,7 @@ SignedIntegerSlider :: proc(
 	if t < 0 do t = 0
 	if t > 1 do t = 1
 
-	handle_size := Types.Vector2f{
-		8,
-		size.y,
-	}
+	handle_size := Types.Vector2f{8, size.y}
 
 	handle_pos := Types.Vector2f{
 		pos.x + t * size.x - handle_size.x * 0.5,
@@ -282,15 +317,15 @@ SignedIntegerSlider :: proc(
 
 /*
 renders a slider that uses a float for the value
-@param ctx a pointer to the UIContext to use for state and rendering
-@param pos the position on the screen to render the slider
-@param size the size of the slider (this is the bar size as the slide size is calculated from this)
-@param value a pointer to an f32 used to store the current state of the checkbox over time
-@param min_max an array of two values the first value is the minumum value for the slider and the second value is the maximum value of the slider
-@param step_size this is the value that the sliders value steps by when the slider is moved
-@param bar_color the color of the bar that the slider is atatched to
-@param slide_color the color of the slider
-@return an f32 representing the state of the slider this current frame
+@param ctx ui context
+@param pos slider position
+@param size slider size
+@param value state pointer
+@param min_max range
+@param step_size snapping step
+@param bar_color bar color
+@param slide_color handle color
+@return current value
 */
 FloatSlider :: proc(
 	ctx: ^UIContext,
@@ -319,7 +354,7 @@ FloatSlider :: proc(
 
 		if step_size > 0 {
 			new_value = f32(i32(new_value / step_size)) * step_size
-            new_value = clamp(new_value, min_max[0], min_max[1])
+			new_value = clamp(new_value, min_max[0], min_max[1])
 		}
 
 		value^ = new_value
@@ -336,17 +371,14 @@ FloatSlider :: proc(
 	if t < 0 do t = 0
 	if t > 1 do t = 1
 
-	handle_size := Types.Vector2f{
-		8,
-		size.y,
-	}
+	handle_size := Types.Vector2f{8, size.y}
 
 	handle_pos := Types.Vector2f{
 		pos.x + t * size.x - handle_size.x * 0.5,
 		pos.y,
 	}
 
-	Renderer.DrawRect(ctx.renderer, handle_pos, handle_size, slide_color, true, 0)
+	Renderer.DrawRect(ctx.renderer, handle_pos, handle_size, slide_color, true, 0.0)
 
 	return value^
 }
@@ -354,74 +386,85 @@ FloatSlider :: proc(
 /*
 renders text to the renderer in ctx
 this is just a wrapper over Renderer.DrawTexture to improve code readability
-@param ctx a pointer to the UIContext to use for state and rendering
-@param pos the position on the screen to render the text
-@param text the text to render
-@param rot optional rotation of the text
+@param ctx ui context
+@param pos text position
+@param text texture to render
+@param scale optional scaling factor
+@param rot rotation
 */
 Text :: proc(
 	ctx: ^UIContext,
-    pos: Types.Vector2f,
-    text: ^Renderer.Texture,
-    rot: f64 = 0.0
+	pos: Types.Vector2f,
+	text: ^Renderer.Texture,
+	scale: Types.Vector2f = {1, 1},
+	rot: f64 = 0.0,
 ) {
-    Renderer.DrawTexture(ctx.renderer, text, pos, rot)
+	if text == nil {
+		return
+	}
+	Renderer.DrawTextureScaled(ctx.renderer, text, pos, scale, rot)
 }
 
 /*
 renders an image to the renderer in ctx
 this is just a wrapper over Renderer.DrawTexture to improve code readability
-@param ctx a pointer to the UIContext to use for state and rendering
-@param pos the position on the screen to render the image
-@param image the image texture to render
-@param rot optional rotation of the image
+@param ctx ui context
+@param pos image position
+@param image texture
+@param scale optional scaling factor
+@param rot rotation
 */
 Image :: proc(
 	ctx: ^UIContext,
 	pos: Types.Vector2f,
 	image: ^Renderer.Texture,
-    rot: f64 = 0.0
+	scale: Types.Vector2f = {1, 1},
+	rot: f64 = 0.0,
 ) {
-    Renderer.DrawTexture(ctx.renderer, image, pos, rot)
+	if image == nil {
+		return
+	}
+	Renderer.DrawTextureScaled(ctx.renderer, image, pos, scale, rot)
 }
 
 /*
 renders a panel to the renderer in ctx
 this is just a wrapper over Renderer.DrawRect to improve code readability
-@param ctx a pointer to the UIContext to use for state and rendering
-@param pos the position on the screen to render the panel
-@param color the color of the panel
-@param rot optional rotation of the panel
+@param ctx ui context
+@param pos panel position
+@param size panel size
+@param color panel color
+@param rot optional rotation
 */
 Panel :: proc(
 	ctx: ^UIContext,
 	pos, size: Types.Vector2f,
 	color: Types.Color,
-    rot: f32 = 0.0,
+	rot: f32 = 0.0,
 ) {
 	Renderer.DrawRect(ctx.renderer, pos, size, color, true, rot)
 }
 
 /*
 a dialog box with text and a yes or no option
-@param title the title for the dialog window
-@param text the text for the dialog window
-@param type the type of message box. Options: (ERROR, WARN, INFO)
-@param background_color the background color of the dialog
-@param text_color the text color of the dialog
-@param button_border_color the color of the border of the buttons
-@param button_color the color of the buttons
-@param button_select_color the color of the button when it is selected
-@return a bool signifying yes: true or no: false
+@param title title text
+@param text body text
+@param type message type
+@param background_color background color
+@param text_color text color
+@param button_border_color border color
+@param button_color button color
+@param button_select_color selected button color
+@return true if yes
 */
 YesNoDialog :: proc(
 	title: string,
 	text: string,
 	type: MessageBoxType,
-	background_color    := [3]u8{255, 255, 255},
-	text_color          := [3]u8{0, 0, 0},
+	background_color := [3]u8{255, 255, 255},
+	text_color := [3]u8{0, 0, 0},
 	button_border_color := [3]u8{0, 0, 0},
-	button_color        := [3]u8{255, 255, 255},
+	button_color := [3]u8{255, 255, 255},
 	button_select_color := [3]u8{191, 191, 191},
 ) -> bool {
 	return ShowTwoButtonDialog(
@@ -436,25 +479,25 @@ YesNoDialog :: proc(
 }
 
 /*
-a dialog box with text and a ok or cancel option
-@param title the title for the dialog window
-@param text the text for the dialog window
-@param type the type of message box. Options: (ERROR, WARN, INFO)
-@param background_color the background color of the dialog
-@param text_color the text color of the dialog
-@param button_border_color the color of the border of the buttons
-@param button_color the color of the buttons
-@param button_select_color the color of the button when it is selected
-@return a bool signifying ok: true or cancel: false
+a dialog box with text and an ok or cancel option
+@param title title text
+@param text body text
+@param type message type
+@param background_color background color
+@param text_color text color
+@param button_border_color border color
+@param button_color button color
+@param button_select_color selected button color
+@return true if ok
 */
 OkCancelDialog :: proc(
 	title: string,
 	text: string,
 	type: MessageBoxType,
-	background_color    := [3]u8{255, 255, 255},
-	text_color          := [3]u8{0, 0, 0},
+	background_color := [3]u8{255, 255, 255},
+	text_color := [3]u8{0, 0, 0},
 	button_border_color := [3]u8{0, 0, 0},
-	button_color        := [3]u8{255, 255, 255},
+	button_color := [3]u8{255, 255, 255},
 	button_select_color := [3]u8{191, 191, 191},
 ) -> bool {
 	return ShowTwoButtonDialog(
@@ -469,25 +512,25 @@ OkCancelDialog :: proc(
 }
 
 /*
-a dialog box with text and a confirm or deny option
-@param title the title for the dialog window
-@param text the text for the dialog window
-@param type the type of message box. Options: (ERROR, WARN, INFO)
-@param background_color the background color of the dialog
-@param text_color the text color of the dialog
-@param button_border_color the color of the border of the buttons
-@param button_color the color of the buttons
-@param button_select_color the color of the button when it is selected
-@return a bool signifying confirm: true or deny: false
+a dialog box with text and confirm/deny option
+@param title title text
+@param text body text
+@param type message type
+@param background_color background color
+@param text_color text color
+@param button_border_color border color
+@param button_color button color
+@param button_select_color selected button color
+@return true if confirm
 */
 ConfirmDenyDialog :: proc(
 	title: string,
 	text: string,
 	type: MessageBoxType,
-	background_color    := [3]u8{255, 255, 255},
-	text_color          := [3]u8{0, 0, 0},
+	background_color := [3]u8{255, 255, 255},
+	text_color := [3]u8{0, 0, 0},
 	button_border_color := [3]u8{0, 0, 0},
-	button_color        := [3]u8{255, 255, 255},
+	button_color := [3]u8{255, 255, 255},
 	button_select_color := [3]u8{191, 191, 191},
 ) -> bool {
 	return ShowTwoButtonDialog(
@@ -501,20 +544,6 @@ ConfirmDenyDialog :: proc(
 	)
 }
 
-/*
-a dialog box with text and custom two options
-@param title the title for the dialog window
-@param text the text for the dialog window
-@param type the type of message box. Options: (ERROR, WARN, INFO,)
-@param accept_label a string for the name of option 1
-@param deny_label a string for the name of option 2
-@param background_color the background color of the dialog
-@param text_color the text color of the dialog
-@param button_border_color the color of the border of the buttons
-@param button_color the color of the buttons
-@param button_select_color the color of the button when it is selected
-@return a bool signifying option_1: true or option_2: false
-*/
 ShowTwoButtonDialog :: proc(
 	title: string,
 	text: string,

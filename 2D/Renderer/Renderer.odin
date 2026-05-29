@@ -1,5 +1,6 @@
 package Renderer
 
+import "core:mem"
 import "base:runtime"
 import "core:math"
 import "../../Util"
@@ -164,6 +165,12 @@ Init :: proc(
 
 }
 
+GetWindowSize :: proc(ctx: ^RenderContext) -> Types.Vector2 {
+    size: Types.Vector2
+    sdl2.GetRendererOutputSize(ctx.Renderer, &size[0], &size[1])
+    return size
+}
+
 /*
 updates the renderer with whatever should be rendered to the screen
 @param cxt The renderer context for the window you want to update
@@ -273,3 +280,9 @@ GetDeltaTime :: proc() -> f32 {
     return delta
 }
 
+
+GetTextureSize :: proc(texture: ^Texture) -> Types.Vector2 {
+    size: Types.Vector2
+    sdl2.QueryTexture(texture, nil, nil, &size[0], &size[1])
+    return size
+}
