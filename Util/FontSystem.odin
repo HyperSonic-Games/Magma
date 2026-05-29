@@ -69,6 +69,12 @@ Add :: proc(
 	size: i32,
 ) -> bool {
 
+    if ttf.WasInit() == 0 {
+        if ttf.Init() != 0 {
+            Log(.ERROR, "MAGMA_ENGINE", "2D_RENDERER_RENDER_TEXT_TO_TEXTURE", "Could not init SDL2_ttf")
+        }
+	}
+
 	for i := 0; i < xar.len(storage.fonts); i += 1 {
 		entry := xar.array_get_ptr(&storage.fonts, i)
 
