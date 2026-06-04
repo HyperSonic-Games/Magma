@@ -173,5 +173,10 @@ RULES = [
     {
         "from": "sdl2/ttf/LICENSE.zlib.txt",
         "to": "licenses/SDL2_ttf/LICENSE.zlib.txt"
+    },
+
+    {
+        "from": "./LICENSE.txt",
+        "to": "licenses/Magma/LICENSE.txt"
     }
 ]
