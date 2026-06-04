@@ -44,7 +44,7 @@ Log :: proc(level: LogLevel, namespace: string, component_name: string, format: 
         fmt.printfln(ansi.CSI + ansi.FG_CYAN + ansi.SGR + "%s<INFO> ~ %s" + ansi.CSI + ansi.FG_WHITE, prefix, full_msg)
     }
     else if (level == .WARN) {
-        fmt.printfln(ansi.CSI + ansi.FG_YELLOW + ansi.SGR + "%s<WARN> ~ %s" + ansi.CSI + ansi.FG_WHITE, prefix, full_msg)
+        fmt.printfln(ansi.CSI + ansi.FG_YELLOW + ansi.SGR + "%s<WARN> ~ %s" + ansi.CSI + ansi.RESET + ansi.SGR, prefix, full_msg)
     }
     else if (level == .ERROR || level == .ERROR_NO_ABORT) { // Leaks memory but it's an error state so the program is crashing anyways
         if (ODIN_DEBUG) {
