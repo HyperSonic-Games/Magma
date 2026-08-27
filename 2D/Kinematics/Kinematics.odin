@@ -248,7 +248,7 @@ and in complex scenes is prefered over it
 @param id the id of the object we want to check collisions against
 @return a list of collisions and their info
 */
-GetCollisions :: proc(world: ^World, id: ObjectID) -> []CollisionInfo {
+GetCollisions :: proc(world: ^World, id: ObjectID) -> [dynamic]CollisionInfo {
     sync.mutex_lock(&world.mutex)
     defer sync.mutex_unlock(&world.mutex)
 
@@ -274,7 +274,7 @@ GetCollisions :: proc(world: ^World, id: ObjectID) -> []CollisionInfo {
         }
     }
 
-    return results[:]
+    return results
 }
 
 DestroyWorld :: proc(world: ^World) {
