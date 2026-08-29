@@ -63,8 +63,8 @@ Button :: proc(
 ) -> bool {
 
 	p := Types.Vector2f{
-		f32(ctx.mouse_input.position[0]),
-		f32(ctx.mouse_input.position[1]),
+		ctx.mouse_input.position.x,
+		ctx.mouse_input.position.y,
 	}
 
 	hover := PointInRect(p, pos, size)
@@ -159,6 +159,10 @@ CheckBox :: proc(
 	check_texture, uncheck_texture: ^Renderer.Texture,
 ) -> bool {
 
+	p := Types.Vector2f{
+		ctx.mouse_input.position.x,
+		ctx.mouse_input.position.y,
+	}
 	p := Types.Vector2f{f32(ctx.mouse_input.position[0]), f32(ctx.mouse_input.position[1])}
 
 	hover := PointInRect(p, pos, size)
@@ -203,6 +207,10 @@ UnsignedIntegerSlider :: proc(
 	slide_color: Types.Color,
 ) -> u64 {
 
+	p := Types.Vector2f{
+		ctx.mouse_input.position.x,
+		ctx.mouse_input.position.y,
+	}
 	p := Types.Vector2f{f32(ctx.mouse_input.position[0]), f32(ctx.mouse_input.position[1])}
 
 	hover := PointInRect(p, pos, size)
@@ -264,6 +272,10 @@ SignedIntegerSlider :: proc(
 	slide_color: Types.Color,
 ) -> i64 {
 
+	p := Types.Vector2f{
+		ctx.mouse_input.position.x,
+		ctx.mouse_input.position.y,
+	}
 	p := Types.Vector2f{f32(ctx.mouse_input.position[0]), f32(ctx.mouse_input.position[1])}
 
 	hover := PointInRect(p, pos, size)
@@ -325,6 +337,10 @@ FloatSlider :: proc(
 	slide_color: Types.Color,
 ) -> f32 {
 
+	p := Types.Vector2f{
+		ctx.mouse_input.position.x,
+		ctx.mouse_input.position.y,
+	}
 	p := Types.Vector2f{f32(ctx.mouse_input.position[0]), f32(ctx.mouse_input.position[1])}
 
 	hover := PointInRect(p, pos, size)

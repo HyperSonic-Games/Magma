@@ -2,6 +2,8 @@
 package EventSys
 
 import "../../Types"
+import "../Renderer"
+import "core:math"
 import "vendor:sdl2"
 
 MOD_KEYS :: enum {
@@ -22,7 +24,7 @@ KEYS :: enum {
 }
 
 Mouse :: struct {
-	position: Types.Vector2,
+	position: Types.Vector2f,
 	RClick: bool,
 	LClick: bool,
 	prev_RClick: bool,
@@ -36,9 +38,6 @@ Keyboard :: struct {
 
 WindowState :: struct {
     should_quit: bool,
-    resized: bool,
-    new_width: i32,
-    new_height: i32,
     minimized: bool,
     maximized: bool,
     focus_gained: bool,
@@ -54,7 +53,6 @@ for the next frame. This should be called at the start of every frame.
 */
 ResetWindowFlags :: proc(state: ^WindowState) {
     state.should_quit = false
-    state.resized = false
     state.minimized = false
     state.maximized = false
     state.focus_gained = false
@@ -138,6 +136,34 @@ ConvertSDLModToMODKEYS :: proc(mod: sdl2.Keymod) -> MOD_KEYS {
     else {return MOD_KEYS.NONE}
 }
 
+@(private)
+GetLogicalMousePos :: proc(ctx: ^Renderer.RenderContext, physical_mx, physical_my: i32) -> Types.Vector2f {
+    win_w, win_h: i32
+    sdl2.GetRendererOutputSize(ctx.Renderer, &win_w, &win_h)
+    
+    tex_w, tex_h: i32
+    sdl2.QueryTexture(ctx.RenderSurface, nil, nil, &tex_w, &tex_h)
+
+    scale := math.min(
+        f32(win_w) / f32(tex_w),
+        f32(win_h) / f32(tex_h),
+    )
+    
+    dst_w := f32(tex_w) * scale
+    dst_h := f32(tex_h) * scale
+    
+    // Find the offset padding bars (letterbox/pillarbox)
+    offset_x := (f32(win_w) - dst_w) * 0.5
+    offset_y := (f32(win_h) - dst_h) * 0.5
+    
+    // Reverse the scaling math to get the true position on your canvas
+    logical_x := (f32(physical_mx) - offset_x) / scale
+    logical_y := (f32(physical_my) - offset_y) / scale
+    
+    return Types.Vector2f{logical_x, logical_y}
+}
+
+
 /*
 polls SDL2 for all events and updates the engine's input and window state.
 This function should be called once per frame.
@@ -145,19 +171,20 @@ This function should be called once per frame.
 @param keyboard pointer to the Keyboard struct to update
 @param win pointer to the WindowState struct to update
 */
-HandleEvents :: proc(mouse: ^Mouse, keyboard: ^Keyboard, win: ^WindowState) {
+HandleEvents :: proc(ctx: ^Renderer.RenderContext, mouse: ^Mouse, keyboard: ^Keyboard, win: ^WindowState) {
     mouse.prev_LClick = mouse.LClick
     mouse.prev_RClick = mouse.RClick
+    // FIX: Always query and translate the absolute mouse state at the start of the frame.
+    // This catches clicks safely even if the cursor hasn't moved an inch.
+    raw_mx, raw_my: i32
+    sdl2.GetMouseState(&raw_mx, &raw_my)
+    mouse.position = GetLogicalMousePos(ctx, raw_mx, raw_my)
+
     event: sdl2.Event
     for sdl2.PollEvent(&event) != false {
         #partial switch event.type {
             case sdl2.EventType.QUIT:
                 win.should_quit = true
-
-            case sdl2.EventType.MOUSEMOTION:
-                motion := event.motion
-                mouse.position[0] = motion.x
-                mouse.position[1] = motion.y
 
             case sdl2.EventType.MOUSEBUTTONDOWN:
                 btn := event.button
@@ -182,10 +209,6 @@ HandleEvents :: proc(mouse: ^Mouse, keyboard: ^Keyboard, win: ^WindowState) {
             case sdl2.EventType.WINDOWEVENT:
                 we := event.window
                 #partial switch we.event {
-                    case sdl2.WindowEventID.RESIZED:
-                        win.resized = true
-                        win.new_width = we.data1
-                        win.new_height = we.data2
                     case sdl2.WindowEventID.MINIMIZED: win.minimized = true
                     case sdl2.WindowEventID.MAXIMIZED: win.maximized = true
                     case sdl2.WindowEventID.FOCUS_GAINED: win.focus_gained  = true

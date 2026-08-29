@@ -79,7 +79,7 @@ main :: proc() {
     speed: f32 = 200.0
 
     for running {
-        EventSys.HandleEvents(mouse, keyboard, win_state)
+        EventSys.HandleEvents(&ctx, mouse, keyboard, win_state)
 
         dt := Renderer.GetDeltaTime()
 

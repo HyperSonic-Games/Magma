@@ -42,7 +42,7 @@ main :: proc() {
 
     for running {
         // Update keyboard & mouse state
-        EventSys.HandleEvents(mouse, keyboard, win_state)
+        EventSys.HandleEvents(&ctx, mouse, keyboard, win_state)
         // Get the Delta time for this frame
         delta_time: f32 = Renderer.GetDeltaTime()
 

@@ -164,3 +164,80 @@ DrawTextureScaled :: proc(
 
     return true
 }
+
+/*
+rasterizes UTF-8 text to create a texture of rendered text ready to draw to the renderer
+NOTE: this is a VERY expensive operation and if the text does not change often you should reuse the result
+@param ctx rendering context used to create the GPU texture
+@param text string to render
+@param font font used for rasterization loaded from the FontSystem
+@param color RGBA color of the rendered text
+@param wrap maximum pixel width before line wrapping occurs
+@param pixel_art_text if true, renders sharp pixelated text. If false, renders smooth anti-aliased text.
+@return the text rendered to a new texture and the size of the texture
+*/
+RenderTextToTexture :: proc(
+	ctx: ^RenderContext,
+	text: string,
+	font: ^ttf.Font,
+	color: Types.Color,
+	wrap: u32,
+	pixel_art_text: bool,
+) -> (renderer_text: ^Texture, width: u32, height: u32) {
+
+	if ctx == nil || font == nil || len(text) == 0 {
+		return nil, {}, {}
+	}
+
+	if ttf.WasInit() == 0 {
+		if ttf.Init() != 0 {
+			Util.Log(.ERROR, "MAGMA_ENGINE", "2D_RENDERER_RENDER_TEXT_TO_TEXTURE", "Could not init SDL2_ttf")
+		}
+	}
+
+	c_text := strings.clone_to_cstring(text, context.temp_allocator)
+
+	surface: ^sdl2.Surface
+	if pixel_art_text {
+		// Solid provides raw, aliased pixels perfect for pixel-art styles
+		surface = ttf.RenderUTF8_Solid_Wrapped(
+			font,
+			c_text,
+			Types.ColorToSDL(color),
+			wrap,
+		)
+	} else {
+		// Blended provides smooth, high-quality anti-aliased alpha edges
+		surface = ttf.RenderUTF8_Blended_Wrapped(
+			font,
+			c_text,
+			Types.ColorToSDL(color),
+			wrap,
+		)
+	}
+
+	if surface == nil {
+		return nil, {}, {}
+	}
+
+	texture := sdl2.CreateTextureFromSurface(ctx.Renderer, surface)
+	sdl2.FreeSurface(surface)
+	if texture == nil {
+		return nil, {}, {}
+	}
+
+	// Crucial: Must explicitly allow alpha transparency pass-through
+	sdl2.SetTextureBlendMode(texture, .BLEND)
+
+	// Tailor the GPU filtering scale mode to match the rendering style
+	if pixel_art_text {
+		sdl2.SetTextureScaleMode(texture, .Nearest)
+	} else {
+		sdl2.SetTextureScaleMode(texture, .Linear)
+	}
+
+	w, h: i32
+	sdl2.QueryTexture(texture, nil, nil, &w, &h)
+
+	return texture, cast(u32)w, cast(u32)h
+}

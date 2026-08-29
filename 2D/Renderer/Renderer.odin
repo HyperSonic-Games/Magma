@@ -58,6 +58,7 @@ Init :: proc(
     sdl2.SetHint(sdl2.HINT_RENDER_VSYNC, "0" if sdl2_debug_verbose else "1")
     sdl2.SetHint(sdl2.HINT_EVENT_LOGGING, "1" if sdl2_debug_verbose else "0")
     sdl2.SetHint(sdl2.HINT_RENDER_BATCHING, "1")
+    sdl2.SetHint(sdl2.HINT_RENDER_SCALE_QUALITY, "2")
     if !sdl2_debug_verbose {
         sdl2.LogSetAllPriority(.WARN)
     }
@@ -66,19 +67,19 @@ Init :: proc(
     switch backend {
         case .OPEN_GL:
             sdl2.SetHint(sdl2.HINT_RENDER_DRIVER, "opengl")
-            sdl2.SetHint(sdl2.HINT_FRAMEBUFFER_ACCELERATION, "opengl")
+            sdl2.SetHint(sdl2.HINT_FRAMEBUFFER_ACCELERATION, "1")
         case .DIRECTX3D11:
             sdl2.SetHint(sdl2.HINT_RENDER_DRIVER, "direct3d11")
-            sdl2.SetHint(sdl2.HINT_FRAMEBUFFER_ACCELERATION, "direct3d11")
+            sdl2.SetHint(sdl2.HINT_FRAMEBUFFER_ACCELERATION, "1")
             if (sdl2_debug_verbose) {
                 sdl2.SetHint(sdl2.HINT_RENDER_DIRECT3D11_DEBUG, "1")
             }
         case .METAL:
             sdl2.SetHint(sdl2.HINT_RENDER_DRIVER, "metal")
-            sdl2.SetHint(sdl2.HINT_FRAMEBUFFER_ACCELERATION, "metal")
+            sdl2.SetHint(sdl2.HINT_FRAMEBUFFER_ACCELERATION, "1")
         case .SOFTWARE:
             sdl2.SetHint(sdl2.HINT_RENDER_DRIVER, "software")
-            sdl2.SetHint(sdl2.HINT_FRAMEBUFFER_ACCELERATION, "software")
+            sdl2.SetHint(sdl2.HINT_FRAMEBUFFER_ACCELERATION, "0")
     }
 
     if sdl2.Init(sdl2.INIT_VIDEO | sdl2.INIT_AUDIO) != 0 {
@@ -86,7 +87,7 @@ Init :: proc(
     }
 
 
-    window_flags: sdl2.WindowFlags = {.SHOWN, .ALLOW_HIGHDPI}
+    window_flags: sdl2.WindowFlags = {.SHOWN, .ALLOW_HIGHDPI, .RESIZABLE}
     window := sdl2.CreateWindow(
         window_name,
         sdl2.WINDOWPOS_CENTERED, sdl2.WINDOWPOS_CENTERED,
@@ -109,7 +110,6 @@ Init :: proc(
     if renderer == nil {
         Util.Log(.ERROR, "MAGMA", "2D_RENDERER_INIT", "Failed to create renderer: %s", sdl2.GetErrorString())
     }
-    sdl2.RenderSetLogicalSize(renderer, width, height)
 
     // Init SDL_image
     image.Init({.JPG, .PNG, .TIF, .WEBP})
@@ -162,9 +162,7 @@ Init :: proc(
 }
 
 GetWindowSize :: proc(ctx: ^RenderContext) -> Types.Vector2 {
-    size: Types.Vector2
-    sdl2.GetRendererOutputSize(ctx.Renderer, &size[0], &size[1])
-    return size
+    return GetTextureSize(ctx.RenderSurface)
 }
 
 /*
@@ -172,14 +170,38 @@ updates the renderer with whatever should be rendered to the screen
 @param cxt The renderer context for the window you want to update
 */
 Update :: proc(ctx: ^RenderContext) {
-    sdl2.SetRenderTarget(ctx.Renderer, nil)  // Switch to default window framebuffer
+    
+    sdl2.SetRenderTarget(ctx.Renderer, nil)
 
-    w: i32 = 0
-    h: i32 = 0
-    _ = sdl2.GetRendererOutputSize(ctx.Renderer, &w, &h)
+    sdl2.SetRenderDrawColor(ctx.Renderer, 0, 0, 0, 255)
+    sdl2.RenderClear(ctx.Renderer)
+    
+    win_w, win_h: i32
+    sdl2.GetRendererOutputSize(ctx.Renderer, &win_w, &win_h)
+    
+    tex_w, tex_h: i32
+    sdl2.QueryTexture(ctx.RenderSurface, nil, nil, &tex_w, &tex_h)
 
-    dstRect: sdl2.Rect = {x = 0, y = 0, w = w, h = h}
-    _ = sdl2.RenderCopy(ctx.Renderer, ctx.RenderSurface, nil, &dstRect)
+    scale := math.min(
+        f32(win_w) / f32(tex_w),
+        f32(win_h) / f32(tex_h),
+    )
+    
+    dst_w := i32(f32(tex_w) * scale)
+    dst_h := i32(f32(tex_h) * scale)
+    
+    dst := sdl2.Rect{
+        x = (win_w - dst_w) / 2,
+        y = (win_h - dst_h) / 2,
+        w = dst_w,
+        h = dst_h,
+    }
+    sdl2.SetTextureScaleMode(ctx.RenderSurface, .Linear)
+
+    sdl2.RenderCopy(ctx.Renderer, ctx.RenderSurface, nil, &dst)
+
+    sdl2.SetRenderTarget(ctx.Renderer, ctx.RenderSurface)
+
     Frames += 1
 }
 
