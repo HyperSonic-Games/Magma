@@ -79,12 +79,13 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
   <pre class='code'>Button (
 	ctx: ^UIContext,
 	pos, size: Types.Vector2f,
-	color, pressed_color: Types.Color,
+	color: Types.Color,
+	pressed_color: Types.Color,
 	r_click: bool = false,
 ) -&gt; bool</pre>
   <p>renders a button to the renderer in ctx</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>cxt</span>: a pointer to the UIContext to use for state and rendering</li>
+    <li><span class='param-name'>ctx</span>: a pointer to the UIContext to use for state and rendering</li>
     <li><span class='param-name'>pos</span>: the position on the screen to render the button</li>
     <li><span class='param-name'>size</span>: the size of the button</li>
     <li><span class='param-name'>color</span>: the color of the button</li>
@@ -92,6 +93,29 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
     <li><span class='param-name'>r_click</span>: wether to respond to a right click (true) or a left click (false)</li>
   </ul></div>
   <div class='return'>Returns: a bool indicating if the button was pressed or not</div>
+</section>
+<section>
+  <h2>TextButton</h2>
+  <pre class='code'>TextButton (
+	ctx: ^UIContext,
+	text: string,
+	font: ^Util.FontEntry,
+	pos, size: Types.Vector2f,
+	color: Types.Color,
+	pressed_color: Types.Color,
+	r_click: bool = false,
+) -&gt; bool</pre>
+  <p>renders a button with text centered inside</p>
+  <div class='params'><strong>Parameters:</strong><ul>
+    <li><span class='param-name'>ctx</span>: ui context</li>
+    <li><span class='param-name'>text</span>: used as label</li>
+    <li><span class='param-name'>pos</span>: button position</li>
+    <li><span class='param-name'>size</span>: button size</li>
+    <li><span class='param-name'>color</span>: base color</li>
+    <li><span class='param-name'>pressed_color</span>: pressed color</li>
+    <li><span class='param-name'>r_click</span>: right click mode</li>
+  </ul></div>
+  <div class='return'>Returns: true if clicked</div>
 </section>
 <section>
   <h2>CheckBox</h2>
@@ -125,16 +149,16 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 ) -&gt; u64</pre>
   <p>renders a slider that uses an unsigned integer for the value</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>ctx</span>: a pointer to the UIContext to use for state and rendering</li>
-    <li><span class='param-name'>pos</span>: the position on the screen to render the slider</li>
-    <li><span class='param-name'>size</span>: the size of the slider (this is the bar size as the slide size is calculated from this)</li>
-    <li><span class='param-name'>value</span>: a pointer to a u64 used to store the current state of the checkbox over time</li>
-    <li><span class='param-name'>min_max</span>: an array of two values the first value is the minumum value for the slider and the second value is the maximum value of the slider</li>
-    <li><span class='param-name'>step_size</span>: this is the value that the value steps by when the slider is moved</li>
-    <li><span class='param-name'>bar_color</span>: the color of the bar that the slider is atatched to</li>
-    <li><span class='param-name'>slide_color</span>: the color of the slider</li>
+    <li><span class='param-name'>ctx</span>: ui context</li>
+    <li><span class='param-name'>pos</span>: slider position</li>
+    <li><span class='param-name'>size</span>: slider size</li>
+    <li><span class='param-name'>value</span>: state pointer</li>
+    <li><span class='param-name'>min_max</span>: range</li>
+    <li><span class='param-name'>step_size</span>: snapping step</li>
+    <li><span class='param-name'>bar_color</span>: bar color</li>
+    <li><span class='param-name'>slide_color</span>: handle color</li>
   </ul></div>
-  <div class='return'>Returns: a u64 representing the state of the slider this current frame</div>
+  <div class='return'>Returns: current value</div>
 </section>
 <section>
   <h2>SignedIntegerSlider</h2>
@@ -149,16 +173,16 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 ) -&gt; i64</pre>
   <p>renders a slider that uses an signed integer for the value</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>ctx</span>: a pointer to the UIContext to use for state and rendering</li>
-    <li><span class='param-name'>pos</span>: the position on the screen to render the slider</li>
-    <li><span class='param-name'>size</span>: the size of the slider (this is the bar size as the slide size is calculated from this)</li>
-    <li><span class='param-name'>value</span>: a pointer to a i64 used to store the current state of the checkbox over time</li>
-    <li><span class='param-name'>min_max</span>: an array of two values the first value is the minumum value for the slider and the second value is the maximum value of the slider</li>
-    <li><span class='param-name'>step_size</span>: this is the value that the value steps by when the slider is moved</li>
-    <li><span class='param-name'>bar_color</span>: the color of the bar that the slider is atatched to</li>
-    <li><span class='param-name'>slide_color</span>: the color of the slider</li>
+    <li><span class='param-name'>ctx</span>: ui context</li>
+    <li><span class='param-name'>pos</span>: slider position</li>
+    <li><span class='param-name'>size</span>: slider size</li>
+    <li><span class='param-name'>value</span>: state pointer</li>
+    <li><span class='param-name'>min_max</span>: range</li>
+    <li><span class='param-name'>step_size</span>: snapping step</li>
+    <li><span class='param-name'>bar_color</span>: bar color</li>
+    <li><span class='param-name'>slide_color</span>: handle color</li>
   </ul></div>
-  <div class='return'>Returns: a i64 representing the state of the slider this current frame</div>
+  <div class='return'>Returns: current value</div>
 </section>
 <section>
   <h2>FloatSlider</h2>
@@ -173,31 +197,35 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 ) -&gt; f32</pre>
   <p>renders a slider that uses a float for the value</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>ctx</span>: a pointer to the UIContext to use for state and rendering</li>
-    <li><span class='param-name'>pos</span>: the position on the screen to render the slider</li>
-    <li><span class='param-name'>size</span>: the size of the slider (this is the bar size as the slide size is calculated from this)</li>
-    <li><span class='param-name'>value</span>: a pointer to an f32 used to store the current state of the checkbox over time</li>
-    <li><span class='param-name'>min_max</span>: an array of two values the first value is the minumum value for the slider and the second value is the maximum value of the slider</li>
-    <li><span class='param-name'>step_size</span>: this is the value that the sliders value steps by when the slider is moved</li>
-    <li><span class='param-name'>bar_color</span>: the color of the bar that the slider is atatched to</li>
-    <li><span class='param-name'>slide_color</span>: the color of the slider</li>
+    <li><span class='param-name'>ctx</span>: ui context</li>
+    <li><span class='param-name'>pos</span>: slider position</li>
+    <li><span class='param-name'>size</span>: slider size</li>
+    <li><span class='param-name'>value</span>: state pointer</li>
+    <li><span class='param-name'>min_max</span>: range</li>
+    <li><span class='param-name'>step_size</span>: snapping step</li>
+    <li><span class='param-name'>bar_color</span>: bar color</li>
+    <li><span class='param-name'>slide_color</span>: handle color</li>
   </ul></div>
-  <div class='return'>Returns: an f32 representing the state of the slider this current frame</div>
+  <div class='return'>Returns: current value</div>
 </section>
 <section>
   <h2>Text</h2>
   <pre class='code'>Text (
 	ctx: ^UIContext,
-    pos: Types.Vector2f,
-    text: ^Renderer.Texture,
-    rot: f64 = 0.0
+	font: ^Util.FontEntry,
+	text: string,
+	pos: Types.Vector2f,
+	scale: Types.Vector2f = {1, 1},
+	rot: f64 = 0.0,
 )</pre>
-  <p>renders text to the renderer in ctx this is just a wrapper over Renderer.DrawTexture to improve code readability</p>
+  <p>renders text to the renderer in ctx</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>ctx</span>: a pointer to the UIContext to use for state and rendering</li>
-    <li><span class='param-name'>pos</span>: the position on the screen to render the text</li>
-    <li><span class='param-name'>text</span>: the text to render</li>
-    <li><span class='param-name'>rot</span>: optional rotation of the text</li>
+    <li><span class='param-name'>ctx</span>: ui context</li>
+    <li><span class='param-name'>font</span>: the font to render with</li>
+    <li><span class='param-name'>text</span>: UTF-8 text to render</li>
+    <li><span class='param-name'>pos</span>: text position</li>
+    <li><span class='param-name'>scale</span>: optional scaling factor</li>
+    <li><span class='param-name'>rot</span>: rotation</li>
   </ul></div>
 </section>
 <section>
@@ -206,14 +234,16 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 	ctx: ^UIContext,
 	pos: Types.Vector2f,
 	image: ^Renderer.Texture,
-    rot: f64 = 0.0
+	scale: Types.Vector2f = {1, 1},
+	rot: f64 = 0.0,
 )</pre>
   <p>renders an image to the renderer in ctx this is just a wrapper over Renderer.DrawTexture to improve code readability</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>ctx</span>: a pointer to the UIContext to use for state and rendering</li>
-    <li><span class='param-name'>pos</span>: the position on the screen to render the image</li>
-    <li><span class='param-name'>image</span>: the image texture to render</li>
-    <li><span class='param-name'>rot</span>: optional rotation of the image</li>
+    <li><span class='param-name'>ctx</span>: ui context</li>
+    <li><span class='param-name'>pos</span>: image position</li>
+    <li><span class='param-name'>image</span>: texture</li>
+    <li><span class='param-name'>scale</span>: optional scaling factor</li>
+    <li><span class='param-name'>rot</span>: rotation</li>
   </ul></div>
 </section>
 <section>
@@ -222,14 +252,15 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 	ctx: ^UIContext,
 	pos, size: Types.Vector2f,
 	color: Types.Color,
-    rot: f32 = 0.0,
+	rot: f32 = 0.0,
 )</pre>
   <p>renders a panel to the renderer in ctx this is just a wrapper over Renderer.DrawRect to improve code readability</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>ctx</span>: a pointer to the UIContext to use for state and rendering</li>
-    <li><span class='param-name'>pos</span>: the position on the screen to render the panel</li>
-    <li><span class='param-name'>color</span>: the color of the panel</li>
-    <li><span class='param-name'>rot</span>: optional rotation of the panel</li>
+    <li><span class='param-name'>ctx</span>: ui context</li>
+    <li><span class='param-name'>pos</span>: panel position</li>
+    <li><span class='param-name'>size</span>: panel size</li>
+    <li><span class='param-name'>color</span>: panel color</li>
+    <li><span class='param-name'>rot</span>: optional rotation</li>
   </ul></div>
 </section>
 <section>
@@ -238,24 +269,24 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 	title: string,
 	text: string,
 	type: MessageBoxType,
-	background_color    := [3]u8{255, 255, 255},
-	text_color          := [3]u8{0, 0, 0},
-	button_border_color := [3]u8{0, 0, 0},
-	button_color        := [3]u8{255, 255, 255},
-	button_select_color := [3]u8{191, 191, 191},
+	background_color := Types.Color{255, 255, 255, 255},
+	text_color := Types.Color{0, 0, 0, 255},
+	button_border_color := Types.Color{0, 0, 0, 255},
+	button_color := Types.Color{255, 255, 255, 255},
+	button_select_color := Types.Color{191, 191, 191, 255},
 ) -&gt; bool</pre>
   <p>a dialog box with text and a yes or no option</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>title</span>: the title for the dialog window</li>
-    <li><span class='param-name'>text</span>: the text for the dialog window</li>
-    <li><span class='param-name'>type</span>: the type of message box. Options: (ERROR, WARN, INFO)</li>
-    <li><span class='param-name'>background_color</span>: the background color of the dialog</li>
-    <li><span class='param-name'>text_color</span>: the text color of the dialog</li>
-    <li><span class='param-name'>button_border_color</span>: the color of the border of the buttons</li>
-    <li><span class='param-name'>button_color</span>: the color of the buttons</li>
-    <li><span class='param-name'>button_select_color</span>: the color of the button when it is selected</li>
+    <li><span class='param-name'>title</span>: title text</li>
+    <li><span class='param-name'>text</span>: body text</li>
+    <li><span class='param-name'>type</span>: message type</li>
+    <li><span class='param-name'>background_color</span>: background color</li>
+    <li><span class='param-name'>text_color</span>: text color</li>
+    <li><span class='param-name'>button_border_color</span>: border color</li>
+    <li><span class='param-name'>button_color</span>: button color</li>
+    <li><span class='param-name'>button_select_color</span>: selected button color</li>
   </ul></div>
-  <div class='return'>Returns: a bool signifying yes: true or no: false</div>
+  <div class='return'>Returns: true if yes false if no</div>
 </section>
 <section>
   <h2>OkCancelDialog</h2>
@@ -263,24 +294,24 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 	title: string,
 	text: string,
 	type: MessageBoxType,
-	background_color    := [3]u8{255, 255, 255},
-	text_color          := [3]u8{0, 0, 0},
-	button_border_color := [3]u8{0, 0, 0},
-	button_color        := [3]u8{255, 255, 255},
-	button_select_color := [3]u8{191, 191, 191},
+	background_color := Types.Color{255, 255, 255, 255},
+	text_color := Types.Color{0, 0, 0, 255},
+	button_border_color := Types.Color{0, 0, 0, 255},
+	button_color := Types.Color{255, 255, 255, 255},
+	button_select_color := Types.Color{191, 191, 191, 255},
 ) -&gt; bool</pre>
-  <p>a dialog box with text and a ok or cancel option</p>
+  <p>a dialog box with text and an ok or cancel option</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>title</span>: the title for the dialog window</li>
-    <li><span class='param-name'>text</span>: the text for the dialog window</li>
-    <li><span class='param-name'>type</span>: the type of message box. Options: (ERROR, WARN, INFO)</li>
-    <li><span class='param-name'>background_color</span>: the background color of the dialog</li>
-    <li><span class='param-name'>text_color</span>: the text color of the dialog</li>
-    <li><span class='param-name'>button_border_color</span>: the color of the border of the buttons</li>
-    <li><span class='param-name'>button_color</span>: the color of the buttons</li>
-    <li><span class='param-name'>button_select_color</span>: the color of the button when it is selected</li>
+    <li><span class='param-name'>title</span>: title text</li>
+    <li><span class='param-name'>text</span>: body text</li>
+    <li><span class='param-name'>type</span>: message type</li>
+    <li><span class='param-name'>background_color</span>: background color</li>
+    <li><span class='param-name'>text_color</span>: text color</li>
+    <li><span class='param-name'>button_border_color</span>: border color</li>
+    <li><span class='param-name'>button_color</span>: button color</li>
+    <li><span class='param-name'>button_select_color</span>: selected button color</li>
   </ul></div>
-  <div class='return'>Returns: a bool signifying ok: true or cancel: false</div>
+  <div class='return'>Returns: true if ok false if cancel</div>
 </section>
 <section>
   <h2>ConfirmDenyDialog</h2>
@@ -288,24 +319,24 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 	title: string,
 	text: string,
 	type: MessageBoxType,
-	background_color    := [3]u8{255, 255, 255},
-	text_color          := [3]u8{0, 0, 0},
-	button_border_color := [3]u8{0, 0, 0},
-	button_color        := [3]u8{255, 255, 255},
-	button_select_color := [3]u8{191, 191, 191},
+	background_color := Types.Color{255, 255, 255, 255},
+	text_color := Types.Color{0, 0, 0, 255},
+	button_border_color := Types.Color{0, 0, 0, 255},
+	button_color := Types.Color{255, 255, 255, 255},
+	button_select_color := Types.Color{191, 191, 191, 255},
 ) -&gt; bool</pre>
-  <p>a dialog box with text and a confirm or deny option</p>
+  <p>a dialog box with text and confirm/deny option</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>title</span>: the title for the dialog window</li>
-    <li><span class='param-name'>text</span>: the text for the dialog window</li>
-    <li><span class='param-name'>type</span>: the type of message box. Options: (ERROR, WARN, INFO)</li>
-    <li><span class='param-name'>background_color</span>: the background color of the dialog</li>
-    <li><span class='param-name'>text_color</span>: the text color of the dialog</li>
-    <li><span class='param-name'>button_border_color</span>: the color of the border of the buttons</li>
-    <li><span class='param-name'>button_color</span>: the color of the buttons</li>
-    <li><span class='param-name'>button_select_color</span>: the color of the button when it is selected</li>
+    <li><span class='param-name'>title</span>: title text</li>
+    <li><span class='param-name'>text</span>: body text</li>
+    <li><span class='param-name'>type</span>: message type</li>
+    <li><span class='param-name'>background_color</span>: background color</li>
+    <li><span class='param-name'>text_color</span>: text color</li>
+    <li><span class='param-name'>button_border_color</span>: border color</li>
+    <li><span class='param-name'>button_color</span>: button color</li>
+    <li><span class='param-name'>button_select_color</span>: selected button color</li>
   </ul></div>
-  <div class='return'>Returns: a bool signifying confirm: true or deny: false</div>
+  <div class='return'>Returns: true if confirm false if deny</div>
 </section>
 <section>
   <h2>ShowTwoButtonDialog</h2>
@@ -315,26 +346,24 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 	type: MessageBoxType,
 	accept_label: string,
 	deny_label: string,
-	background_color: [3]u8,
-	text_color: [3]u8,
-	button_border_color: [3]u8,
-	button_color: [3]u8,
-	button_select_color: [3]u8,
+	background_color: Types.Color,
+	text_color: Types.Color,
+	button_border_color: Types.Color,
+	button_color: Types.Color,
+	button_select_color: Types.Color,
 ) -&gt; bool</pre>
-  <p>a dialog box with text and custom two options</p>
+  <p>shows a generic two button dialog</p>
   <div class='params'><strong>Parameters:</strong><ul>
-    <li><span class='param-name'>title</span>: the title for the dialog window</li>
-    <li><span class='param-name'>text</span>: the text for the dialog window</li>
-    <li><span class='param-name'>type</span>: the type of message box. Options: (ERROR, WARN, INFO,)</li>
-    <li><span class='param-name'>accept_label</span>: a string for the name of option 1</li>
-    <li><span class='param-name'>deny_label</span>: a string for the name of option 2</li>
-    <li><span class='param-name'>background_color</span>: the background color of the dialog</li>
-    <li><span class='param-name'>text_color</span>: the text color of the dialog</li>
-    <li><span class='param-name'>button_border_color</span>: the color of the border of the buttons</li>
-    <li><span class='param-name'>button_color</span>: the color of the buttons</li>
-    <li><span class='param-name'>button_select_color</span>: the color of the button when it is selected</li>
+    <li><span class='param-name'>title</span>: the title of the dialog</li>
+    <li><span class='param-name'>text</span>: the discription of the dialog</li>
+    <li><span class='param-name'>type</span>: the type of dialog</li>
+    <li><span class='param-name'>accept_label</span>: the text for the accept button</li>
+    <li><span class='param-name'>deny_label</span>: the text for the deny_label</li>
+    <li><span class='param-name'>background_color</span>: the color for the background</li>
+    <li><span class='param-name'>text_color</span>: the color for the text</li>
+    <li><span class='param-name'>button_border_color</span>: the color for the border of the buttons</li>
+    <li><span class='param-name'>button_select_color</span>: the color of the buttons when selected</li>
   </ul></div>
-  <div class='return'>Returns: a bool signifying option_1: true or option_2: false</div>
 </section>
 </article>
 </main>

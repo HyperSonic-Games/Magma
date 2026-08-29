@@ -111,6 +111,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 	font: ^ttf.Font,
 	color: Types.Color,
 	wrap: u32,
+	pixel_art_text: bool,
 )</pre>
   <p>rasterizes UTF-8 text to create a texture of rendered text ready to draw to the renderer NOTE: this is a VERY expensive operation and if the text does not change often you should reuse the result</p>
   <div class='params'><strong>Parameters:</strong><ul>
@@ -119,6 +120,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
     <li><span class='param-name'>font</span>: font used for rasterization loaded from the FontSystem</li>
     <li><span class='param-name'>color</span>: RGBA color of the rendered text</li>
     <li><span class='param-name'>wrap</span>: maximum pixel width before line wrapping occurs</li>
+    <li><span class='param-name'>pixel_art_text</span>: if true, renders sharp pixelated text. If false, renders smooth anti-aliased text.</li>
   </ul></div>
   <div class='return'>Returns: the text rendered to a new texture and the size of the texture</div>
 </section>

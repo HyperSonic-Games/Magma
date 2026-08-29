@@ -73,7 +73,7 @@ pre { background: #263238; padding: 0.8em 1em; border-radius: 4px; overflow-x: a
 </section>
 <section>
   <h2>HandleEvents</h2>
-  <pre class='code'>HandleEvents (mouse: ^Mouse, keyboard: ^Keyboard, win: ^WindowState)</pre>
+  <pre class='code'>HandleEvents (ctx: ^Renderer.RenderContext, mouse: ^Mouse, keyboard: ^Keyboard, win: ^WindowState)</pre>
   <p>polls SDL2 for all events and updates the engine&#x27;s input and window state. This function should be called once per frame.</p>
   <div class='params'><strong>Parameters:</strong><ul>
     <li><span class='param-name'>mouse</span>: pointer to the Mouse struct to update</li>
