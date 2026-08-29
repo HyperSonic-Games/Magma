@@ -159,11 +159,7 @@ CheckBox :: proc(
 	check_texture, uncheck_texture: ^Renderer.Texture,
 ) -> bool {
 
-	p := Types.Vector2f{
-		ctx.mouse_input.position.x,
-		ctx.mouse_input.position.y,
-	}
-	p := Types.Vector2f{f32(ctx.mouse_input.position[0]), f32(ctx.mouse_input.position[1])}
+	p := Types.Vector2f{ctx.mouse_input.position.x, ctx.mouse_input.position.y}
 
 	hover := PointInRect(p, pos, size)
 
@@ -207,11 +203,7 @@ UnsignedIntegerSlider :: proc(
 	slide_color: Types.Color,
 ) -> u64 {
 
-	p := Types.Vector2f{
-		ctx.mouse_input.position.x,
-		ctx.mouse_input.position.y,
-	}
-	p := Types.Vector2f{f32(ctx.mouse_input.position[0]), f32(ctx.mouse_input.position[1])}
+	p := Types.Vector2f{ctx.mouse_input.position.x, ctx.mouse_input.position.y}
 
 	hover := PointInRect(p, pos, size)
 
@@ -272,11 +264,7 @@ SignedIntegerSlider :: proc(
 	slide_color: Types.Color,
 ) -> i64 {
 
-	p := Types.Vector2f{
-		ctx.mouse_input.position.x,
-		ctx.mouse_input.position.y,
-	}
-	p := Types.Vector2f{f32(ctx.mouse_input.position[0]), f32(ctx.mouse_input.position[1])}
+	p := Types.Vector2f{ctx.mouse_input.position.x, ctx.mouse_input.position.y}
 
 	hover := PointInRect(p, pos, size)
 
@@ -337,11 +325,7 @@ FloatSlider :: proc(
 	slide_color: Types.Color,
 ) -> f32 {
 
-	p := Types.Vector2f{
-		ctx.mouse_input.position.x,
-		ctx.mouse_input.position.y,
-	}
-	p := Types.Vector2f{f32(ctx.mouse_input.position[0]), f32(ctx.mouse_input.position[1])}
+	p := Types.Vector2f{ctx.mouse_input.position.x, ctx.mouse_input.position.y}
 
 	hover := PointInRect(p, pos, size)
 
@@ -354,7 +338,7 @@ FloatSlider :: proc(
 
 		if step_size > 0 {
 			new_value = f32(i32(new_value / step_size)) * step_size
-			new_value = clamp(new_value, min_max[0], min_max[1])
+			new_value = clamp(new, min_max[0], min_max[1])
 		}
 
 		value^ = new_value
