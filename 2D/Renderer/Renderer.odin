@@ -19,7 +19,7 @@ GraphicsBackend :: enum {
 }
 
 RenderContext :: struct {
-    Window:   ^sdl2.Window,
+    Window: ^sdl2.Window,
     Renderer: ^sdl2.Renderer,
     RenderSurface: ^sdl2.Texture,
 }

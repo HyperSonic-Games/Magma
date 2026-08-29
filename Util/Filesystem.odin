@@ -26,7 +26,7 @@ WriteCompressedStringFile :: proc(filepath: string, text: []string) {
 }
 
 /*
-reads a Shoco-compressed file,
+reads a Shoco compressed file,
 decompresses its content, and returns the result split by lines.
 @param filepath path to the compressed file
 @param allocator allocator used to allocate the returned string array
