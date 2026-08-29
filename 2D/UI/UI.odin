@@ -5,6 +5,7 @@ import "vendor:sdl2"
 import "../../Types"
 import "../Renderer"
 import "../EventSys"
+import "../../Util"
 
 MessageBoxType :: enum u32 {
 	ERROR = 4,
@@ -39,11 +40,8 @@ DestroyUIContext :: proc(ctx: ^UIContext) {
 }
 
 @(private)
-PointInRect :: proc(p, pos, size: Types.Vector2f) -> bool {
-	return p.x >= pos.x &&
-		p.y >= pos.y &&
-		p.x <= pos.x+size.x &&
-		p.y <= pos.y+size.y
+PointInRect :: #force_inline proc(p, pos, size: Types.Vector2f) -> bool {
+	return p.x >= pos.x && p.y >= pos.y && p.x <= pos.x+size.x && p.y <= pos.y+size.y
 }
 
 /*
@@ -59,7 +57,8 @@ renders a button to the renderer in ctx
 Button :: proc(
 	ctx: ^UIContext,
 	pos, size: Types.Vector2f,
-	color, pressed_color: Types.Color,
+	color: Types.Color,
+	pressed_color: Types.Color,
 	r_click: bool = false,
 ) -> bool {
 
@@ -76,7 +75,7 @@ Button :: proc(
 		 (r_click && ctx.mouse_input.RClick))
 
 	clicked :=
-		hover &&
+	    hover &&
 		((!r_click &&
 			ctx.mouse_input.LClick &&
 			!ctx.mouse_input.prev_LClick) ||
@@ -97,7 +96,7 @@ Button :: proc(
 /*
 renders a button with text centered inside
 @param ctx ui context
-@param text texture used as label
+@param text used as label
 @param pos button position
 @param size button size
 @param color base color
@@ -107,27 +106,38 @@ renders a button with text centered inside
 */
 TextButton :: proc(
 	ctx: ^UIContext,
-	text: ^Renderer.Texture,
+	text: string,
+	font: ^Util.FontEntry,
 	pos, size: Types.Vector2f,
-	color, pressed_color: Types.Color,
-	r_click: bool = false
+	color: Types.Color,
+	pressed_color: Types.Color,
+	r_click: bool = false,
 ) -> bool {
 
 	clicked := Button(ctx, pos, size, color, pressed_color, r_click)
 
-	// Center text inside button
-	if text != nil {
-		tex_size := Renderer.GetTextureSize(text)
-
-		if tex_size.x > 0 && tex_size.y > 0 {
-			scale := Types.Vector2f{
-				size.x / f32(tex_size.x),
-				size.y / f32(tex_size.y),
-			}
-
-			Text(ctx, pos, text, scale, 0.0)
-		}
+	if len(text) == 0 || font == nil {
+		return clicked
 	}
+
+	metrics := Util.GetStringMetrics(font, ctx.renderer.Renderer, text)
+
+	if metrics.x <= 0 || metrics.y <= 0 {
+		return clicked
+	}
+
+	scale_factor := min(size.x / metrics.x, size.y / metrics.y,)
+
+	scale := Types.Vector2f{scale_factor, scale_factor}
+
+	scaled_size := Types.Vector2f{metrics.x * scale.x, metrics.y * scale.y,}
+
+	text_pos := Types.Vector2f{
+		pos.x + (size.x - scaled_size.x) * 0.5,
+		pos.y + (size.y - scaled_size.y) * 0.5,
+	}
+
+	Text(ctx, font, text, text_pos, scale, 0.0)
 
 	return clicked
 }
@@ -149,17 +159,11 @@ CheckBox :: proc(
 	check_texture, uncheck_texture: ^Renderer.Texture,
 ) -> bool {
 
-	p := Types.Vector2f{
-		f32(ctx.mouse_input.position[0]),
-		f32(ctx.mouse_input.position[1]),
-	}
+	p := Types.Vector2f{f32(ctx.mouse_input.position[0]), f32(ctx.mouse_input.position[1])}
 
 	hover := PointInRect(p, pos, size)
 
-	clicked :=
-		hover &&
-		ctx.mouse_input.LClick &&
-		!ctx.mouse_input.prev_LClick
+	clicked := hover && ctx.mouse_input.LClick && !ctx.mouse_input.prev_LClick
 
 	if clicked {
 		value^ = !value^
@@ -199,18 +203,14 @@ UnsignedIntegerSlider :: proc(
 	slide_color: Types.Color,
 ) -> u64 {
 
-	p := Types.Vector2f{
-		f32(ctx.mouse_input.position[0]),
-		f32(ctx.mouse_input.position[1]),
-	}
+	p := Types.Vector2f{f32(ctx.mouse_input.position[0]), f32(ctx.mouse_input.position[1])}
 
 	hover := PointInRect(p, pos, size)
 
 	if hover && ctx.mouse_input.LClick {
 
 		t := (p.x - pos.x) / size.x
-		if t < 0 do t = 0
-		if t > 1 do t = 1
+		t = t < 0 ? 0 : (t > 1 ? 1 : t)
 
 		range := f32(min_max[1] - min_max[0])
 		new_value := min_max[0] + u64(range * t)
@@ -231,15 +231,11 @@ UnsignedIntegerSlider :: proc(
 	}
 
 	t := (f32(value^) - f32(min_max[0])) / range
-	if t < 0 do t = 0
-	if t > 1 do t = 1
+	t = t < 0 ? 0 : (t > 1 ? 1 : t)
 
 	handle_size := Types.Vector2f{8, size.y}
 
-	handle_pos := Types.Vector2f{
-		pos.x + t * size.x - handle_size.x * 0.5,
-		pos.y,
-	}
+	handle_pos := Types.Vector2f{pos.x + t * size.x - handle_size.x * 0.5, pos.y}
 
 	Renderer.DrawRect(ctx.renderer, handle_pos, handle_size, slide_color, true, 0.0)
 
@@ -268,18 +264,14 @@ SignedIntegerSlider :: proc(
 	slide_color: Types.Color,
 ) -> i64 {
 
-	p := Types.Vector2f{
-		f32(ctx.mouse_input.position[0]),
-		f32(ctx.mouse_input.position[1]),
-	}
+	p := Types.Vector2f{f32(ctx.mouse_input.position[0]), f32(ctx.mouse_input.position[1])}
 
 	hover := PointInRect(p, pos, size)
 
 	if hover && ctx.mouse_input.LClick {
 
 		t := (p.x - pos.x) / size.x
-		if t < 0 do t = 0
-		if t > 1 do t = 1
+		t = t < 0 ? 0 : (t > 1 ? 1 : t)
 
 		range := f32(min_max[1] - min_max[0])
 		new_value := i64(f32(min_max[0]) + range * t)
@@ -300,15 +292,11 @@ SignedIntegerSlider :: proc(
 	}
 
 	t := (f32(value^) - f32(min_max[0])) / range
-	if t < 0 do t = 0
-	if t > 1 do t = 1
+	t = t < 0 ? 0 : (t > 1 ? 1 : t)
 
 	handle_size := Types.Vector2f{8, size.y}
 
-	handle_pos := Types.Vector2f{
-		pos.x + t * size.x - handle_size.x * 0.5,
-		pos.y,
-	}
+	handle_pos := Types.Vector2f{pos.x + t * size.x - handle_size.x * 0.5, pos.y}
 
 	Renderer.DrawRect(ctx.renderer, handle_pos, handle_size, slide_color, true, 0.0)
 
@@ -337,18 +325,14 @@ FloatSlider :: proc(
 	slide_color: Types.Color,
 ) -> f32 {
 
-	p := Types.Vector2f{
-		f32(ctx.mouse_input.position[0]),
-		f32(ctx.mouse_input.position[1]),
-	}
+	p := Types.Vector2f{f32(ctx.mouse_input.position[0]), f32(ctx.mouse_input.position[1])}
 
 	hover := PointInRect(p, pos, size)
 
 	if hover && ctx.mouse_input.LClick {
 
 		t := (p.x - pos.x) / size.x
-		if t < 0 do t = 0
-		if t > 1 do t = 1
+		t = t < 0 ? 0 : (t > 1 ? 1 : t)
 
 		new_value := min_max[0] + (min_max[1] - min_max[0]) * t
 
@@ -368,15 +352,11 @@ FloatSlider :: proc(
 	}
 
 	t := (value^ - min_max[0]) / range
-	if t < 0 do t = 0
-	if t > 1 do t = 1
+	t = t < 0 ? 0 : (t > 1 ? 1 : t)
 
 	handle_size := Types.Vector2f{8, size.y}
 
-	handle_pos := Types.Vector2f{
-		pos.x + t * size.x - handle_size.x * 0.5,
-		pos.y,
-	}
+	handle_pos := Types.Vector2f{pos.x + t * size.x - handle_size.x * 0.5, pos.y}
 
 	Renderer.DrawRect(ctx.renderer, handle_pos, handle_size, slide_color, true, 0.0)
 
@@ -385,24 +365,66 @@ FloatSlider :: proc(
 
 /*
 renders text to the renderer in ctx
-this is just a wrapper over Renderer.DrawTexture to improve code readability
 @param ctx ui context
+@param font the font to render with
+@param text UTF-8 text to render
 @param pos text position
-@param text texture to render
 @param scale optional scaling factor
 @param rot rotation
 */
 Text :: proc(
 	ctx: ^UIContext,
+	font: ^Util.FontEntry,
+	text: string,
 	pos: Types.Vector2f,
-	text: ^Renderer.Texture,
 	scale: Types.Vector2f = {1, 1},
 	rot: f64 = 0.0,
 ) {
-	if text == nil {
+	if len(text) == 0 || ctx == nil ||font == nil {
 		return
 	}
-	Renderer.DrawTextureScaled(ctx.renderer, text, pos, scale, rot)
+
+	sdl2.SetRenderTarget(ctx.renderer.Renderer, ctx.renderer.RenderSurface)
+	metrics := Util.GetStringMetrics(font, ctx.renderer.Renderer, text)
+	scaled_metrics := Types.Vector2f{metrics.x * scale.x, metrics.y * scale.y}
+
+	global_center := Types.Vector2f{pos.x + scaled_metrics.x * 0.5, pos.y + scaled_metrics.y * 0.5,}
+
+	curr_x := pos.x
+
+	for char in text {
+		glyph, success := Util.EnsureGlyphCached(font, ctx.renderer.Renderer, char)
+		if !success {
+			continue
+		}
+
+		if glyph.SrcRect.w > 0 && glyph.SrcRect.h > 0 {
+			glyph_x := curr_x + f32(glyph.MinX) * scale.x
+			glyph_y := pos.y + f32(font.LineHeight - glyph.MaxY) * scale.y
+			glyph_w := f32(glyph.SrcRect.w) * scale.x
+			glyph_h := f32(glyph.SrcRect.h) * scale.y
+
+			Dst := sdl2.FRect{glyph_x, glyph_y, glyph_w, glyph_h}
+
+			if rot == 0.0 {
+				sdl2.RenderCopyF(ctx.renderer.Renderer, font.AtlasTexture, &glyph.SrcRect, &Dst)
+			}
+			else {
+				local_center := sdl2.FPoint{(global_center.x - Dst.x), (global_center.y - Dst.y)}
+				
+				sdl2.RenderCopyExF(
+					ctx.renderer.Renderer, 
+					font.AtlasTexture, 
+					&glyph.SrcRect, 
+					&Dst, 
+					rot, 
+					&local_center, 
+					.NONE,
+				)
+			}
+		}
+		curr_x += f32(glyph.AdvanceX) * scale.x
+	}
 }
 
 /*
@@ -455,17 +477,17 @@ a dialog box with text and a yes or no option
 @param button_border_color border color
 @param button_color button color
 @param button_select_color selected button color
-@return true if yes
+@return true if yes false if no
 */
 YesNoDialog :: proc(
 	title: string,
 	text: string,
 	type: MessageBoxType,
-	background_color := [3]u8{255, 255, 255},
-	text_color := [3]u8{0, 0, 0},
-	button_border_color := [3]u8{0, 0, 0},
-	button_color := [3]u8{255, 255, 255},
-	button_select_color := [3]u8{191, 191, 191},
+	background_color := Types.Color{255, 255, 255, 255},
+	text_color := Types.Color{0, 0, 0, 255},
+	button_border_color := Types.Color{0, 0, 0, 255},
+	button_color := Types.Color{255, 255, 255, 255},
+	button_select_color := Types.Color{191, 191, 191, 255},
 ) -> bool {
 	return ShowTwoButtonDialog(
 		title, text, type,
@@ -488,17 +510,17 @@ a dialog box with text and an ok or cancel option
 @param button_border_color border color
 @param button_color button color
 @param button_select_color selected button color
-@return true if ok
+@return true if ok false if cancel
 */
 OkCancelDialog :: proc(
 	title: string,
 	text: string,
 	type: MessageBoxType,
-	background_color := [3]u8{255, 255, 255},
-	text_color := [3]u8{0, 0, 0},
-	button_border_color := [3]u8{0, 0, 0},
-	button_color := [3]u8{255, 255, 255},
-	button_select_color := [3]u8{191, 191, 191},
+	background_color := Types.Color{255, 255, 255, 255},
+	text_color := Types.Color{0, 0, 0, 255},
+	button_border_color := Types.Color{0, 0, 0, 255},
+	button_color := Types.Color{255, 255, 255, 255},
+	button_select_color := Types.Color{191, 191, 191, 255},
 ) -> bool {
 	return ShowTwoButtonDialog(
 		title, text, type,
@@ -521,17 +543,17 @@ a dialog box with text and confirm/deny option
 @param button_border_color border color
 @param button_color button color
 @param button_select_color selected button color
-@return true if confirm
+@return true if confirm false if deny
 */
 ConfirmDenyDialog :: proc(
 	title: string,
 	text: string,
 	type: MessageBoxType,
-	background_color := [3]u8{255, 255, 255},
-	text_color := [3]u8{0, 0, 0},
-	button_border_color := [3]u8{0, 0, 0},
-	button_color := [3]u8{255, 255, 255},
-	button_select_color := [3]u8{191, 191, 191},
+	background_color := Types.Color{255, 255, 255, 255},
+	text_color := Types.Color{0, 0, 0, 255},
+	button_border_color := Types.Color{0, 0, 0, 255},
+	button_color := Types.Color{255, 255, 255, 255},
+	button_select_color := Types.Color{191, 191, 191, 255},
 ) -> bool {
 	return ShowTwoButtonDialog(
 		title, text, type,
@@ -543,42 +565,67 @@ ConfirmDenyDialog :: proc(
 		button_select_color,
 	)
 }
-
+/*
+shows a generic two button dialog
+@param title the title of the dialog
+@param text the discription of the dialog
+@param type the type of dialog
+@param accept_label the text for the accept button
+@param deny_label the text for the deny_label
+@param background_color the color for the background
+@param text_color the color for the text
+@param button_border_color the color for the border of the buttons
+@param button_select_color the color of the buttons when selected
+*/
 ShowTwoButtonDialog :: proc(
 	title: string,
 	text: string,
 	type: MessageBoxType,
 	accept_label: string,
 	deny_label: string,
-	background_color: [3]u8,
-	text_color: [3]u8,
-	button_border_color: [3]u8,
-	button_color: [3]u8,
-	button_select_color: [3]u8,
+	background_color: Types.Color,
+	text_color: Types.Color,
+	button_border_color: Types.Color,
+	button_color: Types.Color,
+	button_select_color: Types.Color,
 ) -> bool {
 
 	buttons := [2]sdl2.MessageBoxButtonData{
-		{flags = {.RETURNKEY_DEFAULT}, buttonid = 0, text = strings.clone_to_cstring(accept_label, context.temp_allocator)},
-		{flags = {.ESCAPEKEY_DEFAULT}, buttonid = 1, text = strings.clone_to_cstring(deny_label, context.temp_allocator)},
+		{
+			flags = {.RETURNKEY_DEFAULT},
+			buttonid = 0,
+			text = strings.clone_to_cstring(accept_label, context.temp_allocator)
+		},
+		{
+			flags = {.ESCAPEKEY_DEFAULT},
+			buttonid = 1,
+			text = strings.clone_to_cstring(deny_label, context.temp_allocator)
+		}
 	}
+
+	b_color := Types.ColorToSDL(background_color)
+	t_color := Types.ColorToSDL(text_color)
+	bb_color := Types.ColorToSDL(button_border_color)
+	bt_color := Types.ColorToSDL(button_color)
+	bs_color := Types.ColorToSDL(button_select_color)
 
 	color_theme := sdl2.MessageBoxColorScheme{
 		colors = {
-			.BACKGROUND        = {background_color[0], background_color[1], background_color[2]},
-			.TEXT              = {text_color[0], text_color[1], text_color[2]},
-			.BUTTON_BORDER     = {button_border_color[0], button_border_color[1], button_border_color[2]},
-			.BUTTON_BACKGROUND = {button_color[0], button_color[1], button_color[2]},
-			.BUTTON_SELECTED   = {button_select_color[0], button_select_color[1], button_select_color[2]},
+			.BACKGROUND = {b_color.r, b_color.g, b_color.b},
+			.TEXT = {t_color.r, t_color.g, t_color.b},
+			.BUTTON_BORDER = {bb_color.r, bb_color.g, bb_color.b},
+			.BUTTON_BACKGROUND = {bt_color.r, bt_color.g, bt_color.b},
+			.BUTTON_SELECTED = {bs_color.r, bs_color.g, bs_color.b},
 		},
 	}
 
 	data := sdl2.MessageBoxData{
-		flags       = {cast(sdl2.MessageBoxFlag)type, .BUTTONS_LEFT_TO_RIGHT},
-		window      = nil,
-		title       = strings.clone_to_cstring(title, context.temp_allocator),
-		message     = strings.clone_to_cstring(text, context.temp_allocator),
-		numbuttons  = 2,
-		buttons     = raw_data(buttons[:]),
+		flags = {cast(sdl2.MessageBoxFlag)type, .BUTTONS_LEFT_TO_RIGHT},
+		window = nil,
+		title = strings.clone_to_cstring(title, context.temp_allocator),
+		message = strings.clone_to_cstring(text, context.temp_allocator),
+		numbuttons = 2,
+		buttons = raw_data(buttons[:]),
 		colorScheme = &color_theme,
 	}
 

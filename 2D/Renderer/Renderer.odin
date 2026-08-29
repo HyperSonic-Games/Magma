@@ -8,12 +8,8 @@ import "../../Types"
 import "vendor:sdl2"
 import "vendor:sdl2/image"
 
-
-
 @private
 Frames: u128
-
-
 
 GraphicsBackend :: enum {
     OPEN_GL,
@@ -187,7 +183,6 @@ Update :: proc(ctx: ^RenderContext) {
     Frames += 1
 }
 
-
 /*
 controls if the window in the renderer context is fullscreen or not
 @param cxt the renderer context of the window you want to toggle fullscreen on
@@ -228,7 +223,9 @@ limits the FPS to a specific value
 FPSLimiter :: proc(target_fps: u64) {
     @static last_counter: u64 = 0
 
-    target_frame_time := sdl2.GetPerformanceFrequency() / target_fps
+    freq := sdl2.GetPerformanceFrequency()
+    target_frame_time := freq / target_fps
+
     current_counter := sdl2.GetPerformanceCounter()
 
     if last_counter != 0 {
@@ -237,19 +234,27 @@ FPSLimiter :: proc(target_fps: u64) {
         if elapsed < target_frame_time {
             remaining := target_frame_time - elapsed
 
-            ms := u32((remaining * 1000) / sdl2.GetPerformanceFrequency())
+            // Sleep until close to the target
+            ms := u32((remaining * 1000) / freq)
 
-            if ms > 0 {
-                sdl2.Delay(ms)
+            if ms > 1 {
+                sdl2.Delay(ms - 1)
             }
 
-            // refresh after delay
-            current_counter = sdl2.GetPerformanceCounter()
+            // Busy wait the remainder
+            for {
+                current_counter = sdl2.GetPerformanceCounter()
+
+                if current_counter - last_counter >= target_frame_time {
+                    break
+                }
+            }
         }
     }
 
-    last_counter = current_counter
+    last_counter = sdl2.GetPerformanceCounter()
 }
+
 /*
 returns the time in seconds between the current frame and the previous frame.
 It only updates the previous frame time every second call, effectively measuring delta over two frames.
@@ -279,7 +284,6 @@ GetDeltaTime :: proc() -> f32 {
 
     return delta
 }
-
 
 GetTextureSize :: proc(texture: ^Texture) -> Types.Vector2 {
     size: Types.Vector2

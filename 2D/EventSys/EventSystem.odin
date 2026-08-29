@@ -35,16 +35,16 @@ Keyboard :: struct {
 }
 
 WindowState :: struct {
-    should_quit:    bool,
-    resized:        bool,
-    new_width:      i32,
-    new_height:     i32,
-    minimized:      bool,
-    maximized:      bool,
-    focus_gained:   bool,
-    focus_lost:     bool,
-    mouse_entered:  bool,
-    mouse_left:     bool,
+    should_quit: bool,
+    resized: bool,
+    new_width: i32,
+    new_height: i32,
+    minimized: bool,
+    maximized: bool,
+    focus_gained: bool,
+    focus_lost: bool,
+    mouse_entered: bool,
+    mouse_left: bool,
 }
 
 /*
@@ -53,14 +53,14 @@ for the next frame. This should be called at the start of every frame.
 @param state Pointer to the WindowState struct to reset
 */
 ResetWindowFlags :: proc(state: ^WindowState) {
-    state.should_quit   = false
-    state.resized       = false
-    state.minimized     = false
-    state.maximized     = false
-    state.focus_gained  = false
-    state.focus_lost    = false
+    state.should_quit = false
+    state.resized = false
+    state.minimized = false
+    state.maximized = false
+    state.focus_gained = false
+    state.focus_lost = false
     state.mouse_entered = false
-    state.mouse_left    = false
+    state.mouse_left = false
 }
 
 /*
@@ -183,15 +183,15 @@ HandleEvents :: proc(mouse: ^Mouse, keyboard: ^Keyboard, win: ^WindowState) {
                 we := event.window
                 #partial switch we.event {
                     case sdl2.WindowEventID.RESIZED:
-                        win.resized    = true
-                        win.new_width  = we.data1
+                        win.resized = true
+                        win.new_width = we.data1
                         win.new_height = we.data2
-                    case sdl2.WindowEventID.MINIMIZED:    win.minimized     = true
-                    case sdl2.WindowEventID.MAXIMIZED:    win.maximized     = true
+                    case sdl2.WindowEventID.MINIMIZED: win.minimized = true
+                    case sdl2.WindowEventID.MAXIMIZED: win.maximized = true
                     case sdl2.WindowEventID.FOCUS_GAINED: win.focus_gained  = true
-                    case sdl2.WindowEventID.FOCUS_LOST:   win.focus_lost    = true
-                    case sdl2.WindowEventID.ENTER:        win.mouse_entered = true
-                    case sdl2.WindowEventID.LEAVE:        win.mouse_left    = true
+                    case sdl2.WindowEventID.FOCUS_LOST: win.focus_lost = true
+                    case sdl2.WindowEventID.ENTER: win.mouse_entered = true
+                    case sdl2.WindowEventID.LEAVE: win.mouse_left = true
                     case: {}
                 }
 

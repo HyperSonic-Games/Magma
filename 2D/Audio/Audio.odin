@@ -39,25 +39,25 @@ Init :: proc() -> ^AudioContext {
     }
 
     ctx := new(AudioContext)
-    ctx.FX         = 0
+    ctx.FX = 0
     ctx.Background = 1
-    ctx.Voice      = 2
-    ctx.Ambience   = 3
-    ctx.UI         = 4
-    ctx.Custom1    = 5
-    ctx.Custom2    = 6
-    ctx.Custom3    = 7
-    ctx.Music      = nil
+    ctx.Voice = 2
+    ctx.Ambience = 3
+    ctx.UI = 4
+    ctx.Custom1 = 5
+    ctx.Custom2 = 6
+    ctx.Custom3 = 7
+    ctx.Music = nil
 
     // Initialize all chunks to nil
-    ctx.FXChunk         = nil
+    ctx.FXChunk = nil
     ctx.BackgroundChunk = nil
-    ctx.VoiceChunk      = nil
-    ctx.AmbienceChunk   = nil
-    ctx.UIChunk         = nil
-    ctx.Custom1Chunk    = nil
-    ctx.Custom2Chunk    = nil
-    ctx.Custom3Chunk    = nil
+    ctx.VoiceChunk = nil
+    ctx.AmbienceChunk = nil
+    ctx.UIChunk = nil
+    ctx.Custom1Chunk = nil
+    ctx.Custom2Chunk = nil
+    ctx.Custom3Chunk = nil
 
     return ctx
 }

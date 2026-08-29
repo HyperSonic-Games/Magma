@@ -3,7 +3,7 @@ package Types
 import "core:simd"
 import "vendor:sdl2"
 
-// SIMD-backed color type, representing RGBA channels as 4 unsigned 8-bit integers
+// SIMD backed color type, representing RGBA channels as 4 unsigned 8-bit integers
 Color :: #simd[4]u8
 
 
@@ -54,29 +54,36 @@ ColorSub :: proc(a, b: Color) -> Color {
 }
 
 /*
-performs per-channel multiplication of two Colors, clamped to valid RGBA ranges.
+performs per channel multiplication of two Colors, clamped to valid RGBA ranges.
 @param a first Color operand
 @param b second Color operand
 @return resulting Color after multiplication and clamping
 */
 ColorMul :: proc(a, b: Color) -> Color {
-    return simd.clamp(simd.mul(a, b), {0, 0, 0 ,0}, {255, 255, 255, 255})
+    af := cast(#simd[4]f32)(a)
+    bf := cast(#simd[4]f32)(b)
+
+    result := simd.div(simd.add(simd.mul(af, bf), {127, 127, 127, 127}), {255, 255, 255, 255})
+
+    return cast(Color)(result)
 }
 
 /*
-performs per-channel division of two Colors, with float casting for precision.
+performs per channel division of two Colors, with float casting for precision.
 The result is clamped to valid RGBA ranges.
 @param a numerator Color
 @param b denominator Color
 @return resulting Color after division and clamping
 */
 ColorDiv :: proc(a, b: Color) -> Color {
-    // Cast to float SIMD vectors for division, then back to u8 SIMD vector
-    return simd.clamp(
-        cast(#simd[4]u8) simd.div(cast(#simd[4]f32)a, cast(#simd[4]f32)b), 
-        {0, 0, 0, 0}, 
-        {255, 255, 255, 255}
-    )
+    af := cast(#simd[4]f32)a
+    bf := cast(#simd[4]f32)b
+
+    result := simd.div(simd.mul(af, {255, 255, 255, 255}), bf,)
+
+    result = simd.clamp(result, {0, 0, 0, 0}, {255, 255, 255, 255})
+
+    return cast(Color)result
 }
 
 /*

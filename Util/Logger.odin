@@ -78,10 +78,10 @@ DumpStruct :: proc(strct: $T) where intrinsics.type_is_struct(T) {
     strct := strct
 	id := typeid_of(T)
 	
-	names   := reflect.struct_field_names(id)
-	types   := reflect.struct_field_types(id)
+	names := reflect.struct_field_names(id)
+	types := reflect.struct_field_types(id)
 	offsets := reflect.struct_field_offsets(id)
-	tags    := reflect.struct_field_tags(id)
+	tags := reflect.struct_field_tags(id)
 
 	fmt.printf("%v :: struct {{\n", id)
 	
