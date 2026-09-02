@@ -120,7 +120,7 @@ TextButton :: proc(
 		return clicked
 	}
 
-	metrics := Util.GetStringMetrics(font, ctx.renderer.Renderer, text)
+	metrics := Util.GetStringMetrics(font, text)
 
 	if metrics.x <= 0 || metrics.y <= 0 {
 		return clicked
@@ -338,7 +338,7 @@ FloatSlider :: proc(
 
 		if step_size > 0 {
 			new_value = f32(i32(new_value / step_size)) * step_size
-			new_value = clamp(new, min_max[0], min_max[1])
+			new_value = clamp(new_value, min_max[0], min_max[1])
 		}
 
 		value^ = new_value
@@ -385,7 +385,7 @@ Text :: proc(
 	}
 
 	sdl2.SetRenderTarget(ctx.renderer.Renderer, ctx.renderer.RenderSurface)
-	metrics := Util.GetStringMetrics(font, ctx.renderer.Renderer, text)
+	metrics := Util.GetStringMetrics(font, text)
 	scaled_metrics := Types.Vector2f{metrics.x * scale.x, metrics.y * scale.y}
 
 	global_center := Types.Vector2f{pos.x + scaled_metrics.x * 0.5, pos.y + scaled_metrics.y * 0.5,}
@@ -393,7 +393,7 @@ Text :: proc(
 	curr_x := pos.x
 
 	for char in text {
-		glyph, success := Util.EnsureGlyphCached(font, ctx.renderer.Renderer, char)
+		glyph, success := Util.EnsureGlyphCached(font, char)
 		if !success {
 			continue
 		}
