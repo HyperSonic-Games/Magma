@@ -312,3 +312,9 @@ GetTextureSize :: proc(texture: ^Texture) -> Types.Vector2 {
     sdl2.QueryTexture(texture, nil, nil, &size[0], &size[1])
     return size
 }
+
+GetRendererSize :: proc(ctx: RenderContext) -> Types.Vector2 {
+    vec: Types.Vector2
+    sdl2.GetRendererOutputSize(ctx.Renderer, &vec.x, &vec.y)
+    return vec
+}
