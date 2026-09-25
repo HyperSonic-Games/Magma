@@ -1,7 +1,5 @@
 package Renderer
 
-import "core:mem"
-import "base:runtime"
 import "core:math"
 import "../../Util"
 import "../../Types"
