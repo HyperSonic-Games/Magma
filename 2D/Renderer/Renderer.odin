@@ -150,6 +150,16 @@ Init :: proc(
 
     render_texture := sdl2.CreateTexture(renderer, .RGBA8888, .TARGET, width, height)
     
+    if render_texture == nil {
+        Util.Log(
+            .ERROR,
+            "MAGMA",
+            "2D_RENDERER_INIT",
+            "Failed to create render texture: %s",
+            sdl2.GetErrorString()
+        )
+    }
+    
 
     return RenderContext {
         Window = window,
@@ -168,17 +178,28 @@ updates the renderer with whatever should be rendered to the screen
 @param cxt The renderer context for the window you want to update
 */
 Update :: proc(ctx: ^RenderContext) {
+    assert(ctx != nil)
+    assert(ctx.Renderer != nil)
+    assert(ctx.RenderSurface != nil)
     
     sdl2.SetRenderTarget(ctx.Renderer, nil)
 
     sdl2.SetRenderDrawColor(ctx.Renderer, 0, 0, 0, 255)
     sdl2.RenderClear(ctx.Renderer)
-    
     win_w, win_h: i32
-    sdl2.GetRendererOutputSize(ctx.Renderer, &win_w, &win_h)
+    
+    if sdl2.GetRendererOutputSize(ctx.Renderer, &win_w, &win_h) != 0 {
+        Util.Log(.ERROR, "MAGMA", "UPDATE", sdl2.GetErrorString())
+    }
     
     tex_w, tex_h: i32
-    sdl2.QueryTexture(ctx.RenderSurface, nil, nil, &tex_w, &tex_h)
+    if sdl2.QueryTexture(ctx.RenderSurface, nil, nil, &tex_w, &tex_h) != 0 {
+        Util.Log(.ERROR, "MAGMA", "UPDATE", sdl2.GetErrorString())
+    }
+    
+    if win_w <= 0 || win_h <= 0 || tex_w <= 0 || tex_h <= 0 {
+        Util.Log(.ERROR, "MAGMA", "UPDATE", "Invalid renderer or texture dimensions")
+    }
 
     scale := math.min(
         f32(win_w) / f32(tex_w),
@@ -194,6 +215,7 @@ Update :: proc(ctx: ^RenderContext) {
         w = dst_w,
         h = dst_h,
     }
+    
     sdl2.SetTextureScaleMode(ctx.RenderSurface, .Linear)
 
     sdl2.RenderCopy(ctx.Renderer, ctx.RenderSurface, nil, &dst)
