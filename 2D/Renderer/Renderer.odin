@@ -207,6 +207,7 @@ Update :: proc(ctx: ^RenderContext) {
     )
     
     dst_w := i32(f32(tex_w) * scale)
+    
     dst_h := i32(f32(tex_h) * scale)
     
     dst := sdl2.Rect{
