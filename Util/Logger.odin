@@ -30,49 +30,88 @@ calling with level ERROR will cause a runtime trap if you do not want this use E
 @param format a regular odin format string followed by the vars to print out
 */
 Log :: proc(level: LogLevel, namespace: string, component_name: string, format: string, args: ..any) {
-    prefix := fmt.aprintf("[%s/%s]: ", namespace, component_name)
-
-    full_msg := fmt.aprintf(format, args) if (len(args)) > 0 else format
-
-    if (level == .DEBUG && ODIN_DEBUG == true) {
-        fmt.printfln("%s<DEBUG> ~ %s", prefix, full_msg)
+    if level == .DEBUG && !ODIN_DEBUG {
+        return
     }
-    else if (level == .VERBOSE && VERBOSE_LOGGING) {
-        fmt.printfln("%s<VERBOSE> ~ %s", prefix, full_msg)
-    }
-    else if (level == .INFO) {
-        fmt.printfln(ansi.CSI + ansi.FG_CYAN + ansi.SGR + "%s<INFO> ~ %s" + ansi.CSI + ansi.FG_WHITE, prefix, full_msg)
-    }
-    else if (level == .WARN) {
-        fmt.printfln(ansi.CSI + ansi.FG_YELLOW + ansi.SGR + "%s<WARN> ~ %s" + ansi.CSI + ansi.RESET + ansi.SGR, prefix, full_msg)
-    }
-    else if (level == .ERROR || level == .ERROR_NO_ABORT) {
-        // Leaks memory but it's an error state so the program is crashing anyways
-        if (ODIN_DEBUG) {
-            if level == .ERROR {
-                fmt.eprintfln(ansi.CSI + ansi.FG_RED + ansi.SGR + "%s<ERROR> ~ %s" + ansi.CSI + ansi.FG_WHITE, prefix, full_msg)
-            }
-            else {
-                fmt.eprintfln(ansi.CSI + ansi.FG_RED + ansi.SGR + "%s<ERROR_NO_ABORT> ~ %s" + ansi.CSI + ansi.FG_WHITE, prefix, full_msg)
-            }
-            if level != .ERROR_NO_ABORT {
-                runtime.debug_trap() // Hey debuger we messed up come see
-            }
-        }
-        else {
-            full_msg_cstring := strings.clone_to_cstring(full_msg)
-            sdl2.ShowSimpleMessageBox({.ERROR}, strings.clone_to_cstring(namespace), full_msg_cstring, nil)
-            delete(full_msg_cstring)
-            if level != .ERROR_NO_ABORT {
-                runtime.trap() // CRASH AND BURN
-            }
-        }
+    if level == .VERBOSE && !VERBOSE_LOGGING {
+        return
     }
 
-    delete(prefix)
+    prefix := fmt.aprintf("[%s/%s]", namespace, component_name)
+    defer delete(prefix)
+
+    full_msg := format
+    
     if len(args) > 0 {
-        delete(full_msg)
+        full_msg = fmt.aprintf(format, args)
+        defer delete(full_msg)
     }
+
+    label := ""
+    color_code := ""
+
+    switch level {
+    case .DEBUG:
+        label = "DEBUG"
+        color_code = ansi.FG_WHITE
+    case .VERBOSE:
+        label = "VERBOSE"
+        color_code = ansi.FG_BLUE
+    case .INFO:
+        label = "INFO"
+        color_code = ansi.FG_CYAN
+    case .WARN:
+        label = "WARN"
+        color_code = ansi.FG_YELLOW
+    case .ERROR:
+        label = "ERROR"
+        color_code = ansi.FG_RED
+    case .ERROR_NO_ABORT:
+        label = "ERROR_NO_ABORT"
+        color_code = ansi.FG_RED
+    }
+
+    color := strings.join(
+        []string{ansi.CSI, color_code, ansi.SGR},
+        "",
+        context.temp_allocator,
+    )
+    reset := strings.join(
+        []string{ansi.CSI, ansi.RESET, ansi.SGR},
+        "",
+        context.temp_allocator,
+    )
+
+    output := strings.join(
+        []string{color, prefix, " <", label, "> ~ ", full_msg, reset},
+        "",
+
+        context.temp_allocator,
+    )
+
+    if level == .ERROR || level == .ERROR_NO_ABORT {
+        if ODIN_DEBUG {
+            fmt.eprintfln("%s", output)
+
+            if level == .ERROR {
+                runtime.debug_trap()
+            }
+        } else {
+            title := strings.clone_to_cstring(namespace)
+            message := strings.clone_to_cstring(full_msg)
+            defer delete(title)
+            defer delete(message)
+
+            sdl2.ShowSimpleMessageBox({.ERROR}, title, message, nil)
+
+            if level == .ERROR {
+                runtime.trap()
+            }
+        }
+        return
+    }
+
+    fmt.printfln("%s", output)
 }
 
 DumpStruct :: proc(strct: $T) where intrinsics.type_is_struct(T) {

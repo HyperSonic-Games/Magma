@@ -25,7 +25,15 @@ creates a new UIContext to use for ui state
 @return a pointer to the new UIContext
 */
 CreateUIContext :: proc(renderer: ^Renderer.RenderContext, mouse_data: ^EventSys.Mouse) -> ^UIContext {
-	ctx := new(UIContext)
+	ctx, err := new(UIContext)
+	if err != .None {
+		Util.Log(
+			.ERROR,
+			"MAGMA",
+			"CREATE_UI_CONTEXT",
+			"Could not allocate memory for the UI context"
+		)
+	}
 	ctx.renderer = renderer
 	ctx.mouse_input = mouse_data
 	return ctx
