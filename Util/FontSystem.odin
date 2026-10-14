@@ -38,7 +38,7 @@ FontEntry :: struct {
 }
 
 FontStorage :: struct {
-	Fonts: [dynamic]FontEntry,
+	Fonts: [dynamic]^FontEntry
 }
 
 /*
@@ -47,7 +47,7 @@ creates a new storage for loaded fonts
 @param allocator the allocator used to allocate the storage
 */
 FontStorageInit :: proc(storage: ^FontStorage, allocator := context.allocator) {
-	storage.Fonts = make([dynamic]FontEntry, allocator)
+	storage.Fonts = make([dynamic]^FontEntry, allocator)
 }
 
 /*
@@ -57,7 +57,9 @@ can be reinitalised with FontStorageInit
 @param storage the pointer to the storage you want to destroy
 */
 FontStorageDestroy :: proc(storage: ^FontStorage) {
-	for &entry in storage.Fonts {
+	for entry in storage.Fonts {
+		if entry == nil do continue
+
 		if entry.Font != nil {
 			ttf.CloseFont(entry.Font)
 		}
@@ -66,6 +68,7 @@ FontStorageDestroy :: proc(storage: ^FontStorage) {
 		}
 		delete(entry.Glyphs)
 		delete(entry.Name)
+		free(entry)
 	}
 	delete(storage.Fonts)
 }
@@ -97,9 +100,9 @@ FontStorageAdd :: proc(
 		}
 	}
 
-	for &entry in storage.Fonts {
+	for entry in storage.Fonts {
 		if entry.Name == name && entry.Kind == kind && entry.Size == size {
-			return true, &entry
+			return true, entry
 		}
 	}
 	c_path := strings.clone_to_cstring(path, context.temp_allocator)
@@ -122,7 +125,7 @@ FontStorageAdd :: proc(
 		sdl2.UnlockTexture(atlas_tex)
 	}
 
-	new_entry: FontEntry
+	new_entry := new(FontEntry)
 	new_entry.Name = strings.clone(name)
 	new_entry.Kind = kind
 	new_entry.Size = size
@@ -137,7 +140,7 @@ FontStorageAdd :: proc(
 	new_entry.MaxRowHeight = 0
 
 	append(&storage.Fonts, new_entry)
-	return true, &storage.Fonts[len(storage.Fonts) - 1]
+	return true, new_entry
 }
 
 /*
@@ -153,9 +156,9 @@ FontStorageGet :: proc(storage: ^FontStorage, name: string, kind: FontType, size
 		return nil
 	}
 
-	for &entry in storage.Fonts {
+	for entry in storage.Fonts {
 		if entry.Name == name && entry.Kind == kind && entry.Size == size {
-			return &entry
+			return entry
 		}
 	}
 
@@ -237,6 +240,7 @@ EnsureGlyphCached :: proc(font: ^FontEntry, glyph: rune) -> (GlyphInfo, bool) {
 
 	// Not enough vertical space: invalidate the entire cache.
 	if font.NextY + h + pad > font.AtlasHeight {
+	
 		Log(
 			.INFO,
 			"MAGMA_ENGINE",
